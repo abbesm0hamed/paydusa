@@ -1,0 +1,29 @@
+{
+  "name": "@repo/feature-flags",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+  },
+  "dependencies": {
+    "@repo/analytics": "workspace:*",
+    "@repo/auth": "workspace:*",
+    "@repo/design-system": "workspace:*",
+    "@t3-oss/env-nextjs": "^0.12.0",
+    "@vercel/toolbar": "^0.1.36",
+    "flags": "^3.2.0",
+    "react": "^19.1.0",
+    "zod": "^3.24.2"
+  },
+  "peerDependencies": {
+    "next": "15.1.7"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "22.14.1",
+    "@types/react": "19.1.1",
+    "@types/react-dom": "^19.1.2",
+    "typescript": "^5.8.3"
+  }
+}

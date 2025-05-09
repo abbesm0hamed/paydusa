@@ -1,0 +1,25 @@
+{
+  "name": "@repo/cms",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "basehub dev",
+    "build": "basehub build",
+    "analyze": "basehub",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+  },
+  "dependencies": {
+    "@t3-oss/env-nextjs": "^0.12.0",
+    "basehub": "^8.1.32",
+    "react": "^19.1.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "22.14.1",
+    "@types/react": "19.1.1",
+    "@types/react-dom": "^19.1.2",
+    "next": "15.3.0"
+  }
+}
