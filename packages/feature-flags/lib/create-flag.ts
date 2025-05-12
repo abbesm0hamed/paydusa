@@ -1,5 +1,4 @@
 import { analytics } from '@repo/analytics/posthog/server';
-import { auth } from '@repo/auth/server';
 import { flag } from 'flags/next';
 
 export const createFlag = (key: string) =>
@@ -7,12 +6,7 @@ export const createFlag = (key: string) =>
     key,
     defaultValue: false,
     async decide() {
-      const { userId } = await auth();
-
-      if (!userId) {
-        return this.defaultValue as boolean;
-      }
-
+      const userId = String(Math.random());
       const isEnabled = await analytics.isFeatureEnabled(key, userId);
 
       return isEnabled ?? (this.defaultValue as boolean);

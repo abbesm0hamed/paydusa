@@ -6,8 +6,7 @@
   "description": "Next.js Starter to be used with Medusa V2",
   "keywords": ["medusa-storefront"],
   "scripts": {
-    "dev": "next dev -p 8000",
-    "dev:turbo": "next dev --turbo -p 8000",
+    "dev": "next dev --turbopack -p 8000",
     "build": "next build",
     "start": "next start -p 8000",
     "lint": "next lint",

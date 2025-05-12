@@ -1,12 +1,10 @@
 {
-  "name": "next-forge",
-  "version": "4.2.8",
+  "name": "ecommerce",
+  "version": "0.0.1",
   "bin": {
     "next-forge": "dist/index.js"
   },
-  "files": [
-    "dist/index.js"
-  ],
+  "files": ["dist/index.js"],
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
@@ -25,18 +23,18 @@
     "@auto-it/first-time-contributor": "^11.3.0",
     "@biomejs/biome": "1.9.4",
     "@repo/typescript-config": "workspace:*",
-    "@turbo/gen": "^2.5.0",
-    "@types/node": "^22.14.1",
+    "@turbo/gen": "^2.5.3",
+    "@types/node": "^22.15.17",
     "tsup": "^8.4.0",
-    "turbo": "^2.5.0",
+    "turbo": "^2.5.3",
     "typescript": "^5.8.3",
-    "ultracite": "^4.2.1",
-    "vitest": "^3.1.1"
+    "ultracite": "^4.2.4",
+    "vitest": "^3.1.3"
   },
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "pnpm@10.8.0",
+  "packageManager": "pnpm@10.10.0",
   "dependencies": {
     "@clack/prompts": "^0.10.1",
     "commander": "^13.1.0"
