@@ -1,97 +1,21 @@
-@import 'tailwindcss';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
-}
-
-@utility no-scrollbar {
+@layer utilities {
   /* Chrome, Safari and Opera */
-  &::-webkit-scrollbar {
+  .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
 
-  &::-webkit-scrollbar-track {
+  .no-scrollbar::-webkit-scrollbar-track {
     background-color: transparent;
   }
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
 
-@utility content-container {
-  @apply max-w-[1440px] w-full mx-auto px-6;
-}
-
-@utility contrast-btn {
-  @apply px-4 py-2 border border-black rounded-full hover:bg-black hover:text-white transition-colors duration-200 ease-in;
-}
-
-@utility text-xsmall-regular {
-  @apply text-[10px] leading-4 font-normal;
-}
-
-@utility text-small-regular {
-  @apply text-xs leading-5 font-normal;
-}
-
-@utility text-small-semi {
-  @apply text-xs leading-5 font-semibold;
-}
-
-@utility text-base-regular {
-  @apply text-sm leading-6 font-normal;
-}
-
-@utility text-base-semi {
-  @apply text-sm leading-6 font-semibold;
-}
-
-@utility text-large-regular {
-  @apply text-base leading-6 font-normal;
-}
-
-@utility text-large-semi {
-  @apply text-base leading-6 font-semibold;
-}
-
-@utility text-xl-regular {
-  @apply text-2xl leading-[36px] font-normal;
-}
-
-@utility text-xl-semi {
-  @apply text-2xl leading-[36px] font-semibold;
-}
-
-@utility text-2xl-regular {
-  @apply text-[30px] leading-[48px] font-normal;
-}
-
-@utility text-2xl-semi {
-  @apply text-[30px] leading-[48px] font-semibold;
-}
-
-@utility text-3xl-regular {
-  @apply text-[32px] leading-[44px] font-normal;
-}
-
-@utility text-3xl-semi {
-  @apply text-[32px] leading-[44px] font-semibold;
-}
-
-@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 
   input:focus ~ label,
   input:not(:placeholder-shown) ~ label {
@@ -122,5 +46,67 @@
   input[type="search"]::-webkit-search-results-button,
   input[type="search"]::-webkit-search-results-decoration {
     -webkit-appearance: none;
+  }
+}
+
+@layer components {
+  .content-container {
+    @apply max-w-[1440px] w-full mx-auto px-6;
+  }
+
+  .contrast-btn {
+    @apply px-4 py-2 border border-black rounded-full hover:bg-black hover:text-white transition-colors duration-200 ease-in;
+  }
+
+  .text-xsmall-regular {
+    @apply text-[10px] leading-4 font-normal;
+  }
+
+  .text-small-regular {
+    @apply text-xs leading-5 font-normal;
+  }
+
+  .text-small-semi {
+    @apply text-xs leading-5 font-semibold;
+  }
+
+  .text-base-regular {
+    @apply text-sm leading-6 font-normal;
+  }
+
+  .text-base-semi {
+    @apply text-sm leading-6 font-semibold;
+  }
+
+  .text-large-regular {
+    @apply text-base leading-6 font-normal;
+  }
+
+  .text-large-semi {
+    @apply text-base leading-6 font-semibold;
+  }
+
+  .text-xl-regular {
+    @apply text-2xl leading-[36px] font-normal;
+  }
+
+  .text-xl-semi {
+    @apply text-2xl leading-[36px] font-semibold;
+  }
+
+  .text-2xl-regular {
+    @apply text-[30px] leading-[48px] font-normal;
+  }
+
+  .text-2xl-semi {
+    @apply text-[30px] leading-[48px] font-semibold;
+  }
+
+  .text-3xl-regular {
+    @apply text-[32px] leading-[44px] font-normal;
+  }
+
+  .text-3xl-semi {
+    @apply text-[32px] leading-[44px] font-semibold;
   }
 }

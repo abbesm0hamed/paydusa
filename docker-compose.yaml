@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:17.4-alpine3.21
+    container_name: ecommerce_db
+    restart: on-failure
+    environment:
+      - POSTGRES_USER=ecom_user_7f29a4
+      - POSTGRES_PASSWORD=K4d9m3Lp8sQw2rT1
+      - POSTGRES_DB=postgres_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ecommerce_data:/var/lib/postgresql/data
+
+volumes:
+  ecommerce_data:
+    driver: local

@@ -1,10 +1,12 @@
 {
   "name": "storefront",
-  "version": "1.0.3",
+  "version": "0.0.1",
   "private": true,
   "author": "Kasper Fabricius Kristensen <kasper@medusajs.com> & Victor Gerbrands <victor@medusajs.com> (https://www.medusajs.com)",
   "description": "Next.js Starter to be used with Medusa V2",
-  "keywords": ["medusa-storefront"],
+  "keywords": [
+    "medusa-storefront"
+  ],
   "scripts": {
     "dev": "next dev --turbopack -p 8000",
     "build": "next build",
@@ -14,6 +16,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
+    "@medusajs/icons": "^2.7.1",
     "@medusajs/js-sdk": "latest",
     "@medusajs/ui": "latest",
     "@radix-ui/react-accordion": "^1.2.1",
@@ -50,7 +53,7 @@
     "tailwindcss": "^3.0.23",
     "typescript": "^5.3.2"
   },
-  "packageManager": "pnpm@10.10.0",
+  "packageManager": "yarn@3.2.3",
   "resolutions": {
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
