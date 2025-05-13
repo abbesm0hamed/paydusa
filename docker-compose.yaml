@@ -11,7 +11,60 @@ services:
       - "5432:5432"
     volumes:
       - ecommerce_data:/var/lib/postgresql/data
+    networks:
+      - ecommerce_net
+
+  pgadmin:
+    image: dpage/pgadmin4:8.2
+    container_name: ecommerce_pgadmin
+    restart: on-failure
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@example.com
+      - PGADMIN_DEFAULT_PASSWORD=admin123
+      - PGADMIN_LISTEN_PORT=5050
+      - PGADMIN_CONFIG_SERVER_MODE=False
+      - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
+    ports:
+      - "5050:5050"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./pgadmin-servers.json:/pgadmin4/servers.json
+    depends_on:
+      - postgres
+    networks:
+      - ecommerce_net
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: ecommerce_redis
+    restart: on-failure
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - ecommerce_net
+
+  redisinsight:
+    image: redislabs/redisinsight:latest
+    container_name: ecommerce_redis_ui
+    restart: on-failure
+    ports:
+      - "8001:8001"
+    depends_on:
+      - redis
+    networks:
+      - ecommerce_net
 
 volumes:
   ecommerce_data:
     driver: local
+  pgadmin_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  ecommerce_net:
+    driver: bridge

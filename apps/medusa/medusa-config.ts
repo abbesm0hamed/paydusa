@@ -14,14 +14,28 @@ const getDatabaseUrl = () => {
   return process.env.DATABASE_URL;
 };
 
+// Get Redis URL from environment variables with fallback
+const getRedisUrl = () => {
+  if (
+    process.env.NODE_ENV === 'development' ||
+    process.env.NODE_ENV === 'test'
+  ) {
+    return (
+      process.env.LOCAL_REDIS_URL ||
+      process.env.REDIS_URL ||
+      'redis://localhost:6379'
+    );
+  }
+  return process.env.REDIS_URL || 'redis://redis:6379';
+};
+
 module.exports = defineConfig({
   modules: [
     {
       resolve: '@medusajs/medusa/workflow-engine-redis',
-
       options: {
         redis: {
-          url: process.env.REDIS_URL,
+          url: getRedisUrl(),
         },
       },
     },
