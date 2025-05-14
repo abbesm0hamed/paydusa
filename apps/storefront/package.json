@@ -1,29 +1,43 @@
 {
-  "name": "medusa-next",
+  "name": "storefront",
   "version": "1.0.3",
   "private": true,
   "author": "Kasper Fabricius Kristensen <kasper@medusajs.com> & Victor Gerbrands <victor@medusajs.com> (https://www.medusajs.com)",
   "description": "Next.js Starter to be used with Medusa V2",
-  "keywords": [
-    "medusa-storefront"
-  ],
+  "keywords": ["storefront"],
+  "type": "module",
   "scripts": {
-    "dev": "next dev --turbopack -p 8000",
-    "build": "next build",
-    "start": "next start -p 8000",
-    "lint": "next lint",
-    "analyze": "ANALYZE=true next build"
+    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev -p 8000",
+    "dev:turbo": "cross-env NODE_OPTIONS=--no-deprecation next dev -p 8000 --turbopack",
+    "dev:prod": "cross-env NODE_OPTIONS=--no-deprecation rm -rf .next && pnpm build && pnpm start",
+    "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start -p 8000",
+    "analyze": "ANALYZE=true next build",
+    "ii": "cross-env NODE_OPTIONS=--no-deprecation pnpm --ignore-workspace install",
+    "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
+    "lint:fix": "cross-env NODE_OPTIONS=--no-deprecation next lint --fix",
+    "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+    "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
     "@medusajs/icons": "^2.8.0",
     "@medusajs/js-sdk": "latest",
     "@medusajs/ui": "latest",
+    "@payloadcms/db-postgres": "^3.37.0",
+    "@payloadcms/next": "^3.37.0",
+    "@payloadcms/payload-cloud": "^3.37.0",
+    "@payloadcms/plugin-form-builder": "^3.37.0",
+    "@payloadcms/richtext-lexical": "^3.37.0",
     "@radix-ui/react-accordion": "^1.2.1",
     "@stripe/react-stripe-js": "^1.7.2",
     "@stripe/stripe-js": "^1.29.0",
+    "cross-env": "^7.0.3",
+    "graphql": "^16.11.0",
     "lodash": "^4.17.21",
     "next": "^15.3.1",
+    "payload": "^3.37.0",
     "pg": "^8.11.3",
     "qs": "^6.12.1",
     "react": "19.0.0-rc-66855b96-20241106",
@@ -31,7 +45,8 @@
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "server-only": "^0.0.1",
     "tailwindcss-radix": "^2.8.0",
-    "webpack": "^5"
+    "webpack": "^5",
+    "zod": "^3.24.4"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
@@ -61,5 +76,8 @@
   "overrides": {
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["sharp"]
   }
 }

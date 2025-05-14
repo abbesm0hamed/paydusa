@@ -1,19 +1,19 @@
-const excludedPaths = ["/checkout", "/account/*"]
+const excludedPaths = ['/checkout', '/account/*'];
 
-module.exports = {
+export default {
   siteUrl: process.env.NEXT_PUBLIC_VERCEL_URL,
   generateRobotsTxt: true,
-  exclude: excludedPaths + ["/[sitemap]"],
+  exclude: excludedPaths + ['/[sitemap]'],
   robotsTxtOptions: {
     policies: [
       {
-        userAgent: "*",
-        allow: "/",
+        userAgent: '*',
+        allow: '/',
       },
       {
-        userAgent: "*",
+        userAgent: '*',
         disallow: excludedPaths,
       },
     ],
   },
-}
+};
