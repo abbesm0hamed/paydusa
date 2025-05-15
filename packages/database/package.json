@@ -1,0 +1,27 @@
+{
+  "name": "@repo/database",
+  "version": "0.0.0",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "bump-deps": "pnpx npm-check-updates --deep -u -x react-day-picker && pnpm install"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.0",
+    "@t3-oss/env-core": "^0.13.4",
+    "drizzle-orm": "^0.43.1",
+    "undici": "^7.9.0",
+    "ws": "^8.18.2",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "22.15.18",
+    "@types/ws": "^8.18.1",
+    "bufferutil": "^4.0.9",
+    "drizzle-kit": "^0.31.1",
+    "typescript": "^5.8.3"
+  }
+}
