@@ -2,9 +2,9 @@
   "name": "storefront",
   "version": "1.0.3",
   "private": true,
-  "author": "Kasper Fabricius Kristensen <kasper@medusajs.com> & Victor Gerbrands <victor@medusajs.com> (https://www.medusajs.com)",
-  "description": "Next.js Starter to be used with Medusa V2",
-  "keywords": ["storefront"],
+  "author": "github.com/abbesm0hamed",
+  "description": "complete ecommerce app for tunisians and international buisnesses",
+  "keywords": ["storefront", "shop"],
   "type": "module",
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev -p 8000",
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
-    "@medusajs/icons": "^2.8.1",
+    "@medusajs/icons": "^2.8.2",
     "@medusajs/js-sdk": "latest",
     "@medusajs/ui": "latest",
     "@payloadcms/db-postgres": "^3.37.0",
