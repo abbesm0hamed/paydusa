@@ -5,9 +5,10 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import path from 'path';
 import { buildConfig } from 'payload';
 import { fileURLToPath } from 'url';
-import sharp from 'sharp';
+// import sharp from 'sharp';
 import { Users } from '@/collections/Users';
 import { Media } from '@/collections/Media';
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -67,9 +68,22 @@ export default buildConfig({
       idleTimeoutMillis: 30000,
     },
   }),
-  sharp,
+  // sharp,
   plugins: [
     payloadCloudPlugin(),
     // storage-adapter-placeholder
   ],
+  email: nodemailerAdapter({
+    defaultFromAddress: process.env.SMTP_USER || 'abbesmohamed717@gmail.com',
+    defaultFromName: 'Ecom',
+    transportOptions: {
+      host: process.env.SMTP_HOST,
+      port: 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    },
+  }),
 });

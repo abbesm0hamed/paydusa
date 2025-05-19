@@ -1,0 +1,2026 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../generated/client"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model account_holder {
+  id          String    @id
+  provider_id String
+  external_id String
+  email       String?
+  data        Json      @default("{}")
+  metadata    Json?
+  created_at  DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at  DateTime? @db.Timestamptz(6)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model api_key {
+  id           String    @id
+  token        String    @unique(map: "IDX_api_key_token_unique")
+  salt         String
+  redacted     String
+  title        String
+  type         String
+  last_used_at DateTime? @db.Timestamptz(6)
+  created_by   String
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  revoked_by   String?
+  revoked_at   DateTime? @db.Timestamptz(6)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+
+  @@index([type], map: "IDX_api_key_type")
+}
+
+model application_method_buy_rules {
+  application_method_id String
+  promotion_rule_id     String
+
+  @@id([application_method_id, promotion_rule_id])
+}
+
+model application_method_target_rules {
+  application_method_id String
+  promotion_rule_id     String
+
+  @@id([application_method_id, promotion_rule_id])
+}
+
+model auth_identity {
+  id           String    @id
+  app_metadata Json?
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+}
+
+model capture {
+  id         String    @id
+  amount     Decimal   @db.Decimal
+  raw_amount Json
+  payment_id String
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+  created_by String?
+  metadata   Json?
+
+  @@index([deleted_at], map: "IDX_capture_deleted_at")
+}
+
+model cart {
+  id                  String    @id
+  region_id           String?
+  customer_id         String?
+  sales_channel_id    String?
+  email               String?
+  currency_code       String
+  shipping_address_id String?
+  billing_address_id  String?
+  metadata            Json?
+  created_at          DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at          DateTime? @db.Timestamptz(6)
+  completed_at        DateTime? @db.Timestamptz(6)
+
+  @@index([currency_code], map: "IDX_cart_currency_code")
+}
+
+model cart_address {
+  id           String    @id
+  customer_id  String?
+  company      String?
+  first_name   String?
+  last_name    String?
+  address_1    String?
+  address_2    String?
+  city         String?
+  country_code String?
+  province     String?
+  postal_code  String?
+  phone        String?
+  metadata     Json?
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model cart_line_item {
+  id                        String    @id
+  cart_id                   String
+  title                     String
+  subtitle                  String?
+  thumbnail                 String?
+  quantity                  Int
+  variant_id                String?
+  product_id                String?
+  product_title             String?
+  product_description       String?
+  product_subtitle          String?
+  product_type              String?
+  product_collection        String?
+  product_handle            String?
+  variant_sku               String?
+  variant_barcode           String?
+  variant_title             String?
+  variant_option_values     Json?
+  requires_shipping         Boolean   @default(true)
+  is_discountable           Boolean   @default(true)
+  is_tax_inclusive          Boolean   @default(false)
+  compare_at_unit_price     Decimal?  @db.Decimal
+  raw_compare_at_unit_price Json?
+  unit_price                Decimal   @db.Decimal
+  raw_unit_price            Json
+  metadata                  Json?
+  created_at                DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at                DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at                DateTime? @db.Timestamptz(6)
+  product_type_id           String?
+  is_custom_price           Boolean   @default(false)
+  is_giftcard               Boolean   @default(false)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model cart_line_item_adjustment {
+  id           String    @id
+  description  String?
+  promotion_id String?
+  code         String?
+  amount       Decimal   @db.Decimal
+  raw_amount   Json
+  provider_id  String?
+  metadata     Json?
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+  item_id      String?
+}
+
+model cart_line_item_tax_line {
+  id          String    @id
+  description String?
+  tax_rate_id String?
+  code        String
+  rate        Float     @db.Real
+  provider_id String?
+  metadata    Json?
+  created_at  DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at  DateTime? @db.Timestamptz(6)
+  item_id     String?
+}
+
+model cart_payment_collection {
+  cart_id               String    @db.VarChar(255)
+  payment_collection_id String    @db.VarChar(255)
+  id                    String    @db.VarChar(255)
+  created_at            DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at            DateTime? @db.Timestamptz(6)
+
+  @@id([cart_id, payment_collection_id])
+  @@index([cart_id], map: "IDX_cart_id_-4a39f6c9")
+  @@index([deleted_at], map: "IDX_deleted_at_-4a39f6c9")
+  @@index([id], map: "IDX_id_-4a39f6c9")
+  @@index([payment_collection_id], map: "IDX_payment_collection_id_-4a39f6c9")
+}
+
+model cart_promotion {
+  cart_id      String    @db.VarChar(255)
+  promotion_id String    @db.VarChar(255)
+  id           String    @db.VarChar(255)
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+
+  @@id([cart_id, promotion_id])
+  @@index([cart_id], map: "IDX_cart_id_-a9d4a70b")
+  @@index([deleted_at], map: "IDX_deleted_at_-a9d4a70b")
+  @@index([id], map: "IDX_id_-a9d4a70b")
+  @@index([promotion_id], map: "IDX_promotion_id_-a9d4a70b")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model cart_shipping_method {
+  id                 String    @id
+  cart_id            String
+  name               String
+  description        Json?
+  amount             Decimal   @db.Decimal
+  raw_amount         Json
+  is_tax_inclusive   Boolean   @default(false)
+  shipping_option_id String?
+  data               Json?
+  metadata           Json?
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at         DateTime? @db.Timestamptz(6)
+}
+
+model cart_shipping_method_adjustment {
+  id                 String    @id
+  description        String?
+  promotion_id       String?
+  code               String?
+  amount             Decimal   @db.Decimal
+  raw_amount         Json
+  provider_id        String?
+  metadata           Json?
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at         DateTime? @db.Timestamptz(6)
+  shipping_method_id String?
+}
+
+model cart_shipping_method_tax_line {
+  id                 String    @id
+  description        String?
+  tax_rate_id        String?
+  code               String
+  rate               Float     @db.Real
+  provider_id        String?
+  metadata           Json?
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at         DateTime? @db.Timestamptz(6)
+  shipping_method_id String?
+}
+
+model credit_line {
+  id           String    @id
+  cart_id      String
+  reference    String?
+  reference_id String?
+  amount       Decimal   @db.Decimal
+  raw_amount   Json
+  metadata     Json?
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+}
+
+model currency {
+  code           String    @id
+  symbol         String
+  symbol_native  String
+  decimal_digits Int       @default(0)
+  rounding       Decimal   @default(0) @db.Decimal
+  raw_rounding   Json
+  name           String
+  created_at     DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at     DateTime? @db.Timestamptz(6)
+}
+
+model customer {
+  id           String    @id
+  company_name String?
+  first_name   String?
+  last_name    String?
+  email        String?
+  phone        String?
+  has_account  Boolean   @default(false)
+  metadata     Json?
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+  created_by   String?
+}
+
+model customer_account_holder {
+  customer_id       String    @db.VarChar(255)
+  account_holder_id String    @db.VarChar(255)
+  id                String    @db.VarChar(255)
+  created_at        DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at        DateTime? @db.Timestamptz(6)
+
+  @@id([customer_id, account_holder_id])
+  @@index([account_holder_id], map: "IDX_account_holder_id_5cb3a0c0")
+  @@index([customer_id], map: "IDX_customer_id_5cb3a0c0")
+  @@index([deleted_at], map: "IDX_deleted_at_5cb3a0c0")
+  @@index([id], map: "IDX_id_5cb3a0c0")
+}
+
+model customer_address {
+  id                  String    @id
+  customer_id         String
+  address_name        String?
+  is_default_shipping Boolean   @default(false)
+  is_default_billing  Boolean   @default(false)
+  company             String?
+  first_name          String?
+  last_name           String?
+  address_1           String?
+  address_2           String?
+  city                String?
+  country_code        String?
+  province            String?
+  postal_code         String?
+  phone               String?
+  metadata            Json?
+  created_at          DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at          DateTime? @db.Timestamptz(6)
+
+  @@index([customer_id], map: "IDX_customer_address_customer_id")
+}
+
+model customer_group {
+  id         String    @id
+  name       String
+  metadata   Json?
+  created_by String?
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+}
+
+model customer_group_customer {
+  id                String    @id
+  customer_id       String
+  customer_group_id String
+  metadata          Json?
+  created_at        DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime  @default(now()) @db.Timestamptz(6)
+  created_by        String?
+  deleted_at        DateTime? @db.Timestamptz(6)
+
+  @@index([customer_id], map: "IDX_customer_group_customer_customer_id")
+}
+
+model fulfillment {
+  id                  String    @id
+  location_id         String
+  packed_at           DateTime? @db.Timestamptz(6)
+  shipped_at          DateTime? @db.Timestamptz(6)
+  delivered_at        DateTime? @db.Timestamptz(6)
+  canceled_at         DateTime? @db.Timestamptz(6)
+  data                Json?
+  provider_id         String?
+  shipping_option_id  String?
+  metadata            Json?
+  delivery_address_id String?
+  created_at          DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at          DateTime? @db.Timestamptz(6)
+  marked_shipped_by   String?
+  created_by          String?
+  requires_shipping   Boolean   @default(true)
+}
+
+model fulfillment_address {
+  id           String    @id
+  company      String?
+  first_name   String?
+  last_name    String?
+  address_1    String?
+  address_2    String?
+  city         String?
+  country_code String?
+  province     String?
+  postal_code  String?
+  phone        String?
+  metadata     Json?
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+}
+
+model fulfillment_item {
+  id                String    @id
+  title             String
+  sku               String
+  barcode           String
+  quantity          Decimal   @db.Decimal
+  raw_quantity      Json
+  line_item_id      String?
+  inventory_item_id String?
+  fulfillment_id    String
+  created_at        DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at        DateTime? @db.Timestamptz(6)
+}
+
+model fulfillment_label {
+  id              String    @id
+  tracking_number String
+  tracking_url    String
+  label_url       String
+  fulfillment_id  String
+  created_at      DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at      DateTime? @db.Timestamptz(6)
+}
+
+model fulfillment_provider {
+  id         String    @id
+  is_enabled Boolean   @default(true)
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+}
+
+model fulfillment_set {
+  id         String    @id
+  name       String
+  type       String
+  metadata   Json?
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model geo_zone {
+  id                String    @id
+  type              String    @default("country")
+  country_code      String
+  province_code     String?
+  city              String?
+  service_zone_id   String
+  postal_expression Json?
+  metadata          Json?
+  created_at        DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at        DateTime? @db.Timestamptz(6)
+}
+
+model image {
+  id         String    @id
+  url        String
+  metadata   Json?
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+  rank       Int       @default(0)
+  product_id String
+}
+
+model inventory_item {
+  id                String    @id
+  created_at        DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at        DateTime? @db.Timestamptz(6)
+  sku               String?
+  origin_country    String?
+  hs_code           String?
+  mid_code          String?
+  material          String?
+  weight            Int?
+  length            Int?
+  height            Int?
+  width             Int?
+  requires_shipping Boolean   @default(true)
+  description       String?
+  title             String?
+  thumbnail         String?
+  metadata          Json?
+}
+
+model inventory_level {
+  id                    String    @id
+  created_at            DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at            DateTime? @db.Timestamptz(6)
+  inventory_item_id     String
+  location_id           String
+  stocked_quantity      Decimal   @default(0) @db.Decimal
+  reserved_quantity     Decimal   @default(0) @db.Decimal
+  incoming_quantity     Decimal   @default(0) @db.Decimal
+  metadata              Json?
+  raw_stocked_quantity  Json?
+  raw_reserved_quantity Json?
+  raw_incoming_quantity Json?
+}
+
+model invite {
+  id         String    @id
+  email      String
+  accepted   Boolean   @default(false)
+  token      String
+  expires_at DateTime  @db.Timestamptz(6)
+  metadata   Json?
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+}
+
+model link_module_migrations {
+  id              Int       @id @default(autoincrement())
+  table_name      String    @unique @db.VarChar(255)
+  link_descriptor Json      @default("{}")
+  created_at      DateTime? @default(now()) @db.Timestamp(6)
+}
+
+model location_fulfillment_provider {
+  stock_location_id       String    @db.VarChar(255)
+  fulfillment_provider_id String    @db.VarChar(255)
+  id                      String    @db.VarChar(255)
+  created_at              DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at              DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at              DateTime? @db.Timestamptz(6)
+
+  @@id([stock_location_id, fulfillment_provider_id])
+  @@index([deleted_at], map: "IDX_deleted_at_-1e5992737")
+  @@index([fulfillment_provider_id], map: "IDX_fulfillment_provider_id_-1e5992737")
+  @@index([id], map: "IDX_id_-1e5992737")
+  @@index([stock_location_id], map: "IDX_stock_location_id_-1e5992737")
+}
+
+model location_fulfillment_set {
+  stock_location_id  String    @db.VarChar(255)
+  fulfillment_set_id String    @db.VarChar(255)
+  id                 String    @db.VarChar(255)
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at         DateTime? @db.Timestamptz(6)
+
+  @@id([stock_location_id, fulfillment_set_id])
+  @@index([deleted_at], map: "IDX_deleted_at_-e88adb96")
+  @@index([fulfillment_set_id], map: "IDX_fulfillment_set_id_-e88adb96")
+  @@index([id], map: "IDX_id_-e88adb96")
+  @@index([stock_location_id], map: "IDX_stock_location_id_-e88adb96")
+}
+
+model media {
+  id              Int      @id @default(autoincrement())
+  alt             String   @db.VarChar
+  updated_at      DateTime @default(now()) @db.Timestamptz(3)
+  created_at      DateTime @default(now()) @db.Timestamptz(3)
+  url             String?  @db.VarChar
+  thumbnail_u_r_l String?  @db.VarChar
+  filename        String?  @unique(map: "media_filename_idx") @db.VarChar
+  mime_type       String?  @db.VarChar
+  filesize        Decimal? @db.Decimal
+  width           Decimal? @db.Decimal
+  height          Decimal? @db.Decimal
+  focal_x         Decimal? @db.Decimal
+  focal_y         Decimal? @db.Decimal
+
+  @@index([created_at])
+  @@index([updated_at])
+}
+
+model mikro_orm_migrations {
+  id          Int       @id @default(autoincrement())
+  name        String?   @db.VarChar(255)
+  executed_at DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model notification {
+  id                       String    @id
+  to                       String
+  channel                  String
+  template                 String
+  data                     Json?
+  trigger_type             String?
+  resource_id              String?
+  resource_type            String?
+  receiver_id              String?
+  original_notification_id String?
+  idempotency_key          String?
+  external_id              String?
+  provider_id              String?
+  created_at               DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at               DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at               DateTime? @db.Timestamptz(6)
+  status                   String    @default("pending")
+
+  @@index([provider_id], map: "IDX_notification_provider_id")
+  @@index([receiver_id], map: "IDX_notification_receiver_id")
+}
+
+model notification_provider {
+  id         String    @id
+  handle     String
+  name       String
+  is_enabled Boolean   @default(true)
+  channels   String[]  @default([])
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+}
+
+model order {
+  id                  String            @id
+  region_id           String?
+  display_id          Int?              @default(autoincrement())
+  customer_id         String?
+  version             Int               @default(1)
+  sales_channel_id    String?
+  status              order_status_enum @default(pending)
+  is_draft_order      Boolean           @default(false)
+  email               String?
+  currency_code       String
+  shipping_address_id String?
+  billing_address_id  String?
+  no_notification     Boolean?
+  metadata            Json?
+  created_at          DateTime          @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime          @default(now()) @db.Timestamptz(6)
+  deleted_at          DateTime?         @db.Timestamptz(6)
+  canceled_at         DateTime?         @db.Timestamptz(6)
+
+  @@index([deleted_at], map: "IDX_order_deleted_at")
+}
+
+model order_address {
+  id           String    @id
+  customer_id  String?
+  company      String?
+  first_name   String?
+  last_name    String?
+  address_1    String?
+  address_2    String?
+  city         String?
+  country_code String?
+  province     String?
+  postal_code  String?
+  phone        String?
+  metadata     Json?
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+
+  @@index([customer_id], map: "IDX_order_address_customer_id")
+}
+
+model order_cart {
+  order_id   String    @db.VarChar(255)
+  cart_id    String    @db.VarChar(255)
+  id         String    @db.VarChar(255)
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+
+  @@id([order_id, cart_id])
+  @@index([cart_id], map: "IDX_cart_id_-71069c16")
+  @@index([deleted_at], map: "IDX_deleted_at_-71069c16")
+  @@index([id], map: "IDX_id_-71069c16")
+  @@index([order_id], map: "IDX_order_id_-71069c16")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model order_change {
+  id              String    @id
+  order_id        String
+  version         Int
+  description     String?
+  status          String    @default("pending")
+  internal_note   String?
+  created_by      String?
+  requested_by    String?
+  requested_at    DateTime? @db.Timestamptz(6)
+  confirmed_by    String?
+  confirmed_at    DateTime? @db.Timestamptz(6)
+  declined_by     String?
+  declined_reason String?
+  metadata        Json?
+  declined_at     DateTime? @db.Timestamptz(6)
+  canceled_by     String?
+  canceled_at     DateTime? @db.Timestamptz(6)
+  created_at      DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime  @default(now()) @db.Timestamptz(6)
+  change_type     String?
+  deleted_at      DateTime? @db.Timestamptz(6)
+  return_id       String?
+  claim_id        String?
+  exchange_id     String?
+
+  @@index([change_type], map: "IDX_order_change_change_type")
+  @@index([deleted_at], map: "IDX_order_change_deleted_at")
+  @@index([order_id], map: "IDX_order_change_order_id")
+  @@index([order_id, version], map: "IDX_order_change_order_id_version")
+  @@index([status], map: "IDX_order_change_status")
+}
+
+model order_change_action {
+  id              String    @id
+  order_id        String?
+  version         Int?
+  ordering        BigInt    @default(autoincrement())
+  order_change_id String?
+  reference       String?
+  reference_id    String?
+  action          String
+  details         Json?
+  amount          Decimal?  @db.Decimal
+  raw_amount      Json?
+  internal_note   String?
+  applied         Boolean   @default(false)
+  created_at      DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at      DateTime? @db.Timestamptz(6)
+  return_id       String?
+  claim_id        String?
+  exchange_id     String?
+
+  @@index([deleted_at], map: "IDX_order_change_action_deleted_at")
+  @@index([order_change_id], map: "IDX_order_change_action_order_change_id")
+  @@index([order_id], map: "IDX_order_change_action_order_id")
+  @@index([ordering], map: "IDX_order_change_action_ordering")
+}
+
+model order_claim {
+  id                String                @id
+  order_id          String
+  return_id         String?
+  order_version     Int
+  display_id        Int                   @default(autoincrement())
+  type              order_claim_type_enum
+  no_notification   Boolean?
+  refund_amount     Decimal?              @db.Decimal
+  raw_refund_amount Json?
+  metadata          Json?
+  created_at        DateTime              @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime              @default(now()) @db.Timestamptz(6)
+  deleted_at        DateTime?             @db.Timestamptz(6)
+  canceled_at       DateTime?             @db.Timestamptz(6)
+  created_by        String?
+}
+
+model order_claim_item {
+  id                 String             @id
+  claim_id           String
+  item_id            String
+  is_additional_item Boolean            @default(false)
+  reason             claim_reason_enum?
+  quantity           Decimal            @db.Decimal
+  raw_quantity       Json
+  note               String?
+  metadata           Json?
+  created_at         DateTime           @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime           @default(now()) @db.Timestamptz(6)
+  deleted_at         DateTime?          @db.Timestamptz(6)
+}
+
+model order_claim_item_image {
+  id            String    @id
+  claim_item_id String
+  url           String
+  metadata      Json?
+  created_at    DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at    DateTime? @db.Timestamptz(6)
+}
+
+model order_credit_line {
+  id           String    @id
+  order_id     String
+  reference    String?
+  reference_id String?
+  amount       Decimal   @db.Decimal
+  raw_amount   Json
+  metadata     Json?
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+}
+
+model order_exchange {
+  id                 String    @id
+  order_id           String
+  return_id          String?
+  order_version      Int
+  display_id         Int       @default(autoincrement())
+  no_notification    Boolean?
+  allow_backorder    Boolean   @default(false)
+  difference_due     Decimal?  @db.Decimal
+  raw_difference_due Json?
+  metadata           Json?
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at         DateTime? @db.Timestamptz(6)
+  canceled_at        DateTime? @db.Timestamptz(6)
+  created_by         String?
+}
+
+model order_exchange_item {
+  id           String    @id
+  exchange_id  String
+  item_id      String
+  quantity     Decimal   @db.Decimal
+  raw_quantity Json
+  note         String?
+  metadata     Json?
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+}
+
+model order_fulfillment {
+  order_id       String    @db.VarChar(255)
+  fulfillment_id String    @db.VarChar(255)
+  id             String    @db.VarChar(255)
+  created_at     DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at     DateTime? @db.Timestamptz(6)
+
+  @@id([order_id, fulfillment_id])
+  @@index([deleted_at], map: "IDX_deleted_at_-e8d2543e")
+  @@index([fulfillment_id], map: "IDX_fulfillment_id_-e8d2543e")
+  @@index([id], map: "IDX_id_-e8d2543e")
+  @@index([order_id], map: "IDX_order_id_-e8d2543e")
+}
+
+model order_item {
+  id                            String    @id
+  order_id                      String
+  version                       Int
+  item_id                       String
+  quantity                      Decimal   @db.Decimal
+  raw_quantity                  Json
+  fulfilled_quantity            Decimal   @db.Decimal
+  raw_fulfilled_quantity        Json
+  shipped_quantity              Decimal   @db.Decimal
+  raw_shipped_quantity          Json
+  return_requested_quantity     Decimal   @db.Decimal
+  raw_return_requested_quantity Json
+  return_received_quantity      Decimal   @db.Decimal
+  raw_return_received_quantity  Json
+  return_dismissed_quantity     Decimal   @db.Decimal
+  raw_return_dismissed_quantity Json
+  written_off_quantity          Decimal   @db.Decimal
+  raw_written_off_quantity      Json
+  metadata                      Json?
+  created_at                    DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at                    DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at                    DateTime? @db.Timestamptz(6)
+  delivered_quantity            Decimal   @default(0) @db.Decimal
+  raw_delivered_quantity        Json
+  unit_price                    Decimal?  @db.Decimal
+  raw_unit_price                Json?
+  compare_at_unit_price         Decimal?  @db.Decimal
+  raw_compare_at_unit_price     Json?
+}
+
+model order_line_item {
+  id                        String    @id
+  totals_id                 String?
+  title                     String
+  subtitle                  String?
+  thumbnail                 String?
+  variant_id                String?
+  product_id                String?
+  product_title             String?
+  product_description       String?
+  product_subtitle          String?
+  product_type              String?
+  product_collection        String?
+  product_handle            String?
+  variant_sku               String?
+  variant_barcode           String?
+  variant_title             String?
+  variant_option_values     Json?
+  requires_shipping         Boolean   @default(true)
+  is_discountable           Boolean   @default(true)
+  is_tax_inclusive          Boolean   @default(false)
+  compare_at_unit_price     Decimal?  @db.Decimal
+  raw_compare_at_unit_price Json?
+  unit_price                Decimal   @db.Decimal
+  raw_unit_price            Json
+  metadata                  Json?
+  created_at                DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at                DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at                DateTime? @db.Timestamptz(6)
+  is_custom_price           Boolean   @default(false)
+  product_type_id           String?
+  is_giftcard               Boolean   @default(false)
+}
+
+model order_line_item_adjustment {
+  id           String    @id
+  description  String?
+  promotion_id String?
+  code         String?
+  amount       Decimal   @db.Decimal
+  raw_amount   Json
+  provider_id  String?
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(6)
+  item_id      String
+  deleted_at   DateTime? @db.Timestamptz(6)
+}
+
+model order_line_item_tax_line {
+  id          String    @id
+  description String?
+  tax_rate_id String?
+  code        String
+  rate        Decimal   @db.Decimal
+  raw_rate    Json
+  provider_id String?
+  created_at  DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime  @default(now()) @db.Timestamptz(6)
+  item_id     String
+  deleted_at  DateTime? @db.Timestamptz(6)
+}
+
+model order_payment_collection {
+  order_id              String    @db.VarChar(255)
+  payment_collection_id String    @db.VarChar(255)
+  id                    String    @db.VarChar(255)
+  created_at            DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at            DateTime? @db.Timestamptz(6)
+
+  @@id([order_id, payment_collection_id])
+  @@index([deleted_at], map: "IDX_deleted_at_f42b9949")
+  @@index([id], map: "IDX_id_f42b9949")
+  @@index([order_id], map: "IDX_order_id_f42b9949")
+  @@index([payment_collection_id], map: "IDX_payment_collection_id_f42b9949")
+}
+
+model order_promotion {
+  order_id     String    @db.VarChar(255)
+  promotion_id String    @db.VarChar(255)
+  id           String    @db.VarChar(255)
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+
+  @@id([order_id, promotion_id])
+  @@index([deleted_at], map: "IDX_deleted_at_-71518339")
+  @@index([id], map: "IDX_id_-71518339")
+  @@index([order_id], map: "IDX_order_id_-71518339")
+  @@index([promotion_id], map: "IDX_promotion_id_-71518339")
+}
+
+model order_shipping {
+  id                 String    @id
+  order_id           String
+  version            Int
+  shipping_method_id String
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at         DateTime? @db.Timestamptz(6)
+  return_id          String?
+  claim_id           String?
+  exchange_id        String?
+}
+
+model order_shipping_method {
+  id                 String    @id
+  name               String
+  description        Json?
+  amount             Decimal   @db.Decimal
+  raw_amount         Json
+  is_tax_inclusive   Boolean   @default(false)
+  shipping_option_id String?
+  data               Json?
+  metadata           Json?
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at         DateTime? @db.Timestamptz(6)
+  is_custom_amount   Boolean   @default(false)
+}
+
+model order_shipping_method_adjustment {
+  id                 String    @id
+  description        String?
+  promotion_id       String?
+  code               String?
+  amount             Decimal   @db.Decimal
+  raw_amount         Json
+  provider_id        String?
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime  @default(now()) @db.Timestamptz(6)
+  shipping_method_id String
+  deleted_at         DateTime? @db.Timestamptz(6)
+}
+
+model order_shipping_method_tax_line {
+  id                 String    @id
+  description        String?
+  tax_rate_id        String?
+  code               String
+  rate               Decimal   @db.Decimal
+  raw_rate           Json
+  provider_id        String?
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime  @default(now()) @db.Timestamptz(6)
+  shipping_method_id String
+  deleted_at         DateTime? @db.Timestamptz(6)
+}
+
+model order_summary {
+  id         String    @id
+  order_id   String
+  version    Int       @default(1)
+  totals     Json?
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+}
+
+model order_transaction {
+  id            String    @id
+  order_id      String
+  version       Int       @default(1)
+  amount        Decimal   @db.Decimal
+  raw_amount    Json
+  currency_code String
+  reference     String?
+  reference_id  String?
+  created_at    DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at    DateTime? @db.Timestamptz(6)
+  return_id     String?
+  claim_id      String?
+  exchange_id   String?
+}
+
+model payload_locked_documents {
+  id          Int      @id @default(autoincrement())
+  global_slug String?  @db.VarChar
+  updated_at  DateTime @default(now()) @db.Timestamptz(3)
+  created_at  DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([created_at])
+  @@index([global_slug])
+  @@index([updated_at])
+}
+
+model payload_locked_documents_rels {
+  id        Int    @id @default(autoincrement())
+  order     Int?
+  parent_id Int
+  path      String @db.VarChar
+  users_id  Int?
+  media_id  Int?
+
+  @@index([media_id])
+  @@index([order])
+  @@index([parent_id], map: "payload_locked_documents_rels_parent_idx")
+  @@index([path])
+  @@index([users_id])
+}
+
+model payload_migrations {
+  id         Int      @id @default(autoincrement())
+  name       String?  @db.VarChar
+  batch      Decimal? @db.Decimal
+  updated_at DateTime @default(now()) @db.Timestamptz(3)
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([created_at])
+  @@index([updated_at])
+}
+
+model payload_preferences {
+  id         Int      @id @default(autoincrement())
+  key        String?  @db.VarChar
+  value      Json?
+  updated_at DateTime @default(now()) @db.Timestamptz(3)
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([created_at])
+  @@index([key])
+  @@index([updated_at])
+}
+
+model payload_preferences_rels {
+  id        Int    @id @default(autoincrement())
+  order     Int?
+  parent_id Int
+  path      String @db.VarChar
+  users_id  Int?
+
+  @@index([order])
+  @@index([parent_id], map: "payload_preferences_rels_parent_idx")
+  @@index([path])
+  @@index([users_id])
+}
+
+model payment {
+  id                    String    @id
+  amount                Decimal   @db.Decimal
+  raw_amount            Json
+  currency_code         String
+  provider_id           String
+  data                  Json?
+  created_at            DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at            DateTime? @db.Timestamptz(6)
+  captured_at           DateTime? @db.Timestamptz(6)
+  canceled_at           DateTime? @db.Timestamptz(6)
+  payment_collection_id String
+  payment_session_id    String
+  metadata              Json?
+
+  @@index([payment_session_id], map: "IDX_payment_payment_session_id")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model payment_collection {
+  id                    String    @id
+  currency_code         String
+  amount                Decimal   @db.Decimal
+  raw_amount            Json
+  authorized_amount     Decimal?  @db.Decimal
+  raw_authorized_amount Json?
+  captured_amount       Decimal?  @db.Decimal
+  raw_captured_amount   Json?
+  refunded_amount       Decimal?  @db.Decimal
+  raw_refunded_amount   Json?
+  created_at            DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at            DateTime? @db.Timestamptz(6)
+  completed_at          DateTime? @db.Timestamptz(6)
+  status                String    @default("not_paid")
+  metadata              Json?
+}
+
+model payment_collection_payment_providers {
+  payment_collection_id String
+  payment_provider_id   String
+
+  @@id([payment_collection_id, payment_provider_id])
+}
+
+model payment_provider {
+  id         String    @id
+  is_enabled Boolean   @default(true)
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model payment_session {
+  id                    String    @id
+  currency_code         String
+  amount                Decimal   @db.Decimal
+  raw_amount            Json
+  provider_id           String
+  data                  Json      @default("{}")
+  context               Json?
+  status                String    @default("pending")
+  authorized_at         DateTime? @db.Timestamptz(6)
+  payment_collection_id String
+  metadata              Json?
+  created_at            DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at            DateTime? @db.Timestamptz(6)
+
+  @@index([deleted_at], map: "IDX_payment_session_deleted_at")
+}
+
+model price {
+  id            String    @id
+  title         String?
+  price_set_id  String
+  currency_code String
+  raw_amount    Json
+  rules_count   Int?      @default(0)
+  created_at    DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at    DateTime? @db.Timestamptz(6)
+  price_list_id String?
+  amount        Decimal   @db.Decimal
+  min_quantity  Int?
+  max_quantity  Int?
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model price_list {
+  id          String    @id
+  status      String    @default("draft")
+  starts_at   DateTime? @db.Timestamptz(6)
+  ends_at     DateTime? @db.Timestamptz(6)
+  rules_count Int?      @default(0)
+  title       String
+  description String
+  type        String    @default("sale")
+  created_at  DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at  DateTime? @db.Timestamptz(6)
+}
+
+model price_list_rule {
+  id            String    @id
+  price_list_id String
+  created_at    DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at    DateTime? @db.Timestamptz(6)
+  value         Json?
+  attribute     String    @default("")
+}
+
+model price_preference {
+  id               String    @id
+  attribute        String
+  value            String?
+  is_tax_inclusive Boolean   @default(false)
+  created_at       DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at       DateTime? @db.Timestamptz(6)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model price_rule {
+  id         String    @id
+  value      String
+  priority   Int       @default(0)
+  price_id   String
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+  attribute  String    @default("")
+  operator   String    @default("eq")
+
+  @@index([operator], map: "IDX_price_rule_operator")
+}
+
+model price_set {
+  id         String    @id
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model product {
+  id             String    @id
+  title          String
+  handle         String
+  subtitle       String?
+  description    String?
+  is_giftcard    Boolean   @default(false)
+  status         String    @default("draft")
+  thumbnail      String?
+  weight         String?
+  length         String?
+  height         String?
+  width          String?
+  origin_country String?
+  hs_code        String?
+  mid_code       String?
+  material       String?
+  collection_id  String?
+  type_id        String?
+  discountable   Boolean   @default(true)
+  external_id    String?
+  created_at     DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at     DateTime? @db.Timestamptz(6)
+  metadata       Json?
+
+  @@index([deleted_at], map: "IDX_product_deleted_at")
+}
+
+model product_category {
+  id                 String    @id
+  name               String
+  description        String    @default("")
+  handle             String
+  mpath              String
+  is_active          Boolean   @default(false)
+  is_internal        Boolean   @default(false)
+  rank               Int       @default(0)
+  parent_category_id String?
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at         DateTime? @db.Timestamptz(6)
+  metadata           Json?
+}
+
+model product_category_product {
+  product_id          String
+  product_category_id String
+
+  @@id([product_id, product_category_id])
+}
+
+model product_collection {
+  id         String    @id
+  title      String
+  handle     String
+  metadata   Json?
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+
+  @@index([deleted_at], map: "IDX_product_category_deleted_at")
+  @@index([deleted_at], map: "IDX_product_collection_deleted_at")
+}
+
+model product_option {
+  id         String    @id
+  title      String
+  product_id String
+  metadata   Json?
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+
+  @@index([deleted_at], map: "IDX_product_option_deleted_at")
+}
+
+model product_option_value {
+  id         String    @id
+  value      String
+  option_id  String?
+  metadata   Json?
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+
+  @@index([deleted_at], map: "IDX_product_option_value_deleted_at")
+}
+
+model product_sales_channel {
+  product_id       String    @db.VarChar(255)
+  sales_channel_id String    @db.VarChar(255)
+  id               String    @db.VarChar(255)
+  created_at       DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at       DateTime? @db.Timestamptz(6)
+
+  @@id([product_id, sales_channel_id])
+  @@index([deleted_at], map: "IDX_deleted_at_20b454295")
+  @@index([id], map: "IDX_id_20b454295")
+  @@index([product_id], map: "IDX_product_id_20b454295")
+  @@index([sales_channel_id], map: "IDX_sales_channel_id_20b454295")
+}
+
+model product_shipping_profile {
+  product_id          String    @db.VarChar(255)
+  shipping_profile_id String    @db.VarChar(255)
+  id                  String    @db.VarChar(255)
+  created_at          DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at          DateTime? @db.Timestamptz(6)
+
+  @@id([product_id, shipping_profile_id])
+  @@index([deleted_at], map: "IDX_deleted_at_17a262437")
+  @@index([id], map: "IDX_id_17a262437")
+  @@index([product_id], map: "IDX_product_id_17a262437")
+  @@index([shipping_profile_id], map: "IDX_shipping_profile_id_17a262437")
+}
+
+model product_tag {
+  id         String    @id
+  value      String
+  metadata   Json?
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+
+  @@index([deleted_at], map: "IDX_product_tag_deleted_at")
+}
+
+model product_tags {
+  product_id     String
+  product_tag_id String
+
+  @@id([product_id, product_tag_id])
+}
+
+model product_type {
+  id         String    @id
+  value      String
+  metadata   Json?     @db.Json
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+
+  @@index([deleted_at], map: "IDX_product_type_deleted_at")
+}
+
+model product_variant {
+  id               String    @id
+  title            String
+  sku              String?
+  barcode          String?
+  ean              String?
+  upc              String?
+  allow_backorder  Boolean   @default(false)
+  manage_inventory Boolean   @default(true)
+  hs_code          String?
+  origin_country   String?
+  mid_code         String?
+  material         String?
+  weight           Int?
+  length           Int?
+  height           Int?
+  width            Int?
+  metadata         Json?
+  variant_rank     Int?      @default(0)
+  product_id       String?
+  created_at       DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at       DateTime? @db.Timestamptz(6)
+
+  @@index([deleted_at], map: "IDX_product_variant_deleted_at")
+}
+
+model product_variant_inventory_item {
+  variant_id        String    @db.VarChar(255)
+  inventory_item_id String    @db.VarChar(255)
+  id                String    @db.VarChar(255)
+  required_quantity Int       @default(1)
+  created_at        DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at        DateTime? @db.Timestamptz(6)
+
+  @@id([variant_id, inventory_item_id])
+  @@index([deleted_at], map: "IDX_deleted_at_17b4c4e35")
+  @@index([id], map: "IDX_id_17b4c4e35")
+  @@index([inventory_item_id], map: "IDX_inventory_item_id_17b4c4e35")
+  @@index([variant_id], map: "IDX_variant_id_17b4c4e35")
+}
+
+model product_variant_option {
+  variant_id      String
+  option_value_id String
+
+  @@id([variant_id, option_value_id])
+}
+
+model product_variant_price_set {
+  variant_id   String    @db.VarChar(255)
+  price_set_id String    @db.VarChar(255)
+  id           String    @db.VarChar(255)
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+
+  @@id([variant_id, price_set_id])
+  @@index([deleted_at], map: "IDX_deleted_at_52b23597")
+  @@index([id], map: "IDX_id_52b23597")
+  @@index([price_set_id], map: "IDX_price_set_id_52b23597")
+  @@index([variant_id], map: "IDX_variant_id_52b23597")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model promotion {
+  id           String    @id
+  code         String
+  campaign_id  String?
+  is_automatic Boolean   @default(false)
+  type         String
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+  status       String    @default("draft")
+
+  @@index([type], map: "IDX_promotion_type")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model promotion_application_method {
+  id                     String    @id
+  value                  Decimal?  @db.Decimal
+  raw_value              Json?
+  max_quantity           Int?
+  apply_to_quantity      Int?
+  buy_rules_min_quantity Int?
+  type                   String
+  target_type            String
+  allocation             String?
+  promotion_id           String
+  created_at             DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at             DateTime? @db.Timestamptz(6)
+  currency_code          String?
+
+  @@index([allocation], map: "IDX_application_method_allocation")
+  @@index([target_type], map: "IDX_application_method_target_type")
+  @@index([type], map: "IDX_application_method_type")
+}
+
+model promotion_campaign {
+  id                  String    @id
+  name                String
+  description         String?
+  campaign_identifier String
+  starts_at           DateTime? @db.Timestamptz(6)
+  ends_at             DateTime? @db.Timestamptz(6)
+  created_at          DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at          DateTime? @db.Timestamptz(6)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model promotion_campaign_budget {
+  id            String    @id
+  type          String
+  campaign_id   String
+  limit         Decimal?  @db.Decimal
+  raw_limit     Json?
+  used          Decimal   @default(0) @db.Decimal
+  raw_used      Json
+  created_at    DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at    DateTime? @db.Timestamptz(6)
+  currency_code String?
+
+  @@index([type], map: "IDX_campaign_budget_type")
+}
+
+model promotion_promotion_rule {
+  promotion_id      String
+  promotion_rule_id String
+
+  @@id([promotion_id, promotion_rule_id])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model promotion_rule {
+  id          String    @id
+  description String?
+  attribute   String
+  operator    String
+  created_at  DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at  DateTime? @db.Timestamptz(6)
+
+  @@index([attribute], map: "IDX_promotion_rule_attribute")
+  @@index([operator], map: "IDX_promotion_rule_operator")
+}
+
+model promotion_rule_value {
+  id                String    @id
+  promotion_rule_id String
+  value             String
+  created_at        DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at        DateTime? @db.Timestamptz(6)
+}
+
+model provider_identity {
+  id                String    @id
+  entity_id         String
+  provider          String
+  auth_identity_id  String
+  user_metadata     Json?
+  provider_metadata Json?
+  created_at        DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at        DateTime? @db.Timestamptz(6)
+
+  @@unique([entity_id, provider], map: "IDX_provider_identity_provider_entity_id")
+  @@index([auth_identity_id], map: "IDX_provider_identity_auth_identity_id")
+}
+
+model publishable_api_key_sales_channel {
+  publishable_key_id String    @db.VarChar(255)
+  sales_channel_id   String    @db.VarChar(255)
+  id                 String    @db.VarChar(255)
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at         DateTime? @db.Timestamptz(6)
+
+  @@id([publishable_key_id, sales_channel_id])
+  @@index([deleted_at], map: "IDX_deleted_at_-1d67bae40")
+  @@index([id], map: "IDX_id_-1d67bae40")
+  @@index([publishable_key_id], map: "IDX_publishable_key_id_-1d67bae40")
+  @@index([sales_channel_id], map: "IDX_sales_channel_id_-1d67bae40")
+}
+
+model refund {
+  id               String    @id
+  amount           Decimal   @db.Decimal
+  raw_amount       Json
+  payment_id       String
+  created_at       DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at       DateTime? @db.Timestamptz(6)
+  created_by       String?
+  metadata         Json?
+  refund_reason_id String?
+  note             String?
+
+  @@index([deleted_at], map: "IDX_refund_deleted_at")
+}
+
+model refund_reason {
+  id          String    @id
+  label       String
+  description String?
+  metadata    Json?
+  created_at  DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at  DateTime? @db.Timestamptz(6)
+}
+
+model region {
+  id              String    @id
+  name            String
+  currency_code   String
+  metadata        Json?
+  created_at      DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at      DateTime? @db.Timestamptz(6)
+  automatic_taxes Boolean   @default(true)
+}
+
+model region_country {
+  iso_2        String    @id
+  iso_3        String
+  num_code     String
+  name         String
+  display_name String
+  region_id    String?
+  metadata     Json?
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+
+  @@unique([region_id, iso_2], map: "IDX_region_country_region_id_iso_2_unique")
+}
+
+model region_payment_provider {
+  region_id           String    @db.VarChar(255)
+  payment_provider_id String    @db.VarChar(255)
+  id                  String    @db.VarChar(255)
+  created_at          DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at          DateTime? @db.Timestamptz(6)
+
+  @@id([region_id, payment_provider_id])
+  @@index([deleted_at], map: "IDX_deleted_at_1c934dab0")
+  @@index([id], map: "IDX_id_1c934dab0")
+  @@index([payment_provider_id], map: "IDX_payment_provider_id_1c934dab0")
+  @@index([region_id], map: "IDX_region_id_1c934dab0")
+}
+
+model reservation_item {
+  id                String    @id
+  created_at        DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at        DateTime? @db.Timestamptz(6)
+  line_item_id      String?
+  location_id       String
+  quantity          Decimal   @db.Decimal
+  external_id       String?
+  description       String?
+  created_by        String?
+  metadata          Json?
+  inventory_item_id String
+  allow_backorder   Boolean?  @default(false)
+  raw_quantity      Json?
+}
+
+/// This model has been renamed to 'Renamedreturn' during introspection, because the original name 'return' is reserved.
+model Renamedreturn {
+  id                String             @id
+  order_id          String
+  claim_id          String?
+  exchange_id       String?
+  order_version     Int
+  display_id        Int                @default(autoincrement())
+  status            return_status_enum @default(open)
+  no_notification   Boolean?
+  refund_amount     Decimal?           @db.Decimal
+  raw_refund_amount Json?
+  metadata          Json?
+  created_at        DateTime           @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime           @default(now()) @db.Timestamptz(6)
+  deleted_at        DateTime?          @db.Timestamptz(6)
+  received_at       DateTime?          @db.Timestamptz(6)
+  canceled_at       DateTime?          @db.Timestamptz(6)
+  location_id       String?
+  requested_at      DateTime?          @db.Timestamptz(6)
+  created_by        String?
+
+  @@map("return")
+}
+
+model return_fulfillment {
+  return_id      String    @db.VarChar(255)
+  fulfillment_id String    @db.VarChar(255)
+  id             String    @db.VarChar(255)
+  created_at     DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at     DateTime? @db.Timestamptz(6)
+
+  @@id([return_id, fulfillment_id])
+  @@index([deleted_at], map: "IDX_deleted_at_-31ea43a")
+  @@index([fulfillment_id], map: "IDX_fulfillment_id_-31ea43a")
+  @@index([id], map: "IDX_id_-31ea43a")
+  @@index([return_id], map: "IDX_return_id_-31ea43a")
+}
+
+model return_item {
+  id                    String    @id
+  return_id             String
+  reason_id             String?
+  item_id               String
+  quantity              Decimal   @db.Decimal
+  raw_quantity          Json
+  received_quantity     Decimal   @default(0) @db.Decimal
+  raw_received_quantity Json
+  note                  String?
+  metadata              Json?
+  created_at            DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at            DateTime? @db.Timestamptz(6)
+  damaged_quantity      Decimal   @default(0) @db.Decimal
+  raw_damaged_quantity  Json
+}
+
+model return_reason {
+  id                      String    @id @db.VarChar
+  value                   String    @db.VarChar
+  label                   String    @db.VarChar
+  description             String?   @db.VarChar
+  metadata                Json?
+  parent_return_reason_id String?   @db.VarChar
+  created_at              DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at              DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at              DateTime? @db.Timestamptz(6)
+}
+
+model sales_channel {
+  id          String    @id
+  name        String
+  description String?
+  is_disabled Boolean   @default(false)
+  metadata    Json?
+  created_at  DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at  DateTime? @db.Timestamptz(6)
+
+  @@index([deleted_at], map: "IDX_sales_channel_deleted_at")
+}
+
+model sales_channel_stock_location {
+  sales_channel_id  String    @db.VarChar(255)
+  stock_location_id String    @db.VarChar(255)
+  id                String    @db.VarChar(255)
+  created_at        DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at        DateTime? @db.Timestamptz(6)
+
+  @@id([sales_channel_id, stock_location_id])
+  @@index([deleted_at], map: "IDX_deleted_at_26d06f470")
+  @@index([id], map: "IDX_id_26d06f470")
+  @@index([sales_channel_id], map: "IDX_sales_channel_id_26d06f470")
+  @@index([stock_location_id], map: "IDX_stock_location_id_26d06f470")
+}
+
+model script_migrations {
+  id          Int       @id @default(autoincrement())
+  script_name String    @unique(map: "idx_script_name_unique") @db.VarChar(255)
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  finished_at DateTime? @db.Timestamptz(6)
+}
+
+model service_zone {
+  id                 String    @id
+  name               String
+  metadata           Json?
+  fulfillment_set_id String
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at         DateTime? @db.Timestamptz(6)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model shipping_option {
+  id                      String    @id
+  name                    String
+  price_type              String    @default("flat")
+  service_zone_id         String
+  shipping_profile_id     String?
+  provider_id             String?
+  data                    Json?
+  metadata                Json?
+  shipping_option_type_id String
+  created_at              DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at              DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at              DateTime? @db.Timestamptz(6)
+}
+
+model shipping_option_price_set {
+  shipping_option_id String    @db.VarChar(255)
+  price_set_id       String    @db.VarChar(255)
+  id                 String    @db.VarChar(255)
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at         DateTime? @db.Timestamptz(6)
+
+  @@id([shipping_option_id, price_set_id])
+  @@index([deleted_at], map: "IDX_deleted_at_ba32fa9c")
+  @@index([id], map: "IDX_id_ba32fa9c")
+  @@index([price_set_id], map: "IDX_price_set_id_ba32fa9c")
+  @@index([shipping_option_id], map: "IDX_shipping_option_id_ba32fa9c")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model shipping_option_rule {
+  id                 String    @id
+  attribute          String
+  operator           String
+  value              Json?
+  shipping_option_id String
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at         DateTime? @db.Timestamptz(6)
+}
+
+model shipping_option_type {
+  id          String    @id
+  label       String
+  description String?
+  code        String
+  created_at  DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at  DateTime? @db.Timestamptz(6)
+}
+
+model shipping_profile {
+  id         String    @id
+  name       String
+  type       String
+  metadata   Json?
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+}
+
+model stock_location {
+  id         String    @id
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+  name       String
+  address_id String?
+  metadata   Json?
+}
+
+model stock_location_address {
+  id           String    @id
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+  address_1    String
+  address_2    String?
+  company      String?
+  city         String?
+  country_code String
+  phone        String?
+  province     String?
+  postal_code  String?
+  metadata     Json?
+}
+
+model store {
+  id                       String    @id
+  name                     String    @default("Medusa Store")
+  default_sales_channel_id String?
+  default_region_id        String?
+  default_location_id      String?
+  metadata                 Json?
+  created_at               DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at               DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at               DateTime? @db.Timestamptz(6)
+}
+
+model store_currency {
+  id            String    @id
+  currency_code String
+  is_default    Boolean   @default(false)
+  store_id      String?
+  created_at    DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at    DateTime? @db.Timestamptz(6)
+}
+
+model tax_provider {
+  id         String    @id
+  is_enabled Boolean   @default(true)
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+}
+
+model tax_rate {
+  id            String    @id
+  rate          Float?    @db.Real
+  code          String
+  name          String
+  is_default    Boolean   @default(false)
+  is_combinable Boolean   @default(false)
+  tax_region_id String
+  metadata      Json?
+  created_at    DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime  @default(now()) @db.Timestamptz(6)
+  created_by    String?
+  deleted_at    DateTime? @db.Timestamptz(6)
+}
+
+model tax_rate_rule {
+  id           String    @id
+  tax_rate_id  String
+  reference_id String
+  reference    String
+  metadata     Json?
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(6)
+  created_by   String?
+  deleted_at   DateTime? @db.Timestamptz(6)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model tax_region {
+  id            String    @id
+  provider_id   String?
+  country_code  String
+  province_code String?
+  parent_id     String?
+  metadata      Json?
+  created_at    DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime  @default(now()) @db.Timestamptz(6)
+  created_by    String?
+  deleted_at    DateTime? @db.Timestamptz(6)
+
+  @@index([parent_id], map: "IDX_tax_region_parent_id")
+}
+
+model user {
+  id         String    @id
+  first_name String?
+  last_name  String?
+  email      String
+  avatar_url String?
+  metadata   Json?
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+}
+
+model users {
+  id                        Int       @id @default(autoincrement())
+  updated_at                DateTime  @default(now()) @db.Timestamptz(3)
+  created_at                DateTime  @default(now()) @db.Timestamptz(3)
+  email                     String    @unique(map: "users_email_idx") @db.VarChar
+  reset_password_token      String?   @db.VarChar
+  reset_password_expiration DateTime? @db.Timestamptz(3)
+  salt                      String?   @db.VarChar
+  hash                      String?   @db.VarChar
+  login_attempts            Decimal?  @default(0) @db.Decimal
+  lock_until                DateTime? @db.Timestamptz(3)
+
+  @@index([created_at])
+  @@index([updated_at])
+}
+
+model workflow_execution {
+  id             String    @db.VarChar
+  workflow_id    String    @db.VarChar
+  transaction_id String    @db.VarChar
+  execution      Json?
+  context        Json?
+  state          String    @db.VarChar
+  created_at     DateTime  @default(now()) @db.Timestamp(6)
+  updated_at     DateTime  @default(now()) @db.Timestamp(6)
+  deleted_at     DateTime? @db.Timestamp(6)
+  retention_time Int?
+  run_id         String    @default("01JVN8RRCQG5Q8VN4QKXWAT8XF")
+
+  @@id([workflow_id, transaction_id, run_id])
+}
+
+enum claim_reason_enum {
+  missing_item
+  wrong_item
+  production_failure
+  other
+}
+
+enum order_claim_type_enum {
+  refund
+  replace
+}
+
+enum order_status_enum {
+  pending
+  completed
+  draft
+  archived
+  canceled
+  requires_action
+}
+
+enum return_status_enum {
+  open
+  requested
+  received
+  partially_received
+  canceled
+}

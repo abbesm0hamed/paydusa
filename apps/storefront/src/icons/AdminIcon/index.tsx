@@ -1,16 +1,16 @@
-export default function AdminLogo() {
+export default function AdminIcon() {
   const loading = 'lazy';
   const priority = 'low';
 
   return (
     <img
       alt="ecommerce Logo"
-      width={164}
-      height={64}
+      width={32}
+      height={32}
       loading={loading}
       fetchPriority={priority}
       decoding="async"
-      className={'h-[4rem] w-[22rem]'}
+      className={'h-[18px] w-[18px]'}
       src={'/favicon.ico'}
     />
   );
