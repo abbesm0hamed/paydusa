@@ -36,9 +36,7 @@ export async function Footer({ locale }: { locale: TypedLocale }) {
 
         <div className="bg-slate-700">
           <div className="flex items-center justify-between container">
-            <p className="text-sm text-gray-500">
-              © 2025 Holmena digital agency
-            </p>
+            <p className="text-sm text-gray-500">© 2025 Ecommerce</p>
             <div className="flex gap-4">
               <a href="#" className="text-gray-500 hover:text-primary">
                 instagram

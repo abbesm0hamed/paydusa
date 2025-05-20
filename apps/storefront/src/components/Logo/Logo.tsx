@@ -20,7 +20,7 @@ export default function Logo(props: Props) {
 
   return (
     <img
-      alt="Holmena Logo"
+      alt="Ecommerce Logo"
       width={142}
       height={42}
       loading={loading}

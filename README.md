@@ -1,1 +1,1 @@
-## ecommerce monorepo by HOLMENA
+## ecommerce monorepo
