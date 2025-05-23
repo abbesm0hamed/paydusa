@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["dom", "dom.iterable", "esnext", "ES2022"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -16,9 +16,11 @@
     "incremental": true,
     "baseUrl": "./src",
     "paths": {
+      "@/*": ["*"],
       "@lib/*": ["lib/*"],
       "@modules/*": ["modules/*"],
-      "@pages/*": ["pages/*"]
+      "@pages/*": ["pages/*"],
+      "@payload-config": ["payload.config.ts"]
     },
     "plugins": [
       {
@@ -35,3 +37,4 @@
     "jest-coverage"
   ]
 }
+

@@ -1,14 +1,14 @@
-import { Container } from "@medusajs/ui"
+import { Container } from '@medusajs/ui';
 
-import ChevronDown from "@modules/common/icons/chevron-down"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { convertToLocale } from "@lib/util/money"
-import { HttpTypes } from "@medusajs/types"
+import ChevronDown from '@modules/common/icons/chevron-down';
+import LocalizedClientLink from '@modules/common/components/localized-client-link';
+import { convertToLocale } from '@lib/util/money';
+import { HttpTypes } from '@medusajs/types';
 
 type OverviewProps = {
-  customer: HttpTypes.StoreCustomer | null
-  orders: HttpTypes.StoreOrder[] | null
-}
+  customer: HttpTypes.StoreCustomer | null;
+  orders: HttpTypes.StoreOrder[] | null;
+};
 
 const Overview = ({ customer, orders }: OverviewProps) => {
   return (
@@ -19,7 +19,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
             Hello {customer?.first_name}
           </span>
           <span className="text-small-regular text-ui-fg-base">
-            Signed in as:{" "}
+            Signed in as:{' '}
             <span
               className="font-semibold"
               data-testid="customer-email"
@@ -121,7 +121,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
                           </Container>
                         </LocalizedClientLink>
                       </li>
-                    )
+                    );
                   })
                 ) : (
                   <span data-testid="no-orders-message">No recent orders</span>
@@ -132,37 +132,37 @@ const Overview = ({ customer, orders }: OverviewProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const getProfileCompletion = (customer: HttpTypes.StoreCustomer | null) => {
-  let count = 0
+  let count = 0;
 
   if (!customer) {
-    return 0
+    return 0;
   }
 
   if (customer.email) {
-    count++
+    count++;
   }
 
   if (customer.first_name && customer.last_name) {
-    count++
+    count++;
   }
 
   if (customer.phone) {
-    count++
+    count++;
   }
 
   const billingAddress = customer.addresses?.find(
     (addr) => addr.is_default_billing
-  )
+  );
 
   if (billingAddress) {
-    count++
+    count++;
   }
 
-  return (count / 4) * 100
-}
+  return (count / 4) * 100;
+};
 
-export default Overview
+export default Overview;
