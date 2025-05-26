@@ -4,7 +4,10 @@
   "private": true,
   "author": "github.com/abbesm0hamed",
   "description": "complete ecommerce app for tunisians and international businesses",
-  "keywords": ["storefront", "shop"],
+  "keywords": [
+    "storefront",
+    "shop"
+  ],
   "type": "module",
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev -p 8000",
@@ -26,22 +29,30 @@
     "@medusajs/icons": "^2.8.3",
     "@medusajs/js-sdk": "latest",
     "@medusajs/ui": "latest",
+    "@payloadcms/admin-bar": "^3.39.1",
     "@payloadcms/db-postgres": "^3.39.1",
     "@payloadcms/email-nodemailer": "^3.39.1",
+    "@payloadcms/live-preview-react": "^3.39.1",
     "@payloadcms/next": "^3.39.1",
     "@payloadcms/payload-cloud": "^3.39.1",
     "@payloadcms/plugin-form-builder": "^3.39.1",
+    "@payloadcms/plugin-nested-docs": "^3.39.1",
+    "@payloadcms/plugin-redirects": "^3.39.1",
     "@payloadcms/plugin-search": "^3.39.1",
     "@payloadcms/plugin-seo": "^3.39.1",
     "@payloadcms/richtext-lexical": "^3.39.1",
     "@payloadcms/storage-uploadthing": "^3.39.1",
     "@radix-ui/react-accordion": "^1.2.11",
+    "@repo/seo": "workspace:*",
     "@stripe/react-stripe-js": "^3.7.0",
     "@stripe/stripe-js": "^7.3.0",
+    "class-variance-authority": "^0.7.1",
     "cross-env": "^7.0.3",
+    "geist": "^1.4.2",
     "graphql": "^16.11.0",
     "lodash": "^4.17.21",
     "next": "^15.3.2",
+    "next-intl": "^4.1.0",
     "nodemailer": "^7.0.3",
     "payload": "^3.39.1",
     "pg": "^8.16.0",
@@ -76,15 +87,8 @@
     "typescript": "^5.8.3"
   },
   "packageManager": "pnpm@10.11.0",
-  "resolutions": {
-    "@types/react": "npm:types-react@19.0.0-rc.1",
-    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
-  },
   "overrides": {
     "react": "19.1.0",
     "react-dom": "19.1.0"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": ["sharp"]
   }
 }

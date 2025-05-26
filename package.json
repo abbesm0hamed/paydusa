@@ -1,6 +1,7 @@
 {
   "name": "ecommerce",
   "version": "0.0.1",
+  "type": "module",
   "bin": {
     "next-forge": "dist/index.js"
   },
@@ -39,5 +40,11 @@
     "@clack/prompts": "^0.10.1",
     "commander": "^13.1.0"
   },
-  "type": "module"
+  "resolutions": {
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["sharp"]
+  }
 }

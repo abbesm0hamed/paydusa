@@ -1,5 +1,8 @@
 import { withPayload } from '@payloadcms/next/withPayload';
 import checkEnvVariables from './check-env-variables.mjs';
+import createNextIntlPlugin from 'next-intl/plugin';
+
+const withNextIntl = createNextIntlPlugin();
 
 // Run environment variable check
 checkEnvVariables();
@@ -43,4 +46,6 @@ const nextConfig = {
 };
 
 // Export the config with Payload integration
-export default withPayload(nextConfig);
+export default withNextIntl(
+  withPayload(nextConfig, { devBundleServerPackages: false })
+);

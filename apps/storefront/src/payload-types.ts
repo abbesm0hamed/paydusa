@@ -95,6 +95,12 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    video: Video;
+    br: Br;
+    commandLine: CommandLine;
+    command: Command;
+    link: Link;
+    templateCards: TemplateCard;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -112,6 +118,12 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    video: VideoSelect<false> | VideoSelect<true>;
+    br: BrSelect<false> | BrSelect<true>;
+    commandLine: CommandLineSelect<false> | CommandLineSelect<true>;
+    command: CommandSelect<false> | CommandSelect<true>;
+    link: LinkSelect<false> | LinkSelect<true>;
+    templateCards: TemplateCardsSelect<false> | TemplateCardsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -132,7 +144,7 @@ export interface Config {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
   };
-  locale: null;
+  locale: 'ar' | 'en' | 'fr';
   user: User & {
     collection: 'users';
   };
@@ -1150,6 +1162,55 @@ export interface ReusableContent {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "video".
+ */
+export interface Video {
+  id: number;
+  url?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "br".
+ */
+export interface Br {
+  id: number;
+  ignore?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "commandLine".
+ */
+export interface CommandLine {
+  id: number;
+  command?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "templateCards".
+ */
+export interface TemplateCard {
+  id: number;
+  templates?:
+    | {
+        name: string;
+        description: string;
+        image: string;
+        slug: string;
+        order: number;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1517,6 +1578,30 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'video';
+        value: number | Video;
+      } | null)
+    | ({
+        relationTo: 'br';
+        value: number | Br;
+      } | null)
+    | ({
+        relationTo: 'commandLine';
+        value: number | CommandLine;
+      } | null)
+    | ({
+        relationTo: 'command';
+        value: number | Command;
+      } | null)
+    | ({
+        relationTo: 'link';
+        value: number | Link;
+      } | null)
+    | ({
+        relationTo: 'templateCards';
+        value: number | TemplateCard;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -2025,6 +2110,78 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "video_select".
+ */
+export interface VideoSelect<T extends boolean = true> {
+  url?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "br_select".
+ */
+export interface BrSelect<T extends boolean = true> {
+  ignore?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "commandLine_select".
+ */
+export interface CommandLineSelect<T extends boolean = true> {
+  command?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "command_select".
+ */
+export interface CommandSelect<T extends boolean = true> {
+  command?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "link_select".
+ */
+export interface LinkSelect<T extends boolean = true> {
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "templateCards_select".
+ */
+export interface TemplateCardsSelect<T extends boolean = true> {
+  templates?:
+    | T
+    | {
+        name?: T;
+        description?: T;
+        image?: T;
+        slug?: T;
+        order?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
