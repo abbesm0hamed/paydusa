@@ -7,13 +7,13 @@ type MetadataGenerator = Omit<Metadata, 'description' | 'title'> & {
   image?: string;
 };
 
-const applicationName = 'next-forge';
+const applicationName = 'ecommerce';
 const author: Metadata['authors'] = {
-  name: 'Hayden Bleasel',
-  url: 'https://haydenbleasel.com/',
+  name: 'Abbes Mohamed',
+  url: 'https://github.com/abbesm0hamed',
 };
-const publisher = 'Hayden Bleasel';
-const twitterHandle = '@haydenbleasel';
+const publisher = 'Abbes Mohamed';
+const twitterHandle = '@thr3add';
 
 export const createMetadata = ({
   title,
@@ -41,12 +41,22 @@ export const createMetadata = ({
       description,
       type: 'website',
       siteName: applicationName,
-      locale: 'en_US',
+      locale: 'en',
     },
     publisher,
     twitter: {
       card: 'summary_large_image',
       creator: twitterHandle,
+    },
+    icons: {
+      icon: '/favicon/favicon.svg',
+    },
+    manifest: '/favicon/site.webmanifest',
+    alternates: {
+      canonical: '/',
+      languages: {
+        en: '/en',
+      },
     },
   };
 

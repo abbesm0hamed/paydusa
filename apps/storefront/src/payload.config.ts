@@ -38,10 +38,14 @@ import { Callout } from '@/blocks/Callout/config';
 import { FormBlock } from '@/blocks/Form/config';
 import { plugins } from '@/plugins';
 
+import { i18n, localization } from '@/i18n/localization';
+
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 export default buildConfig({
+  i18n,
+  localization,
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
@@ -213,7 +217,109 @@ export default buildConfig({
     // CodeBlock,
   ],
   globals: [Header, Footer],
-  collections: [Pages, ReusableContent, Posts, Media, Categories, Users],
+  collections: [
+    Pages,
+    ReusableContent,
+    Posts,
+    Media,
+    Categories,
+    Users,
+    {
+      slug: 'video',
+      fields: [
+        {
+          name: 'url',
+          type: 'text',
+        },
+      ],
+      interfaceName: 'VideoBlock',
+    },
+    {
+      slug: 'br',
+      fields: [
+        {
+          name: 'ignore',
+          type: 'text',
+        },
+      ],
+
+      interfaceName: 'BrBlock',
+    },
+    // VideoDrawerBlock,
+    {
+      slug: 'commandLine',
+      fields: [
+        {
+          name: 'command',
+          type: 'text',
+        },
+      ],
+      interfaceName: 'CommandLineBlock',
+    },
+    {
+      slug: 'command',
+      fields: [
+        {
+          name: 'command',
+          type: 'text',
+          required: true,
+        },
+      ],
+      labels: {
+        plural: 'Command Lines',
+        singular: 'Command Line',
+      },
+    },
+    {
+      slug: 'link',
+      fields: [link()],
+      labels: {
+        plural: 'Links',
+        singular: 'Link',
+      },
+    },
+    {
+      slug: 'templateCards',
+      fields: [
+        {
+          name: 'templates',
+          type: 'array',
+          fields: [
+            {
+              name: 'name',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'description',
+              type: 'textarea',
+              required: true,
+            },
+            {
+              name: 'image',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'slug',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'order',
+              type: 'number',
+              required: true,
+            },
+          ],
+          labels: {
+            plural: 'Templates',
+            singular: 'Template',
+          },
+        },
+      ],
+      interfaceName: 'TemplateCardsBlock',
+    },
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -228,6 +334,7 @@ export default buildConfig({
       max: 10,
       idleTimeoutMillis: 30000,
     },
+    migrationDir: '@/migrations',
   }),
   // sharp,
   plugins: [...plugins],

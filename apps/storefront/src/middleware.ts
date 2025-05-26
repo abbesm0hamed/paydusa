@@ -1,5 +1,7 @@
 import { HttpTypes } from '@medusajs/types';
 import { NextRequest, NextResponse } from 'next/server';
+import createIntlMiddleware from 'next-intl/middleware';
+import { routing } from './i18n/routing';
 
 const BACKEND_URL = process.env.MEDUSA_BACKEND_URL;
 const PUBLISHABLE_API_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY;
@@ -9,6 +11,9 @@ const regionMapCache = {
   regionMap: new Map<string, HttpTypes.StoreRegion>(),
   regionMapUpdated: Date.now(),
 };
+
+// Create the intl middleware
+const intlMiddleware = createIntlMiddleware(routing);
 
 async function getRegionMap(cacheId: string) {
   const { regionMap, regionMapUpdated } = regionMapCache;
@@ -65,7 +70,7 @@ async function getRegionMap(cacheId: string) {
 /**
  * Fetches regions from Medusa and sets the region cookie.
  * @param request
- * @param response
+ * @param regionMap
  */
 async function getCountryCode(
   request: NextRequest,
@@ -78,9 +83,18 @@ async function getCountryCode(
       .get('x-vercel-ip-country')
       ?.toLowerCase();
 
-    const urlCountryCode = request.nextUrl.pathname
-      .split('/')[1]
-      ?.toLowerCase();
+    // Extract country code from URL, accounting for locale prefix
+    const pathSegments = request.nextUrl.pathname.split('/').filter(Boolean);
+    const locales = routing.locales;
+
+    // Check if first segment is a locale
+    const firstSegment = pathSegments[0]?.toLowerCase();
+    const isLocaleInPath = locales.includes(firstSegment as any);
+
+    // Get country code from URL (after locale if present)
+    const urlCountryCode = isLocaleInPath
+      ? pathSegments[1]?.toLowerCase()
+      : firstSegment;
 
     if (urlCountryCode && regionMap.has(urlCountryCode)) {
       countryCode = urlCountryCode;
@@ -103,67 +117,138 @@ async function getCountryCode(
 }
 
 /**
- * Middleware to handle region selection and onboarding status.
+ * Check if URL has country code, accounting for locale prefix
+ */
+function checkUrlHasCountryCode(request: NextRequest, countryCode: string) {
+  const pathSegments = request.nextUrl.pathname.split('/').filter(Boolean);
+  const locales = routing.locales;
+
+  // Check if first segment is a locale
+  const firstSegment = pathSegments[0]?.toLowerCase();
+  const isLocaleInPath = locales.includes(firstSegment as any);
+
+  // Get country code from URL (after locale if present)
+  const urlCountryCode = isLocaleInPath
+    ? pathSegments[1]?.toLowerCase()
+    : firstSegment;
+
+  return urlCountryCode === countryCode;
+}
+
+/**
+ * Combined middleware to handle both internationalization and region selection.
  * This ignores /admin paths and doesn't redirect them.
  */
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Skip middleware for admin paths
-  if (pathname.startsWith('/admin')) {
+  // Skip middleware for admin and API paths
+  if (
+    pathname.startsWith('/admin') ||
+    pathname.startsWith('/api') ||
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/_vercel') ||
+    pathname.startsWith('/graphql-playground') ||
+    pathname.startsWith('/graphql') ||
+    pathname.startsWith('/next')
+  ) {
     return NextResponse.next();
   }
 
-  let redirectUrl = request.nextUrl.href;
+  // Skip for static assets
+  if (pathname.includes('.')) {
+    return NextResponse.next();
+  }
 
-  let response = NextResponse.redirect(redirectUrl, 307);
+  // First, handle internationalization
+  const intlResponse = intlMiddleware(request);
+
+  // If intl middleware returns a redirect, we need to handle region logic with the new URL
+  if (intlResponse && intlResponse.headers.get('location')) {
+    const redirectLocation = intlResponse.headers.get('location');
+    if (redirectLocation) {
+      // Create a new request object with the redirected URL for region processing
+      const newUrl = new URL(redirectLocation);
+      const newRequest = new NextRequest(newUrl);
+      request = newRequest;
+    }
+  }
 
   let cacheIdCookie = request.cookies.get('_medusa_cache_id');
-
   let cacheId = cacheIdCookie?.value || crypto.randomUUID();
 
-  const regionMap = await getRegionMap(cacheId);
+  try {
+    const regionMap = await getRegionMap(cacheId);
+    const countryCode = regionMap && (await getCountryCode(request, regionMap));
 
-  const countryCode = regionMap && (await getCountryCode(request, regionMap));
+    if (!countryCode) {
+      // If we can't determine country code, just return the intl response
+      return intlResponse || NextResponse.next();
+    }
 
-  const urlHasCountryCode =
-    countryCode && request.nextUrl.pathname.split('/')[1].includes(countryCode);
+    const urlHasCountryCode = checkUrlHasCountryCode(request, countryCode);
 
-  // if one of the country codes is in the url and the cache id is set, return next
-  if (urlHasCountryCode && cacheIdCookie) {
-    return NextResponse.next();
+    // If URL has country code and cache ID is set, return the intl response or next
+    if (urlHasCountryCode && cacheIdCookie) {
+      return intlResponse || NextResponse.next();
+    }
+
+    // If URL has country code but no cache ID, set cache ID
+    if (urlHasCountryCode && !cacheIdCookie) {
+      const response = intlResponse || NextResponse.next();
+      response.cookies.set('_medusa_cache_id', cacheId, {
+        maxAge: 60 * 60 * 24,
+      });
+      return response;
+    }
+
+    // If no country code in URL, we need to add it
+    if (!urlHasCountryCode) {
+      const pathSegments = request.nextUrl.pathname.split('/').filter(Boolean);
+      const locales = routing.locales;
+
+      // Check if first segment is a locale
+      const firstSegment = pathSegments[0];
+      const isLocaleInPath =
+        firstSegment && locales.includes(firstSegment as any);
+
+      let newPathname;
+      if (isLocaleInPath) {
+        // Pattern: /[locale]/[country]/[...rest] or /[locale]/
+        const restPath = pathSegments.slice(1).join('/');
+        newPathname = `/${firstSegment}/${countryCode}${restPath ? '/' + restPath : ''}`;
+      } else {
+        // Pattern: /[country]/[...rest] or /
+        const restPath = pathSegments.join('/');
+        newPathname = `/${countryCode}${restPath ? '/' + restPath : ''}`;
+      }
+
+      const queryString = request.nextUrl.search;
+      const redirectUrl = `${request.nextUrl.origin}${newPathname}${queryString}`;
+
+      const response = NextResponse.redirect(redirectUrl, 307);
+      response.cookies.set('_medusa_cache_id', cacheId, {
+        maxAge: 60 * 60 * 24,
+      });
+
+      return response;
+    }
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Middleware.ts: Error in region handling:', error);
+    }
+    // Fallback to intl middleware response if region handling fails
+    return intlResponse || NextResponse.next();
   }
 
-  // if one of the country codes is in the url and the cache id is not set, set the cache id and redirect
-  if (urlHasCountryCode && !cacheIdCookie) {
-    response.cookies.set('_medusa_cache_id', cacheId, {
-      maxAge: 60 * 60 * 24,
-    });
-
-    return response;
-  }
-
-  // check if the url is a static asset
-  if (request.nextUrl.pathname.includes('.')) {
-    return NextResponse.next();
-  }
-
-  const redirectPath =
-    request.nextUrl.pathname === '/' ? '' : request.nextUrl.pathname;
-
-  const queryString = request.nextUrl.search ? request.nextUrl.search : '';
-
-  // If no country code is set, we redirect to the relevant region.
-  if (!urlHasCountryCode && countryCode) {
-    redirectUrl = `${request.nextUrl.origin}/${countryCode}${redirectPath}${queryString}`;
-    response = NextResponse.redirect(`${redirectUrl}`, 307);
-  }
-
-  return response;
+  return intlResponse || NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|images|assets|png|svg|jpg|jpeg|gif|webp).*)',
+    // Match all pathnames except for
+    // - … if they start with `/api`, `/_next`, `/_vercel`, or `/admin`
+    // - … the ones containing a dot (e.g. `favicon.ico`)
+    '/((?!api|_next|_vercel|admin|graphql-playground|graphql|next|.*\\..*).*)',
   ],
 };

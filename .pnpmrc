@@ -1,0 +1,43 @@
+# PNPM Configuration for Turborepo
+# Place this file in the root of your turborepo
+
+# Hoisting settings for monorepo
+hoist-pattern[]=*eslint*
+hoist-pattern[]=*prettier*
+hoist-pattern[]=*typescript*
+hoist-pattern[]=*@types/*
+
+# Workspace settings
+prefer-workspace-packages=true
+link-workspace-packages=deep
+
+# Registry settings
+registry=https://registry.npmjs.org/
+
+# Disable authentication prompts for public packages
+git-checks=false
+
+# Store settings
+store-dir=~/.pnpm-store
+
+# Install settings
+frozen-lockfile=false
+prefer-frozen-lockfile=true
+
+# Resolution settings
+resolution-mode=highest
+
+# Logging
+loglevel=warn
+
+# Performance optimizations
+fetch-retries=3
+fetch-retry-factor=2
+fetch-retry-mintimeout=10000
+fetch-retry-maxtimeout=60000
+
+# Security
+audit-level=moderate
+
+# Node.js version requirement
+engine-strict=true
