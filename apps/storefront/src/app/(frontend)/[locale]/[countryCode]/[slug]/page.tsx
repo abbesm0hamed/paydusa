@@ -15,6 +15,7 @@ import { generateMeta } from '@/utilities/generateMeta';
 import PageClient from './page.client';
 import { LivePreviewListener } from '@/components/LivePreviewListener';
 
+// FIX: SSG
 // export async function generateStaticParams() {
 //   console.log('🔍 generateStaticParams called for [slug] page');
 //
