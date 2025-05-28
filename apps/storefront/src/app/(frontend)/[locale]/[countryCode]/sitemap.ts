@@ -1,6 +1,5 @@
 import fs from 'node:fs';
-import { MetadataRoute } from 'next';
-import { env } from 'env';
+import type { MetadataRoute } from 'next';
 import { routing } from '@/i18n/routing'; // Import your routing configuration
 
 // Get all app folders excluding special Next.js folders
@@ -12,10 +11,10 @@ const pages = appFolders
   .map((folder) => folder.name);
 
 // Determine the URL base
-const protocol = env.NEXT_PUBLIC_WWW_URL?.startsWith('https')
+const protocol = process.env.NEXT_PUBLIC_WWW_URL?.startsWith('https')
   ? 'https'
   : 'http';
-const url = new URL(`${protocol}://${env.NEXT_PUBLIC_WWW_URL}`);
+const url = new URL(`${protocol}://${process.env.NEXT_PUBLIC_WWW_URL}`);
 
 // Define async function to fetch any dynamic content (like blog posts)
 // Example for blog posts if you have them
