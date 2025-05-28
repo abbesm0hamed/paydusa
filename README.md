@@ -26,4 +26,4 @@ pnpx turbo run dev
 
 - [Next Forge](https://github.com/haydenbleasel/next-forge)
 - [Medusa Next.js Starter](https://github.com/medusajs/nextjs-starter-medusa.git)
-- [PayloadCMS](https://github.com/payloadcms/payload)
+- [PayloadCMS Website template](https://github.com/payloadcms/payload/tree/main/templates/website)
