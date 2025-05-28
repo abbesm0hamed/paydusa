@@ -7,8 +7,18 @@ export default {
     './src/components/**/*.{js,ts,jsx,tsx}',
     './src/modules/**/*.{js,ts,jsx,tsx}',
     './node_modules/@medusajs/ui/dist/**/*.{js,jsx,ts,tsx}',
+    './src/components/**/*.{ts,tsx}',
+    './src/lib/**/*.{ts,tsx}',
+    './src/providers/**/*.{ts,tsx}',
   ],
   theme: {
+    container: {
+      center: true,
+      padding: '2rem',
+      screens: {
+        '2xl': '1400px',
+      },
+    },
     extend: {
       transitionProperty: {
         width: 'width margin',
