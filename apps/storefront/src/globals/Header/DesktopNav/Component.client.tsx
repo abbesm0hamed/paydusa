@@ -16,9 +16,19 @@ import { FlickeringGrid } from '@repo/design-system/components/ui/flickeringPatt
 
 interface HeaderClientProps {
   data: Header;
+  showOnlyNav?: boolean;
+  showOnlyActions?: boolean;
+  showOnlySearch?: boolean;
+  showOnlyMegaMenu?: boolean;
 }
 
-export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
+export const HeaderClient: React.FC<HeaderClientProps> = ({
+  data,
+  showOnlyNav = false,
+  showOnlyActions = false,
+  showOnlySearch = false,
+  showOnlyMegaMenu = false,
+}) => {
   const t = useTranslations();
   const { headerTheme, setHeaderTheme } = useHeaderTheme();
   const pathname = usePathname();
@@ -47,81 +57,86 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   const handleMouseLeave = () => {
     hoverTimeout.current = setTimeout(() => {
       setActiveMegaMenu(null);
-    }, 300); // 300ms delay to match Payload's smooth feel
+    }, 300);
   };
 
-  // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
       if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
     };
   }, []);
 
-  return (
-    <header
-      className="bg-muted relative"
-      {...(theme ? { 'data-theme': theme } : {})}
-    >
-      <div className="container">
-        <section className="flex items-center justify-between h-16 shadow-xl/10">
-          <div className="flex items-center">
-            <Link href="/" className="mr-8">
-              <Logo
-                loading="eager"
-                priority="high"
-                className="h-6"
-                url={data?.logo?.url as string}
+  // Show only navigation items
+  if (showOnlyNav) {
+    return (
+      <nav className="flex items-stretch h-full relative">
+        {navItems.map((item, i) => {
+          if (item.type === 'link' && item.linkFields?.link) {
+            return (
+              <CMSLink
+                key={i}
+                {...item.linkFields.link}
+                appearance="link"
+                className="flex items-center px-4 hover:text-ui-fg-base txt-compact-small"
               />
-            </Link>
-          </div>
+            );
+          }
+          if (item.type !== 'group' || !item.groupFields) return null;
 
-          <nav className="flex items-stretch h-full relative ">
-            {navItems.map((item, i) => {
-              if (item.type === 'link' && item.linkFields?.link) {
-                return (
-                  <CMSLink
-                    key={i}
-                    {...item.linkFields.link}
-                    appearance="link"
-                    className="flex items-center px-4 hover:underline"
-                  />
-                );
-              }
-              if (item.type !== 'group' || !item.groupFields) return null;
+          const groupIndex = groupItems.findIndex((g) => g === item);
+          const { label } = item.groupFields;
 
-              const groupIndex = groupItems.findIndex((g) => g === item);
-              const { label } = item.groupFields;
-
-              return (
-                <div
-                  key={i}
-                  className="group relative h-full flex items-stretch"
-                  onMouseEnter={() => handleMouseEnter(groupIndex)}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <div className="cursor-pointer flex items-center h-full px-4 group-hover:underline">
-                    <span>{label}</span>
-                  </div>
-                </div>
-              );
-            })}
-          </nav>
-
-          <section className="flex items-center gap-4">
-            <LocaleSwitcher />
-            <Link href="/search" className="text-gray-700 hover:text-black">
-              <span className="sr-only">{t('search')}</span>
-              <SearchIcon className="w-5 h-5" />
-            </Link>
-            <Link
-              href="/sign-up"
-              className="px-4 py-2 rounded-md text-sm font-medium"
+          return (
+            <div
+              key={i}
+              className="group relative h-full flex items-stretch"
+              onMouseEnter={() => handleMouseEnter(groupIndex)}
+              onMouseLeave={handleMouseLeave}
             >
-              Sign up
-            </Link>
-          </section>
-        </section>
+              <div className="cursor-pointer flex items-center h-full px-4 hover:text-ui-fg-base txt-compact-small">
+                <span>{label}</span>
+              </div>
+            </div>
+          );
+        })}
+      </nav>
+    );
+  }
 
+  // Show only actions (language switcher and sign up)
+  if (showOnlyActions) {
+    return (
+      <div className="flex items-center gap-4">
+        <LocaleSwitcher />
+        <Link
+          href="/sign-up"
+          className="px-4 py-2 rounded-md txt-compact-small font-medium hover:text-ui-fg-base"
+        >
+          Sign up
+        </Link>
+      </div>
+    );
+  }
+
+  // Show only search
+  if (showOnlySearch) {
+    return (
+      <Link
+        href="/search"
+        className="text-ui-fg-subtle hover:text-ui-fg-base flex items-center gap-2"
+      >
+        <SearchIcon className="w-4 h-4" />
+        <span className="txt-compact-small hidden sm:inline">
+          {t('search')}
+        </span>
+      </Link>
+    );
+  }
+
+  // Show only mega menu
+  if (showOnlyMegaMenu) {
+    return (
+      <div {...(theme ? { 'data-theme': theme } : {})}>
         <div className="absolute left-0 right-0 z-20 bg-muted">
           {groupItems.map((item, i) => {
             if (item.type !== 'group' || !item.groupFields) return null;
@@ -174,7 +189,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                   />
                 </div>
 
-                <div className="container relative z-10">
+                <div className="content-container relative z-10">
                   <div className="py-6">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                       {formattedGroups.map((group, groupIndex) => (
@@ -182,7 +197,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                           {(group.title || group.image) && (
                             <div>
                               {group.title && (
-                                <h3 className="text-xs uppercase tracking-wider text-gray-500 font-medium mb-3">
+                                <h3 className="txt-compact-small-plus uppercase tracking-wider text-ui-fg-muted font-medium mb-3">
                                   {group.title}
                                 </h3>
                               )}
@@ -201,7 +216,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                                 />
                               )}
                               {group.description && (
-                                <p className="text-sm text-gray-600 mt-3">
+                                <p className="txt-compact-small text-ui-fg-subtle mt-3">
                                   {group.description}
                                 </p>
                               )}
@@ -213,10 +228,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                                 <CMSLink
                                   {...item.link}
                                   appearance="link"
-                                  className="font-normal text-sm text-gray-800 hover:underline"
+                                  className="font-normal txt-compact-small text-ui-fg-base hover:text-ui-fg-interactive"
                                 />
                                 {item.description && (
-                                  <p className="text-xs text-gray-500">
+                                  <p className="txt-compact-xsmall text-ui-fg-subtle">
                                     {item.description}
                                   </p>
                                 )}
@@ -233,6 +248,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           })}
         </div>
       </div>
-    </header>
-  );
+    );
+  }
+
+  // Default: show nothing (this shouldn't be reached with the new structure)
+  return null;
 };
