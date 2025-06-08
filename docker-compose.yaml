@@ -4,9 +4,9 @@ services:
     container_name: ecommerce_db
     restart: on-failure
     environment:
-      - POSTGRES_USER=${POSTGRES_USER:-ecom_user}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-strongpassword}
-      - POSTGRES_DB=${POSTGRES_DB:-ecommerce}
+      - POSTGRES_USER=${POSTGRES_USER:-ecom_user_7f29a4}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-strongpass}
+      - POSTGRES_DB=${POSTGRES_DB:-postgres_db}
     ports:
       - "5432:5432"
     volumes:
@@ -17,30 +17,30 @@ services:
       test:
         [
           "CMD-SHELL",
-          "pg_isready -U ${POSTGRES_USER:-ecom_user} -d ${POSTGRES_DB:-ecommerce}",
+          "pg_isready -U ${POSTGRES_USER:-ecom_user_7f29a4} -d ${POSTGRES_DB:-postgres_db}",
         ]
       interval: 10s
       timeout: 5s
       retries: 5
 
   # pgAdmin4 - comprehensive PostgreSQL management tool with secure env vars
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: ecommerce_pgadmin
-    restart: on-failure
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@example.com}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-secureadminpass}
-      PGADMIN_LISTEN_PORT: 80
-    ports:
-      - "8080:80"
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - ecommerce_net
+  # pgadmin:
+  #   image: dpage/pgadmin4:latest
+  #   container_name: ecommerce_pgadmin
+  #   restart: on-failure
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@medusa.local}
+  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+  #     PGADMIN_LISTEN_PORT: 80
+  #   ports:
+  #     - "8080:80"
+  #   volumes:
+  #     - pgadmin_data:/var/lib/pgadmin
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   networks:
+  #     - ecommerce_net
 
   redis:
     image: redis:7.2-alpine
@@ -78,6 +78,7 @@ volumes:
     driver: local
   pgadmin_data:
     driver: local
+
 networks:
   ecommerce_net:
     driver: bridge

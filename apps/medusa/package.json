@@ -13,13 +13,14 @@
     "medusa"
   ],
   "scripts": {
-    "build": "medusa build",
-    "seed": "medusa exec ./src/scripts/seed.ts",
-    "start": "medusa start",
-    "dev": "docker-compose up -d && medusa develop",
-    "dev:down": "docker-compose down",
-    "docker:up": "docker-compose up -d",
-    "docker:down": "docker-compose down",
+    "build": "npx medusa build",
+    "seed": "npx medusa exec ./src/scripts/seed.ts",
+    "start": "npx medusa start",
+    "migrate": "npx medusa db:migrate",
+    "dev": "sudo docker-compose up -d && medusa develop",
+    "dev:down": "sudo docker-compose down",
+    "docker:up": "sudo docker-compose up -d",
+    "docker:down": "sudo docker-compose down",
     "test:integration:http": "TEST_TYPE=integration:http NODE_OPTIONS=--experimental-vm-modules jest --silent=false --runInBand --forceExit",
     "test:integration:modules": "TEST_TYPE=integration:modules NODE_OPTIONS=--experimental-vm-modules jest --silent --runInBand --forceExit",
     "test:unit": "TEST_TYPE=unit NODE_OPTIONS=--experimental-vm-modules jest --silent --runInBand --forceExit"
