@@ -334,7 +334,6 @@ export default buildConfig({
       max: 10,
       idleTimeoutMillis: 30000,
     },
-    migrationDir: '@/migrations',
   }),
   // sharp,
   plugins: [...plugins],
