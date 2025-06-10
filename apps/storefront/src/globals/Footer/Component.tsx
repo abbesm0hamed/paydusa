@@ -5,9 +5,6 @@ import { ThemeSelector } from '@/providers/Theme/ThemeSelector';
 import { CMSLink } from '@/components/Link';
 import { TypedLocale } from 'payload';
 import NextImage from 'next/image';
-import { cn } from '@repo/design-system/lib/utils';
-import { placeholderBlur } from '@/utilities/constants';
-import { ImageMedia } from '@/components/Media/ImageMedia';
 
 export async function Footer({ locale }: { locale: TypedLocale }) {
   const footerData: Footer = await getCachedGlobal('footer', 1, locale)();
