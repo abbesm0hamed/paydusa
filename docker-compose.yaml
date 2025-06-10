@@ -33,7 +33,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-secureadminpass}
       PGADMIN_LISTEN_PORT: 80
     ports:
-      - "8080:80"
+      - "8081:80"
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     depends_on:
