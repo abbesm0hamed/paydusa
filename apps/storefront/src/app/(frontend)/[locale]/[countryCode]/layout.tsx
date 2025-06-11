@@ -44,6 +44,7 @@ export default async function RootLayout({ children, params }: Args) {
 
   const { isEnabled } = await draftMode();
   const messages = await getMessages();
+
   return (
     <html
       className={cn(
@@ -77,7 +78,6 @@ export default async function RootLayout({ children, params }: Args) {
               preview: isEnabled,
             }}
           />
-
           <Header locale={locale} />
           <main className="relative">{children}</main>
           <Footer locale={locale} />

@@ -5,7 +5,9 @@
   "bin": {
     "next-forge": "dist/index.js"
   },
-  "files": ["dist/index.js"],
+  "files": [
+    "dist/index.js"
+  ],
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
@@ -35,7 +37,7 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "pnpm@10.11.0",
+  "packageManager": "pnpm@10.12.1",
   "dependencies": {
     "@clack/prompts": "^0.10.1",
     "commander": "^13.1.0"
@@ -45,6 +47,8 @@
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["sharp"]
+    "onlyBuiltDependencies": [
+      "sharp"
+    ]
   }
 }

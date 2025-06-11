@@ -103,21 +103,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
     );
   }
 
-  // Show only actions (language switcher and sign up)
-  if (showOnlyActions) {
-    return (
-      <div className="flex items-center gap-4">
-        <LocaleSwitcher />
-        <Link
-          href="/sign-up"
-          className="px-4 py-2 rounded-md txt-compact-small font-medium hover:text-ui-fg-base"
-        >
-          Sign up
-        </Link>
-      </div>
-    );
-  }
-
   // Show only search
   if (showOnlySearch) {
     return (
@@ -130,6 +115,15 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
           {t('search')}
         </span>
       </Link>
+    );
+  }
+
+  // Show only actions (language switcher and sign up)
+  if (showOnlyActions) {
+    return (
+      <div className="flex items-center gap-4">
+        <LocaleSwitcher />
+      </div>
     );
   }
 
