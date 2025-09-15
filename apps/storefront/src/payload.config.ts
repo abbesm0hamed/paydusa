@@ -3,6 +3,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { buildConfig, PayloadRequest } from 'payload';
 
+import { resolvePath } from '@/lib/paths';
+
 import { postgresAdapter } from '@payloadcms/db-postgres';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer';
@@ -334,7 +336,7 @@ export default buildConfig({
       max: 10,
       idleTimeoutMillis: 30000,
     },
-    migrationDir: '@/migrations',
+    migrationDir: resolvePath.migrations,
   }),
   // sharp,
   plugins: [...plugins],

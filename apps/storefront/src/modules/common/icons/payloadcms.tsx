@@ -20,7 +20,7 @@ const PayloadCMS: React.FC<IconProps> = ({
       <path
         d="M8.301 0 16.56 4.96875v9.42975L10.340250000000001 18V8.57025L2.07675 3.606 8.301 0ZM1.44 13.7265l6.2325 -3.609v7.359l-6.2325 -3.75Z"
         fill={color}
-        stroke-width="0.75"
+        strokeWidth="0.75"
       ></path>
     </svg>
   );
