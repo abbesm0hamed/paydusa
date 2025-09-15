@@ -71,12 +71,34 @@ services:
     networks:
       - ecommerce_net
 
+  # Database visualization
+  db-viz:
+    image: ghcr.io/drizzle-team/gateway:latest
+    container_name: db_viz
+    restart: always
+    ports:
+      - "4983:4983"
+    environment:
+      - PORT=4983
+      - STORE_PATH=/app
+      - MASTERPASS=admin123
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-ecom_user_7f29a4}:${POSTGRES_PASSWORD:-strongpass}@postgres:5432/${POSTGRES_DB:-postgres_db}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - ecommerce_net
+    volumes:
+      - db_viz_data:/app
+
 volumes:
   ecommerce_data:
     driver: local
   redis_data:
     driver: local
   pgadmin_data:
+    driver: local
+  db_viz_data:
     driver: local
 
 networks:

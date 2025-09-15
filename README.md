@@ -59,9 +59,14 @@ This monorepo integrates a Medusa backend, PayloadCMS, Next.js storefront, Prism
    cd ../..
    ```
 
-9. **Run Prisma Studio** (optional - for database management):
+9. **Access Database UI** (optional - for database management):
    ```bash
-   pnpm studio
+   # Database visualization will be available at http://localhost:4983
+   # Starts automatically with docker compose
+   # Default master password: admin123
+   # Use this connection URL: postgresql://user:pass@postgres:5432/postgres_db
+   # Note: Use 'postgres' as host (not localhost) because both the database 
+   # visualization and PostgreSQL are in the same Docker network
    ```
 
 ## 🚀 Development Workflow
