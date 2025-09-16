@@ -13,6 +13,7 @@ import { useTranslations } from 'next-intl';
 import { CMSLink } from '@/components/Link';
 import Image from 'next/image';
 import { FlickeringGrid } from '@repo/design-system/components/ui/flickeringPatterns/flickeringDots';
+import SearchModal from '@/modules/search/components/modal';
 
 interface HeaderClientProps {
   data: Header;
@@ -35,6 +36,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
   const navItems = data?.navItems || [];
   const [theme, setTheme] = useState<string | null>(null);
   const [activeMegaMenu, setActiveMegaMenu] = useState<number | null>(null);
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const groupItems = useRef(
@@ -106,15 +108,23 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
   // Show only search
   if (showOnlySearch) {
     return (
-      <Link
-        href="/search"
-        className="text-ui-fg-subtle hover:text-ui-fg-base flex items-center gap-2"
-      >
-        <SearchIcon className="w-4 h-4" />
-        <span className="txt-compact-small hidden sm:inline">
-          {t('search')}
-        </span>
-      </Link>
+      <>
+        <button
+          onClick={() => {
+            setIsSearchModalOpen(true);
+          }}
+          className="text-ui-fg-subtle hover:text-ui-fg-base flex items-center gap-2"
+        >
+          <SearchIcon className="w-4 h-4" />
+          <span className="txt-compact-small hidden sm:inline">
+            {t('search')}
+          </span>
+        </button>
+        <SearchModal 
+          isOpen={isSearchModalOpen} 
+          onClose={() => setIsSearchModalOpen(false)} 
+        />
+      </>
     );
   }
 

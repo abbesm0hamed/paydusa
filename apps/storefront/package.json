@@ -4,7 +4,10 @@
   "private": true,
   "author": "github.com/abbesm0hamed",
   "description": "complete ecommerce app for tunisians and international businesses",
-  "keywords": ["storefront", "shop"],
+  "keywords": [
+    "storefront",
+    "shop"
+  ],
   "type": "module",
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev -p 8000",
@@ -44,6 +47,7 @@
     "@repo/seo": "workspace:*",
     "@stripe/react-stripe-js": "^4.0.2",
     "@stripe/stripe-js": "^7.9.0",
+    "algoliasearch": "^5.37.0",
     "class-variance-authority": "^0.7.1",
     "cross-env": "^10.0.0",
     "geist": "^1.5.1",
@@ -58,6 +62,7 @@
     "react": "19.1.1",
     "react-country-flag": "^3.1.0",
     "react-dom": "19.1.1",
+    "react-instantsearch": "^7.16.3",
     "server-only": "^0.0.1",
     "sharp": "^0.34.3",
     "tailwindcss-radix": "^4.0.2",
