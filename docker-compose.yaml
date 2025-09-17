@@ -23,25 +23,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # pgAdmin4 - comprehensive PostgreSQL management tool with secure env vars
-  # pgadmin:
-  #   image: dpage/pgadmin4:latest
-  #   container_name: ecommerce_pgadmin
-  #   restart: on-failure
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@medusa.local}
-  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
-  #     PGADMIN_LISTEN_PORT: 80
-  #   ports:
-  #     - "8080:80"
-  #   volumes:
-  #     - pgadmin_data:/var/lib/pgadmin
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #   networks:
-  #     - ecommerce_net
-
   redis:
     image: redis:7.2-alpine
     container_name: ecommerce_redis
@@ -95,8 +76,6 @@ volumes:
   ecommerce_data:
     driver: local
   redis_data:
-    driver: local
-  pgadmin_data:
     driver: local
   db_viz_data:
     driver: local
