@@ -13,7 +13,16 @@ export const syncProductsWorkflow = createWorkflow(
   ({ filters, limit, offset }: SyncProductsWorkflowInput) => {
     const { data, metadata } = useQueryGraphStep({
       entity: "product",
-      fields: ["id", "title", "description", "handle", "thumbnail", "categories.*", "tags.*"],
+      fields: [
+        "id", 
+        "title", 
+        "description", 
+        "handle", 
+        "thumbnail", 
+        "images.*",
+        "categories.*", 
+        "tags.*"
+      ],
       pagination: {
         take: limit,
         skip: offset,
