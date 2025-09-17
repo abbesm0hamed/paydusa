@@ -55,7 +55,17 @@ This monorepo integrates a Medusa backend, PayloadCMS, Next.js storefront, Prism
 8. **Setup Storefront** (if using PayloadCMS):
    ```bash
    cd ../storefront
+   # Copy environment template and configure
+   cp .env.template .env
+   # Fill in required variables: PAYLOAD_SECRET, LOCAL_DATABASE_URI, etc.
+   
+   # Run migrations to create database schema
    npx payload migrate
+   
+   # If you encounter "users_sessions table missing" error:
+   npx payload migrate:create  # Generate missing tables migration
+   npx payload migrate         # Apply the new migration
+   
    cd ../..
    ```
 
@@ -103,9 +113,31 @@ pnpx turbo run dev
 
 ## 🔍 Troubleshooting
 
+### Common Issues
+
 - **Database Connection Issues**: Ensure Docker containers are running and environment variables match
 - **Port Conflicts**: Check if ports 9000 (Medusa), 3000 (Storefront), 5432 (PostgreSQL), 6379 (Redis) are available
 - **Missing Dependencies**: Run `pnpm install` in the root directory
+
+### PayloadCMS Storefront Issues
+
+#### Database Query Error: users_sessions table missing
+
+**Error**: 
+```
+Failed query: select "users"."id", ... "users_sessions"."data" as "sessions" from "users" "users" left join lateral ... from "users_sessions" ...
+```
+
+**Cause**: Payload CMS authentication is enabled but the required `users_sessions` table is missing from the database schema.
+
+**Solution**:
+```bash
+cd apps/storefront
+npx payload migrate:create  # Generates migration for missing tables
+npx payload migrate         # Applies the migration
+```
+
+This creates the `users_sessions` table with proper structure and foreign key constraints to the `users` table.
 
 ## 📂 Monorepo Structure
 
