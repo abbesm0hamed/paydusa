@@ -37,7 +37,7 @@ export const CardGrid: React.FC<CardGridBlockProps> = ({
 
   return (
     <section className="py-12">
-      <div className="container">
+      <div className="content-container">
         {/* Content Section */}
         {content && (
           <div className="mb-8">

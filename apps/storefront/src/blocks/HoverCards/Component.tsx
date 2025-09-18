@@ -88,7 +88,7 @@ export const HoverCards: React.FC<HoverCardsBlockProps> = ({
 
   return (
     <div className={cn('py-12')}>
-      <div className="container">
+      <div className="content-container">
         {/* Content Section */}
         {content && (
           <div className="mb-8">

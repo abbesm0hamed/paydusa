@@ -62,7 +62,7 @@ export const LinkGrid: React.FC<LinkGridBlockType> = (props) => {
 
   return (
     <section className="py-10 md:py-12">
-      <div className="container">
+      <div className="content-container">
         <div className={`grid ${getGridCols(links.length)} gap-4 md:gap-6`}>
           {links.map((item, i) => {
             const linkUrl = getLinkUrl(item.link);

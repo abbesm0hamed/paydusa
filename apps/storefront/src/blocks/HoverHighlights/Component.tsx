@@ -45,7 +45,7 @@ export const HoverHighlights: React.FC<HoverHighlightsBlockProps> = (props) => {
 
   return (
     <section className="py-12 md:py-16 lg:py-20">
-      <div className="container">
+      <div className="content-container">
         <div className="">
           {/* Before Text */}
           {beforeText && (

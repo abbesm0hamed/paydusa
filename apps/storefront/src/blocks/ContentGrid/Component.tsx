@@ -80,7 +80,7 @@ export const ContentGrid: React.FC<ContentGridBlockType> = (props) => {
 
   return (
     <section className="py-12 md:py-16 lg:py-20">
-      <div className="container">
+      <div className="content-container">
         {style === 'gridBelow' ? (
           <>
             {/* Header with content and links */}
