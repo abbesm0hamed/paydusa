@@ -57,7 +57,6 @@ This monorepo integrates a Medusa backend, PayloadCMS, Next.js storefront, Prism
    cd ../storefront
    # Copy environment template and configure
    cp .env.template .env
-   # Fill in required variables: PAYLOAD_SECRET, LOCAL_DATABASE_URI, etc.
    
    # Run migrations to create database schema
    npx payload migrate
