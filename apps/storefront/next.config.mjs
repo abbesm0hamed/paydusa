@@ -6,7 +6,7 @@ const withNextIntl = createNextIntlPlugin();
 
 // Run environment variable check
 checkEnvVariables();
-
+const r2Hostname = process.env.NEXT_PUBLIC_R2_HOSTNAME || "fallback.example.com";
 /**
  * @type {import('next').NextConfig}
  */
@@ -40,6 +40,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'medusa-server-testing.s3.us-east-1.amazonaws.com',
+      },
+      {
+        protocol: 'https',
+        hostname: r2Hostname,
       },
     ],
   },

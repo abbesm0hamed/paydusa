@@ -14,7 +14,7 @@ export async function Footer({ locale }: { locale: TypedLocale }) {
   return (
     <footer className="w-full bg-background border-t border-t-orange">
       <div className="w-full flex flex-col justify-between bg-slate-900">
-        <div className="flex flex-col container">
+        <div className="flex flex-col content-container">
           {footerLogo && (
             <div className="h-20 sm:h-32 md:h-38 lg:h-48 xl:h-56 relative overflow-hidden">
               <NextImage
@@ -32,7 +32,7 @@ export async function Footer({ locale }: { locale: TypedLocale }) {
         </div>
 
         <div className="bg-slate-700">
-          <div className="flex items-center justify-between container">
+          <div className="flex items-center justify-between content-container">
             <p className="text-sm text-gray-500">© 2025 Ecommerce</p>
             <div className="flex gap-4">
               <a href="#" className="text-gray-500 hover:text-primary">
@@ -53,7 +53,7 @@ export async function Footer({ locale }: { locale: TypedLocale }) {
       </div>
 
       <div className="bg-slate-600 border-t border-t-orange">
-        <div className="w-full container">
+        <div className="w-full content-container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="flex justify-end w-full">
               <ThemeSelector />

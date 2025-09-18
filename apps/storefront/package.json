@@ -26,6 +26,7 @@
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.726.1",
     "@headlessui/react": "^2.2.8",
     "@medusajs/icons": "latest",
     "@medusajs/js-sdk": "latest",
@@ -42,6 +43,7 @@
     "@payloadcms/plugin-search": "^3.55.1",
     "@payloadcms/plugin-seo": "^3.55.1",
     "@payloadcms/richtext-lexical": "^3.55.1",
+    "@payloadcms/storage-s3": "^3.55.1",
     "@payloadcms/storage-uploadthing": "^3.55.1",
     "@radix-ui/react-accordion": "^1.2.12",
     "@repo/seo": "workspace:*",
@@ -66,6 +68,7 @@
     "server-only": "^0.0.1",
     "sharp": "^0.34.3",
     "tailwindcss-radix": "^4.0.2",
+    "types": "link:@payloadcms/plugin-seo/types",
     "webpack": "^5",
     "zod": "^4.1.8"
   },
@@ -89,9 +92,15 @@
     "tailwindcss": "^3.0.23",
     "typescript": "^5.9.2"
   },
+  "pnpm": {
+    "overrides": {
+      "@aws-sdk/client-s3": "3.726.1"
+    }
+  },
   "packageManager": "pnpm@10.16.1",
   "overrides": {
     "react": "19.1.1",
-    "react-dom": "19.1.1"
+    "react-dom": "19.1.1",
+    "@aws-sdk/client-s3": "3.726.1"
   }
 }

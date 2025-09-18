@@ -6,7 +6,6 @@ import { seoPlugin } from '@payloadcms/plugin-seo';
 import { searchPlugin } from '@payloadcms/plugin-search';
 import { Plugin } from 'payload';
 import { revalidateRedirects } from '@/hooks/revalidateRedirects';
-import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types';
 import {
   FixedToolbarFeature,
   HeadingFeature,
@@ -14,12 +13,11 @@ import {
 } from '@payloadcms/richtext-lexical';
 import { searchFields } from '@/search/fieldOverrides';
 import { beforeSyncWithSearch } from '@/search/beforeSync';
-// this package will automatically set disableLocalStorage to true for each collection.
-import { uploadthingStorage } from '@payloadcms/storage-uploadthing';
+import { s3Storage } from '@payloadcms/storage-s3';
 
-import { Page, Post } from '@/payload-types';
 import { getServerSideURL } from '@/utilities/getURL';
-import { env } from 'env';
+import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types';
+import { Page, Post } from '@/payload-types';
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title
@@ -32,6 +30,8 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 
   return doc?.slug ? `${url}/${doc.slug}` : url;
 };
+
+const prefix = 'cms/media';
 
 export const plugins: Plugin[] = [
   redirectsPlugin({
@@ -103,13 +103,29 @@ export const plugins: Plugin[] = [
     },
   }),
   payloadCloudPlugin(),
-  uploadthingStorage({
+  s3Storage({
     collections: {
       media: true,
+      'media-with-prefix': {
+        prefix,
+      },
+      'media-with-presigned-downloads': {
+        signedDownloads: {
+          shouldUseSignedURL: ({ collection, filename, req }) => {
+            return filename.endsWith('.mp4')
+          },
+        },
+      },
     },
-    options: {
-      token: process.env.UPLOADTHING_TOKEN,
-      acl: 'public-read',
+    bucket: process.env.S3_BUCKET!,
+    config: {
+      endpoint: process.env.S3_ENDPOINT!,
+      region: process.env.S3_REGION || 'auto',
+      credentials: {
+        accessKeyId: process.env.S3_ACCESS_KEY_ID!,
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
+      },
+      forcePathStyle: true,
     },
   }),
 ];

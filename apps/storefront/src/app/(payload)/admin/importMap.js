@@ -36,7 +36,7 @@ import { RowLabel as RowLabel_e5f2ea2a3ff3620de63526e885e3b034 } from '@/globals
 import { BlogMarkdownField as BlogMarkdownField_56d4480acc26516a7f77c240ba7b194a } from '@/blocks/BlogMarkdown/Field'
 import { default as default_ea366715dec2bdecbc5f39e874150dd3 } from '@/icons/AdminIcon'
 import { default as default_d0335e7a62aec198e4416a8134eda638 } from '@/components/Logo/AdminLogo'
-import { UploadthingClientUploadHandler as UploadthingClientUploadHandler_749dcaa11bb61b873d113cb6c609bc10 } from '@payloadcms/storage-uploadthing/client'
+import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 
 export const importMap = {
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -77,5 +77,5 @@ export const importMap = {
   "@/blocks/BlogMarkdown/Field#BlogMarkdownField": BlogMarkdownField_56d4480acc26516a7f77c240ba7b194a,
   "@/icons/AdminIcon#default": default_ea366715dec2bdecbc5f39e874150dd3,
   "@/components/Logo/AdminLogo#default": default_d0335e7a62aec198e4416a8134eda638,
-  "@payloadcms/storage-uploadthing/client#UploadthingClientUploadHandler": UploadthingClientUploadHandler_749dcaa11bb61b873d113cb6c609bc10
+  "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24
 }

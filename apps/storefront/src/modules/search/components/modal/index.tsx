@@ -79,16 +79,24 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
 }
 
 const Hit = ({ hit, onClose }: { hit: Hit; onClose: () => void }) => {
+  const hasValidThumbnail = hit.thumbnail && hit.thumbnail.trim() !== ""
+  
   return (
     <div className="relative p-3 border border-ui-border-base rounded hover:bg-ui-bg-subtle">
       <div className="flex gap-3">
-        <Image 
-          src={hit.thumbnail} 
-          alt={hit.title} 
-          width={60} 
-          height={60} 
-          className="rounded object-cover"
-        />
+        {hasValidThumbnail ? (
+          <Image 
+            src={hit.thumbnail} 
+            alt={hit.title} 
+            width={60} 
+            height={60} 
+            className="rounded object-cover"
+          />
+        ) : (
+          <div className="w-[60px] h-[60px] bg-ui-bg-subtle rounded flex items-center justify-center">
+            <span className="text-ui-fg-muted text-xs">No Image</span>
+          </div>
+        )}
         <div className="flex-1 min-w-0">
           <h3 className="text-sm font-medium text-ui-fg-base truncate">
             {hit.title}

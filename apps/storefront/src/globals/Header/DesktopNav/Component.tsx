@@ -17,8 +17,8 @@ export async function Header({ locale }: { locale: TypedLocale }) {
     <div className="sticky top-0 inset-x-0 z-50 group">
       <header className="relative bg-white border-b duration-200 border-ui-border-base">
         {/* First Line: Logo, Navigation, Language & Sign Up */}
-        <div className="h-12">
-          <div className="container flex items-center justify-between w-full h-full">
+        <div className="h-12 mx-auto">
+          <div className="content-container flex items-center justify-between w-full h-full">
             <div className="flex-1 basis-0 h-full flex items-center">
               <LocalizedClientLink
                 href="/"
@@ -47,7 +47,7 @@ export async function Header({ locale }: { locale: TypedLocale }) {
         </div>
 
         <div className="h-8 mx-auto border-t border-ui-border-base bg-muted/30">
-          <div className="container flex items-center justify-between w-full h-full txt-xsmall-plus text-ui-fg-subtle">
+          <div className="content-container flex items-center justify-between w-full h-full txt-xsmall-plus text-ui-fg-subtle">
             <div className="flex-1 basis-0 h-full flex items-center">
               <SideMenu regions={regions} />
             </div>
