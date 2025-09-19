@@ -20,6 +20,7 @@ import { GeistMono } from 'geist/font/mono';
 import { getLocalizedMessages } from '@/i18n/request';
 import { getServerSideURL } from '@/utilities/getURL';
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph';
+import { Providers } from '@/providers';
 
 type Args = {
   children: React.ReactNode;
@@ -72,16 +73,18 @@ export default async function RootLayout({ children, params }: Args) {
         />
       </head>
       <body className="font-default">
-        <NextIntlClientProvider messages={messages}>
-          <AdminBar
-            adminBarProps={{
-              preview: isEnabled,
-            }}
-          />
-          <Header locale={locale} />
-          <main className="relative">{children}</main>
-          <Footer locale={locale} />
-        </NextIntlClientProvider>
+        <Providers>
+          <NextIntlClientProvider messages={messages}>
+            <AdminBar
+              adminBarProps={{
+                preview: isEnabled,
+              }}
+            />
+            <Header locale={locale} />
+            <main className="relative">{children}</main>
+            <Footer locale={locale} />
+          </NextIntlClientProvider>
+        </Providers>
       </body>
     </html>
   );

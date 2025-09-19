@@ -11,7 +11,7 @@ export default function AdminLogo() {
       fetchPriority={priority}
       decoding="async"
       className={'h-[4rem] w-[22rem]'}
-      src={'/favicon.ico'}
+      src={'/favicon/favicon.ico'}
     />
   );
 }

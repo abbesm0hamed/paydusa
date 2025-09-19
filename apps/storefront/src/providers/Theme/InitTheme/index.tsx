@@ -40,6 +40,8 @@ export const InitTheme: React.FC = () => {
     }
 
     document.documentElement.setAttribute('data-theme', themeToSet)
+    document.documentElement.classList.remove('dark', 'light')
+    document.documentElement.classList.add(themeToSet)
   })();
   `,
       }}

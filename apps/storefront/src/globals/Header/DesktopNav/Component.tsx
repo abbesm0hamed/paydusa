@@ -15,14 +15,14 @@ export async function Header({ locale }: { locale: TypedLocale }) {
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
-      <header className="relative bg-white border-b duration-200 border-ui-border-base">
+      <header className="relative bg-background dark:bg-background border-b duration-200 border-border">
         {/* First Line: Logo, Navigation, Language & Sign Up */}
         <div className="h-12 mx-auto">
           <div className="content-container flex items-center justify-between w-full h-full">
             <div className="flex-1 basis-0 h-full flex items-center">
               <LocalizedClientLink
                 href="/"
-                className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase mr-8"
+                className="txt-compact-xlarge-plus text-foreground hover:text-foreground/80 uppercase mr-8"
                 data-testid="nav-store-link"
               >
                 Medusa Store
@@ -35,7 +35,7 @@ export async function Header({ locale }: { locale: TypedLocale }) {
               <HeaderClient data={headerData} showOnlyActions={true} />
               <div className="hidden small:flex items-center gap-x-6 h-full">
                 <LocalizedClientLink
-                  className="hover:text-ui-fg-base"
+                  className="text-foreground hover:text-foreground/80"
                   href="/account"
                   data-testid="nav-account-link"
                 >
@@ -46,8 +46,8 @@ export async function Header({ locale }: { locale: TypedLocale }) {
           </div>
         </div>
 
-        <div className="h-8 mx-auto border-t border-ui-border-base bg-muted/30">
-          <div className="content-container flex items-center justify-between w-full h-full txt-xsmall-plus text-ui-fg-subtle">
+        <div className="h-8 mx-auto border-t border-border bg-muted/30">
+          <div className="content-container flex items-center justify-between w-full h-full txt-xsmall-plus text-muted-foreground">
             <div className="flex-1 basis-0 h-full flex items-center">
               <SideMenu regions={regions} />
             </div>
@@ -60,7 +60,7 @@ export async function Header({ locale }: { locale: TypedLocale }) {
               <Suspense
                 fallback={
                   <LocalizedClientLink
-                    className="hover:text-ui-fg-base flex gap-2"
+                    className="text-foreground hover:text-foreground/80 flex gap-2"
                     href="/cart"
                     data-testid="nav-cart-link"
                   >

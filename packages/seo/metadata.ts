@@ -49,7 +49,7 @@ export const createMetadata = ({
       creator: twitterHandle,
     },
     icons: {
-      icon: '/favicon/favicon.svg',
+      icon: '/favicon/favicon.ico',
     },
     manifest: '/favicon/site.webmanifest',
     alternates: {

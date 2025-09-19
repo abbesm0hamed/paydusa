@@ -11,7 +11,7 @@ export default function AdminIcon() {
       fetchPriority={priority}
       decoding="async"
       className={'h-[18px] w-[18px]'}
-      src={'/favicon.ico'}
+      src={'/favicon/favicon.ico'}
     />
   );
 }
