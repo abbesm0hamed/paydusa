@@ -95,6 +95,7 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    products: Product;
     video: Video;
     br: Br;
     commandLine: CommandLine;
@@ -118,6 +119,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
     video: VideoSelect<false> | VideoSelect<true>;
     br: BrSelect<false> | BrSelect<true>;
     commandLine: CommandLineSelect<false> | CommandLineSelect<true>;
@@ -466,6 +468,9 @@ export interface User {
   id: number;
   updatedAt: string;
   createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
@@ -1168,6 +1173,100 @@ export interface ReusableContent {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  /**
+   * The unique identifier from Medusa
+   */
+  medusa_id: string;
+  /**
+   * The product title
+   */
+  title: string;
+  /**
+   * Product subtitle
+   */
+  subtitle?: string | null;
+  /**
+   * Detailed product description
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Product thumbnail image
+   */
+  thumbnail?: (number | null) | Media;
+  /**
+   * Gallery of product images
+   */
+  images?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * SEO-related fields for better search visibility
+   */
+  seo?: {
+    meta_title?: string | null;
+    meta_description?: string | null;
+    meta_keywords?: string | null;
+  };
+  options?:
+    | {
+        title: string;
+        /**
+         * The unique identifier for the option from Medusa
+         */
+        medusa_id: string;
+        id?: string | null;
+      }[]
+    | null;
+  variants?:
+    | {
+        title: string;
+        /**
+         * The unique identifier for the variant from Medusa
+         */
+        medusa_id: string;
+        option_values?:
+          | {
+              /**
+               * The unique identifier for the option value from Medusa
+               */
+              medusa_id: string;
+              /**
+               * The unique identifier for the option from Medusa
+               */
+              medusa_option_id: string;
+              value: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "video".
  */
 export interface Video {
@@ -1584,6 +1683,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: number | Product;
       } | null)
     | ({
         relationTo: 'video';
@@ -2108,6 +2211,9 @@ export interface CategoriesSelect<T extends boolean = true> {
 export interface UsersSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
+  enableAPIKey?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
   email?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
@@ -2122,6 +2228,54 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  medusa_id?: T;
+  title?: T;
+  subtitle?: T;
+  description?: T;
+  thumbnail?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  seo?:
+    | T
+    | {
+        meta_title?: T;
+        meta_description?: T;
+        meta_keywords?: T;
+      };
+  options?:
+    | T
+    | {
+        title?: T;
+        medusa_id?: T;
+        id?: T;
+      };
+  variants?:
+    | T
+    | {
+        title?: T;
+        medusa_id?: T;
+        option_values?:
+          | T
+          | {
+              medusa_id?: T;
+              medusa_option_id?: T;
+              value?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -41,6 +41,7 @@ import { FormBlock } from '@/blocks/Form/config';
 import { plugins } from '@/plugins';
 
 import { i18n, localization } from '@/i18n/localization';
+import { Products } from './collections/Products';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -226,6 +227,7 @@ export default buildConfig({
     Media,
     Categories,
     Users,
+    Products,
     {
       slug: 'video',
       fields: [

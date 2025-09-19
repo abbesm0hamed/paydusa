@@ -32,7 +32,7 @@ export async function Footer({ locale }: { locale: TypedLocale }) {
         </div>
 
         <div className="bg-slate-700">
-          <div className="flex items-center justify-between content-container">
+          <div className="flex items-center justify-between content-container w-full flex-wrap">
             <p className="text-sm text-gray-500">© 2025 Ecommerce</p>
             <div className="flex gap-4">
               <a href="#" className="text-gray-500 hover:text-primary">
