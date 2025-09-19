@@ -98,10 +98,10 @@ async function getCountryCode(
 
     if (urlCountryCode && regionMap.has(urlCountryCode)) {
       countryCode = urlCountryCode;
-    } else if (vercelCountryCode && regionMap.has(vercelCountryCode)) {
-      countryCode = vercelCountryCode;
     } else if (regionMap.has(DEFAULT_REGION)) {
       countryCode = DEFAULT_REGION;
+    } else if (vercelCountryCode && regionMap.has(vercelCountryCode)) {
+      countryCode = vercelCountryCode;
     } else if (regionMap.keys().next().value) {
       countryCode = regionMap.keys().next().value;
     }
