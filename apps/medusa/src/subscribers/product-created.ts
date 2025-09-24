@@ -3,6 +3,7 @@ import {
   type SubscriberConfig,
 } from "@medusajs/framework"
 import { syncProductsWorkflow } from "../workflows/sync-products"
+import { createPayloadProductsWorkflow } from "../workflows/create-payload-products"
 
 export default async function productCreatedHandler({ 
   event,
@@ -12,6 +13,13 @@ export default async function productCreatedHandler({
   
   try {
     logger.info(`Syncing newly created product ${event.data.id} to Algolia...`)
+
+    await createPayloadProductsWorkflow(container)
+      .run({
+        input: {
+          product_ids: [event.data.id],
+        }
+      })
     
     await syncProductsWorkflow(container).run({
       input: {

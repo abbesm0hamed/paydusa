@@ -11,18 +11,23 @@ import { useParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
 import ProductPrice from "../product-price"
 import MobileActions from "./mobile-actions"
+import { StoreProductWithPayload } from "../../../../types/global"
 
 type ProductActionsProps = {
-  product: HttpTypes.StoreProduct
+  product: StoreProductWithPayload
   region: HttpTypes.StoreRegion
   disabled?: boolean
 }
 
 const optionsAsKeymap = (
-  variantOptions: HttpTypes.StoreProductVariant["options"]
+  variantOptions: HttpTypes.StoreProductVariant["options"],
+  payloadData: StoreProductWithPayload["payload_product"]
 ) => {
+  const firstVariant = payloadData?.variants?.[0]
   return variantOptions?.reduce((acc: Record<string, string>, varopt: any) => {
-    acc[varopt.option_id] = varopt.value
+    acc[varopt.option_id] = firstVariant?.option_values.find(
+      (v) => v.medusa_option_id === varopt.id
+    )?.value || varopt.value
     return acc
   }, {})
 }
@@ -38,7 +43,10 @@ export default function ProductActions({
   // If there is only 1 variant, preselect the options
   useEffect(() => {
     if (product.variants?.length === 1) {
-      const variantOptions = optionsAsKeymap(product.variants[0].options)
+      const variantOptions = optionsAsKeymap(
+        product.variants[0].options,
+        product.payload_product
+      )
       setOptions(variantOptions ?? {})
     }
   }, [product.variants])
@@ -49,7 +57,10 @@ export default function ProductActions({
     }
 
     return product.variants.find((v) => {
-      const variantOptions = optionsAsKeymap(v.options)
+      const variantOptions = optionsAsKeymap(
+        v.options,
+        product.payload_product
+      )
       return isEqual(variantOptions, options)
     })
   }, [product.variants, options])
@@ -65,7 +76,10 @@ export default function ProductActions({
   //check if the selected options produce a valid variant
   const isValidVariant = useMemo(() => {
     return product.variants?.some((v) => {
-      const variantOptions = optionsAsKeymap(v.options)
+      const variantOptions = optionsAsKeymap(
+        v.options,
+        product.payload_product
+      )
       return isEqual(variantOptions, options)
     })
   }, [product.variants, options])
@@ -120,13 +134,16 @@ export default function ProductActions({
           {(product.variants?.length ?? 0) > 1 && (
             <div className="flex flex-col gap-y-4">
               {(product.options || []).map((option) => {
+                const payloadOption = product.payload_product?.options?.find(
+                  (o) => o.medusa_id === option.id
+                )
                 return (
                   <div key={option.id}>
                     <OptionSelect
                       option={option}
                       current={options[option.id]}
                       updateOption={setOptionValue}
-                      title={option.title ?? ""}
+                      title={payloadOption?.title || option.title || ""}
                       data-testid="product-options"
                       disabled={!!disabled || isAdding}
                     />

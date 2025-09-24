@@ -28,7 +28,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
   const salesChannelModuleService = container.resolve(Modules.SALES_CHANNEL);
   const storeModuleService = container.resolve(Modules.STORE);
 
-  const countries = [
+  const europeanCountries = [
     "gb",
     "de",
     "dk",
@@ -36,6 +36,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
     "fr",
     "es",
     "it",
+  ];
+
+  const africanCountries = [
+    "tn",
   ];
 
   logger.info("Seeding store data...");
@@ -72,6 +76,9 @@ export default async function seedDemoData({ container }: ExecArgs) {
           {
             currency_code: "usd",
           },
+          {
+            currency_code: "tnd",
+          },
         ],
         default_sales_channel_id: defaultSalesChannel[0].id,
       },
@@ -84,18 +91,26 @@ export default async function seedDemoData({ container }: ExecArgs) {
         {
           name: "Europe",
           currency_code: "eur",
-          countries,
+          countries: europeanCountries,
+          payment_providers: ["pp_system_default"],
+        },
+        {
+          name: "Africa",
+          currency_code: "tnd",
+          countries: africanCountries,
           payment_providers: ["pp_system_default"],
         },
       ],
     },
   });
-  const region = regionResult[0];
+  const europeRegion = regionResult[0];
+  const africaRegion = regionResult[1];
   logger.info("Finished seeding regions.");
 
   logger.info("Seeding tax regions...");
+  const allCountries = [...europeanCountries, ...africanCountries];
   await createTaxRegionsWorkflow(container).run({
-    input: countries.map((country_code) => ({
+    input: allCountries.map((country_code) => ({
       country_code,
       provider_id: "tp_system"
     })),
@@ -151,42 +166,30 @@ export default async function seedDemoData({ container }: ExecArgs) {
     shippingProfile = shippingProfileResult[0];
   }
 
-  const fulfillmentSet = await fulfillmentModuleService.createFulfillmentSets({
+  const europeanFulfillmentSet = await fulfillmentModuleService.createFulfillmentSets({
     name: "European Warehouse delivery",
     type: "shipping",
     service_zones: [
       {
         name: "Europe",
-        geo_zones: [
-          {
-            country_code: "gb",
-            type: "country",
-          },
-          {
-            country_code: "de",
-            type: "country",
-          },
-          {
-            country_code: "dk",
-            type: "country",
-          },
-          {
-            country_code: "se",
-            type: "country",
-          },
-          {
-            country_code: "fr",
-            type: "country",
-          },
-          {
-            country_code: "es",
-            type: "country",
-          },
-          {
-            country_code: "it",
-            type: "country",
-          },
-        ],
+        geo_zones: europeanCountries.map(country_code => ({
+          country_code,
+          type: "country" as const,
+        })),
+      },
+    ],
+  });
+
+  const africanFulfillmentSet = await fulfillmentModuleService.createFulfillmentSets({
+    name: "African Warehouse delivery",
+    type: "shipping",
+    service_zones: [
+      {
+        name: "Africa",
+        geo_zones: africanCountries.map(country_code => ({
+          country_code,
+          type: "country" as const,
+        })),
       },
     ],
   });
@@ -196,7 +199,16 @@ export default async function seedDemoData({ container }: ExecArgs) {
       stock_location_id: stockLocation.id,
     },
     [Modules.FULFILLMENT]: {
-      fulfillment_set_id: fulfillmentSet.id,
+      fulfillment_set_id: europeanFulfillmentSet.id,
+    },
+  });
+
+  await link.create({
+    [Modules.STOCK_LOCATION]: {
+      stock_location_id: stockLocation.id,
+    },
+    [Modules.FULFILLMENT]: {
+      fulfillment_set_id: africanFulfillmentSet.id,
     },
   });
 
@@ -206,7 +218,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
         name: "Standard Shipping",
         price_type: "flat",
         provider_id: "manual_manual",
-        service_zone_id: fulfillmentSet.service_zones[0].id,
+        service_zone_id: europeanFulfillmentSet.service_zones[0].id,
         shipping_profile_id: shippingProfile.id,
         type: {
           label: "Standard",
@@ -223,7 +235,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
             amount: 10,
           },
           {
-            region_id: region.id,
+            region_id: europeRegion.id,
             amount: 10,
           },
         ],
@@ -244,7 +256,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
         name: "Express Shipping",
         price_type: "flat",
         provider_id: "manual_manual",
-        service_zone_id: fulfillmentSet.service_zones[0].id,
+        service_zone_id: europeanFulfillmentSet.service_zones[0].id,
         shipping_profile_id: shippingProfile.id,
         type: {
           label: "Express",
@@ -261,8 +273,84 @@ export default async function seedDemoData({ container }: ExecArgs) {
             amount: 10,
           },
           {
-            region_id: region.id,
+            region_id: europeRegion.id,
             amount: 10,
+          },
+        ],
+        rules: [
+          {
+            attribute: "enabled_in_store",
+            value: "true",
+            operator: "eq",
+          },
+          {
+            attribute: "is_return",
+            value: "false",
+            operator: "eq",
+          },
+        ],
+      },
+      {
+        name: "Standard Shipping Africa",
+        price_type: "flat",
+        provider_id: "manual_manual",
+        service_zone_id: africanFulfillmentSet.service_zones[0].id,
+        shipping_profile_id: shippingProfile.id,
+        type: {
+          label: "Standard",
+          description: "Ship in 5-7 days.",
+          code: "standard",
+        },
+        prices: [
+          {
+            currency_code: "tnd",
+            amount: 15,
+          },
+          {
+            currency_code: "eur",
+            amount: 15,
+          },
+          {
+            region_id: africaRegion.id,
+            amount: 15,
+          },
+        ],
+        rules: [
+          {
+            attribute: "enabled_in_store",
+            value: "true",
+            operator: "eq",
+          },
+          {
+            attribute: "is_return",
+            value: "false",
+            operator: "eq",
+          },
+        ],
+      },
+      {
+        name: "Express Shipping Africa",
+        price_type: "flat",
+        provider_id: "manual_manual",
+        service_zone_id: africanFulfillmentSet.service_zones[0].id,
+        shipping_profile_id: shippingProfile.id,
+        type: {
+          label: "Express",
+          description: "Ship in 2-3 days.",
+          code: "express",
+        },
+        prices: [
+          {
+            currency_code: "tnd",
+            amount: 25,
+          },
+          {
+            currency_code: "eur",
+            amount: 25,
+          },
+          {
+            region_id: africaRegion.id,
+            amount: 25,
           },
         ],
         rules: [
@@ -396,6 +484,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                   amount: 15,
                   currency_code: "usd",
                 },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
+                },
               ],
             },
             {
@@ -413,6 +505,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 {
                   amount: 15,
                   currency_code: "usd",
+                },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
                 },
               ],
             },
@@ -432,6 +528,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                   amount: 15,
                   currency_code: "usd",
                 },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
+                },
               ],
             },
             {
@@ -449,6 +549,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 {
                   amount: 15,
                   currency_code: "usd",
+                },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
                 },
               ],
             },
@@ -468,6 +572,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                   amount: 15,
                   currency_code: "usd",
                 },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
+                },
               ],
             },
             {
@@ -485,6 +593,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 {
                   amount: 15,
                   currency_code: "usd",
+                },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
                 },
               ],
             },
@@ -504,6 +616,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                   amount: 15,
                   currency_code: "usd",
                 },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
+                },
               ],
             },
             {
@@ -521,6 +637,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 {
                   amount: 15,
                   currency_code: "usd",
+                },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
                 },
               ],
             },
@@ -572,6 +692,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                   amount: 15,
                   currency_code: "usd",
                 },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
+                },
               ],
             },
             {
@@ -588,6 +712,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 {
                   amount: 15,
                   currency_code: "usd",
+                },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
                 },
               ],
             },
@@ -606,6 +734,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                   amount: 15,
                   currency_code: "usd",
                 },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
+                },
               ],
             },
             {
@@ -622,6 +754,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 {
                   amount: 15,
                   currency_code: "usd",
+                },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
                 },
               ],
             },
@@ -673,6 +809,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                   amount: 15,
                   currency_code: "usd",
                 },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
+                },
               ],
             },
             {
@@ -689,6 +829,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 {
                   amount: 15,
                   currency_code: "usd",
+                },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
                 },
               ],
             },
@@ -707,6 +851,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                   amount: 15,
                   currency_code: "usd",
                 },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
+                },
               ],
             },
             {
@@ -723,6 +871,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 {
                   amount: 15,
                   currency_code: "usd",
+                },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
                 },
               ],
             },
@@ -774,6 +926,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                   amount: 15,
                   currency_code: "usd",
                 },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
+                },
               ],
             },
             {
@@ -790,6 +946,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 {
                   amount: 15,
                   currency_code: "usd",
+                },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
                 },
               ],
             },
@@ -808,6 +968,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                   amount: 15,
                   currency_code: "usd",
                 },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
+                },
               ],
             },
             {
@@ -824,6 +988,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 {
                   amount: 15,
                   currency_code: "usd",
+                },
+                {
+                  amount: 35,
+                  currency_code: "tnd",
                 },
               ],
             },

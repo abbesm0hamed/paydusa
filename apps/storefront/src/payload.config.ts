@@ -1,5 +1,5 @@
 import path from 'path';
-// import sharp from 'sharp';
+import sharp from 'sharp';
 import { fileURLToPath } from 'url';
 import { buildConfig, PayloadRequest } from 'payload';
 
@@ -340,7 +340,7 @@ export default buildConfig({
     },
     migrationDir: resolvePath.migrations,
   }),
-  // sharp,
+  sharp,
   plugins: [...plugins],
   upload: {
     limits: {
@@ -348,7 +348,7 @@ export default buildConfig({
     },
   },
   email: nodemailerAdapter({
-    defaultFromAddress: process.env.SMTP_USER || 'abbesmohamed717@gmail.com',
+    defaultFromAddress: process.env.SMTP_USER!!,
     defaultFromName: 'Ecom',
     transportOptions: {
       host: process.env.SMTP_HOST,

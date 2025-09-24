@@ -30,13 +30,13 @@ export default async function Page() {
   return (
     <div className="pt-24 pb-24">
       <PageClient />
-      <div className="container mb-16">
+      <div className="content-container mb-16">
         <div className="prose dark:prose-invert max-w-none">
           <h1>Posts</h1>
         </div>
       </div>
 
-      <div className="container mb-8 fade-top-border">
+      <div className="content-container mb-8 fade-top-border">
         <PageRange
           collection="posts"
           currentPage={posts.page}

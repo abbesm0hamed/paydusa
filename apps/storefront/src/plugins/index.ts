@@ -105,15 +105,10 @@ export const plugins: Plugin[] = [
   payloadCloudPlugin(),
   s3Storage({
     collections: {
-      media: true,
-      'media-with-prefix': {
+      media: {
         prefix,
-      },
-      'media-with-presigned-downloads': {
-        signedDownloads: {
-          shouldUseSignedURL: ({ collection, filename, req }) => {
-            return filename.endsWith('.mp4')
-          },
+        generateFileURL: ({ filename }: { filename: string }) => {
+          return `${process.env.S3_FILE_URL}/${prefix}/${filename}`;
         },
       },
     },

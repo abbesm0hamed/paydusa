@@ -94,13 +94,12 @@
   },
   "pnpm": {
     "overrides": {
-      "@aws-sdk/client-s3": "3.726.1"
+      "@aws-sdk/client-s3": "3.726.1",
+      "undici": "5.20.0"
     }
   },
-  "packageManager": "pnpm@10.16.1",
   "overrides": {
-    "react": "19.1.1",
-    "react-dom": "19.1.1",
-    "@aws-sdk/client-s3": "3.726.1"
+    "@aws-sdk/client-s3": "3.726.1",
+    "undici": "5.20.0"
   }
 }

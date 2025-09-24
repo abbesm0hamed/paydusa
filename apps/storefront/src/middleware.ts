@@ -19,49 +19,83 @@ async function getRegionMap(cacheId: string) {
   const { regionMap, regionMapUpdated } = regionMapCache;
 
   if (!BACKEND_URL) {
-    throw new Error(
-      'Middleware.ts: Error fetching regions. Did you set up regions in your Medusa Admin and define a MEDUSA_BACKEND_URL environment variable? Note that the variable is no longer named NEXT_PUBLIC_MEDUSA_BACKEND_URL.'
-    );
+    console.warn('MEDUSA_BACKEND_URL not configured, using fallback region');
+    if (!regionMap.has(DEFAULT_REGION)) {
+      regionMapCache.regionMap.set(DEFAULT_REGION, { 
+        id: DEFAULT_REGION, 
+        name: 'Default Region',
+        countries: [{ iso_2: DEFAULT_REGION }]
+      } as any);
+    }
+    return regionMapCache.regionMap;
   }
 
   if (
     !regionMap.keys().next().value ||
     regionMapUpdated < Date.now() - 3600 * 1000
   ) {
-    // Fetch regions from Medusa. We can't use the JS client here because middleware is running on Edge and the client needs a Node environment.
-    const { regions } = await fetch(`${BACKEND_URL}/store/regions`, {
-      headers: {
-        'x-publishable-api-key': PUBLISHABLE_API_KEY!,
-      },
-      next: {
-        revalidate: 3600,
-        tags: [`regions-${cacheId}`],
-      },
-      cache: 'force-cache',
-    }).then(async (response) => {
-      const json = await response.json();
-
-      if (!response.ok) {
-        throw new Error(json.message);
+    try {
+      if (!PUBLISHABLE_API_KEY) {
+        console.warn('NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY not configured, using fallback region');
+        regionMapCache.regionMap.set(DEFAULT_REGION, { 
+          id: DEFAULT_REGION, 
+          name: 'Default Region',
+          countries: [{ iso_2: DEFAULT_REGION }]
+        } as any);
+        return regionMapCache.regionMap;
       }
 
-      return json;
-    });
+      const { regions } = await fetch(`${BACKEND_URL}/store/regions`, {
+        headers: {
+          'x-publishable-api-key': PUBLISHABLE_API_KEY,
+        },
+        next: {
+          revalidate: 3600,
+          tags: [`regions-${cacheId}`],
+        },
+        cache: 'force-cache',
+      }).then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: Failed to fetch regions`);
+        }
 
-    if (!regions?.length) {
-      throw new Error(
-        'No regions found. Please set up regions in your Medusa Admin.'
-      );
-    }
-
-    // Create a map of country codes to regions.
-    regions.forEach((region: HttpTypes.StoreRegion) => {
-      region.countries?.forEach((c) => {
-        regionMapCache.regionMap.set(c.iso_2 ?? '', region);
+        const json = await response.json();
+        return json;
       });
-    });
 
-    regionMapCache.regionMapUpdated = Date.now();
+      if (!regions?.length) {
+        console.warn('No regions found from Medusa API, using fallback region');
+        // Set fallback region
+        regionMapCache.regionMap.set(DEFAULT_REGION, { 
+          id: DEFAULT_REGION, 
+          name: 'Default Region',
+          countries: [{ iso_2: DEFAULT_REGION }]
+        } as any);
+        return regionMapCache.regionMap;
+      }
+
+      // Clear existing map and populate with fresh data
+      regionMapCache.regionMap.clear();
+      
+      // Create a map of country codes to regions.
+      regions.forEach((region: HttpTypes.StoreRegion) => {
+        region.countries?.forEach((c) => {
+          regionMapCache.regionMap.set(c.iso_2 ?? '', region);
+        });
+      });
+
+      regionMapCache.regionMapUpdated = Date.now();
+    } catch (error) {
+      console.warn('Error fetching regions from Medusa:', error);
+      // Set fallback region on error
+      if (!regionMap.has(DEFAULT_REGION)) {
+        regionMapCache.regionMap.set(DEFAULT_REGION, { 
+          id: DEFAULT_REGION, 
+          name: 'Default Region',
+          countries: [{ iso_2: DEFAULT_REGION }]
+        } as any);
+      }
+    }
   }
 
   return regionMapCache.regionMap;
@@ -98,12 +132,19 @@ async function getCountryCode(
 
     if (urlCountryCode && regionMap.has(urlCountryCode)) {
       countryCode = urlCountryCode;
-    } else if (regionMap.has(DEFAULT_REGION)) {
-      countryCode = DEFAULT_REGION;
     } else if (vercelCountryCode && regionMap.has(vercelCountryCode)) {
       countryCode = vercelCountryCode;
-    } else if (regionMap.keys().next().value) {
-      countryCode = regionMap.keys().next().value;
+    } else if (regionMap.has(DEFAULT_REGION)) {
+      countryCode = DEFAULT_REGION;
+    } else {
+      // Always fallback to first available region if default not found
+      const firstRegion = regionMap.keys().next().value;
+      if (firstRegion) {
+        countryCode = firstRegion;
+      } else {
+        // Ultimate fallback to DEFAULT_REGION even if not in map
+        countryCode = DEFAULT_REGION;
+      }
     }
 
     return countryCode;
@@ -249,6 +290,6 @@ export const config = {
     // Match all pathnames except for
     // - … if they start with `/api`, `/_next`, `/_vercel`, or `/admin`
     // - … the ones containing a dot (e.g. `favicon.ico`)
-    '/((?!api|_next|_vercel|admin|graphql-playground|graphql|next|.*\\..*).*)',
+    '/((?!api|svg|jpg|jpeg|gif|webp|_next|_next/image|_next/static|assets|_vercel|admin|graphql-playground|graphql|next|.*\\..*).*)',
   ],
 };

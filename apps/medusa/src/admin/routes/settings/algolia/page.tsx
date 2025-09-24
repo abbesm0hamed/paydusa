@@ -1,16 +1,8 @@
 import { Container, Heading, Button, toast } from "@medusajs/ui"
-import { useMutation, QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { useMutation, QueryClientProvider } from "@tanstack/react-query"
 import { sdk } from "../../../lib/sdk"
 import { defineRouteConfig } from "@medusajs/admin-sdk"
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-  },
-})
+import { queryClient } from "../../../lib/query-client"
 
 const AlgoliaPageContent = () => {
   const { mutate, isPending } = useMutation({

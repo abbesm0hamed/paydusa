@@ -63,12 +63,14 @@ export const listProducts = async ({
           offset,
           region_id: region?.id,
           fields:
-            "*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags",
+            "*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags,*payload_product",
           ...queryParams,
         },
         headers,
-        next,
-        cache: "force-cache",
+        // cache: "force-cache",
+        // next: { 
+        //   revalidate: 60, // Revalidate every 60 seconds
+        // }
       }
     )
     .then(({ products, count }) => {

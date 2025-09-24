@@ -39,7 +39,7 @@
   "engines": {
     "node": ">=20"
   },
-  "packageManager": "pnpm@10.16.1",
+  "packageManager": "pnpm@10.17.1",
   "dependencies": {
     "@clack/prompts": "^0.10.1",
     "commander": "^13.1.0"

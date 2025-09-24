@@ -262,6 +262,40 @@ export const Products: CollectionConfig = {
 
         return data
       }
+    ],
+    afterChange: [
+      async ({ doc, req, operation, previousDoc }) => {
+        if (req.query.is_from_medusa) {
+          return doc;
+        }
+
+        if (operation === 'update' && doc.medusa_id) {
+          try {
+            
+            const updateData: any = {};
+            if (previousDoc.title !== doc.title) {
+              updateData.title = doc.title;
+            }
+            
+            if (previousDoc.subtitle !== doc.subtitle) {
+              updateData.subtitle = doc.subtitle;
+            }
+            
+            if (JSON.stringify(previousDoc.description) !== JSON.stringify(doc.description)) {
+                updateData.description = doc.description;
+            }
+
+            if (Object.keys(updateData).length > 0) {
+              const { updateProduct } = await import('../lib/medusa-products');
+              await updateProduct(doc.medusa_id, updateData);
+            }
+          } catch (error) {
+            
+          }
+        }
+
+        return doc;
+      }
     ]
   },
   access: {
