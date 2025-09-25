@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { Hits, InstantSearch, SearchBox, useSearchBox } from "react-instantsearch"
 import { searchClient } from "../../../../lib/config"
 import Modal from "../../../common/components/modal"
@@ -25,6 +25,8 @@ interface SearchModalProps {
 export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const pathname = usePathname()
   const [previousPathname, setPreviousPathname] = useState(pathname)
+  const searchInputRef = useRef<HTMLInputElement>(null)
+  const [searchQuery, setSearchQuery] = useState("")
 
   useEffect(() => {
     if (pathname !== previousPathname && isOpen) {
@@ -32,6 +34,52 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
       setPreviousPathname(pathname)
     }
   }, [pathname, previousPathname, isOpen, onClose])
+
+  // Auto-focus the search input when modal opens and restore previous value
+  useEffect(() => {
+    if (isOpen) {
+      const focusInput = () => {
+        const searchInput = document.querySelector('.ais-SearchBox-input') as HTMLInputElement
+        if (searchInput) {
+          if (searchQuery) {
+            searchInput.value = searchQuery
+            const event = new Event('input', { bubbles: true })
+            searchInput.dispatchEvent(event)
+          }
+          searchInput.focus()
+        } else {
+          requestAnimationFrame(() => {
+            const retryInput = document.querySelector('.ais-SearchBox-input') as HTMLInputElement
+            if (retryInput) {
+              if (searchQuery) {
+                retryInput.value = searchQuery
+                const event = new Event('input', { bubbles: true })
+                retryInput.dispatchEvent(event)
+              }
+              retryInput.focus()
+            }
+          })
+        }
+      }
+      
+      requestAnimationFrame(focusInput)
+    }
+  }, [isOpen, searchQuery])
+
+  // Save search query when user types
+  useEffect(() => {
+    if (isOpen) {
+      const handleInput = (e: Event) => {
+        const target = e.target as HTMLInputElement
+        if (target.classList.contains('ais-SearchBox-input')) {
+          setSearchQuery(target.value)
+        }
+      }
+
+      document.addEventListener('input', handleInput)
+      return () => document.removeEventListener('input', handleInput)
+    }
+  }, [isOpen])
 
   return (
     <Modal isOpen={isOpen} close={onClose} search={true}>
