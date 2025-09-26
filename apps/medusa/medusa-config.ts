@@ -75,6 +75,21 @@ module.exports = defineConfig({
         ],
       },
     },
+    {
+      resolve: "@medusajs/medusa/analytics",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/analytics-posthog",
+            id: "posthog",
+            options: {
+              posthogEventsKey: process.env.POSTHOG_EVENTS_API_KEY,
+              posthogHost: process.env.POSTHOG_HOST || "https://eu.i.posthog.com",
+            },
+          },
+        ],
+      },
+    },
   ],
   projectConfig: {
     databaseUrl: getDatabaseUrl(),

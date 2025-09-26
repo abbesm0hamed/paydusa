@@ -1,11 +1,13 @@
 {
   "name": "storefront",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "author": "github.com/abbesm0hamed",
   "description": "complete ecommerce app for tunisians and international businesses",
   "keywords": [
+    "ecommerce",
     "storefront",
+    "store",
     "shop"
   ],
   "type": "module",
