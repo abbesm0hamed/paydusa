@@ -1,5 +1,6 @@
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
 import { trackOrderPlacedWorkflow } from "../workflows/track-order-placed"
+import { sendOrderConfirmationWorkflow } from "../workflows/send-order-confirmation"
 
 export default async function orderPlacedHandler({
   event: { data },
@@ -10,6 +11,13 @@ export default async function orderPlacedHandler({
       input: {
         id: data.id,
       },
+    })
+
+  await sendOrderConfirmationWorkflow(container)
+    .run({
+      input: {
+        id: data.id
+      }
     })
 }
 
