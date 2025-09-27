@@ -1,6 +1,6 @@
 # 🛒 Ecommerce Monorepo with Medusa, PayloadCMS, and Next.js
 
-This monorepo integrates a Medusa backend, PayloadCMS, Next.js storefront, Prisma Studio, and an email app for seamless ecommerce development.
+This monorepo integrates a Medusa backend, PayloadCMS, Next.js storefront, Drizzle Studio, and an email app for seamless ecommerce development.
 
 # 🔧 Fresh Local Setup
 
@@ -100,9 +100,6 @@ pnpx turbo run dev
    
    # Storefront
    cd apps/storefront && pnpm dev
-   
-   # Studio
-   cd apps/studio && pnpm dev
    ```
 
 3. **Stop Services When Done**:
@@ -142,7 +139,7 @@ This creates the `users_sessions` table with proper structure and foreign key co
 
 - **`storefront`**: Next.js app integrated with Medusa and PayloadCMS.
 - **`medusa`**: Medusa backend for ecommerce functionalities.
-- **`studio`**: Prisma Studio for database management.
+- **`studio`**: drizzle studio for database management.
 - **`email`**: Email rendering app using `react-email` and `@react-email/components`.
 
 ### Email App Features:
