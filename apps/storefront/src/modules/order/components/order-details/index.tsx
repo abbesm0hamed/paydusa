@@ -1,5 +1,10 @@
+'use client';
+
 import { HttpTypes } from "@medusajs/types"
 import { Text } from "@medusajs/ui"
+import { Button, toast } from "@medusajs/ui"
+import { useState } from "react"
+import { sdk } from "../../../../lib/config"
 
 type OrderDetailsProps = {
   order: HttpTypes.StoreOrder
@@ -11,6 +16,39 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
     const formatted = str.split("_").join(" ")
 
     return formatted.slice(0, 1).toUpperCase() + formatted.slice(1)
+  }
+  const [isDownloading, setIsDownloading] = useState(false)
+
+  const downloadInvoice = async () => {
+    setIsDownloading(true)
+    
+    try {
+      const response: Response = await sdk.client.fetch(
+        `/store/orders/${order.id}/invoices`, 
+        {
+          method: "GET",
+          headers: {
+            "accept": "application/pdf",
+          },
+        }
+      )
+
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement("a")
+      a.href = url
+      a.download = `invoice-${order.id}.pdf`
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+      setIsDownloading(false)
+      toast.success("Invoice generated and downloaded successfully")
+    } catch (error) {
+      toast.error(`Failed to generate invoice: ${error}`)
+      setIsDownloading(false)
+    }
+
   }
 
   return (
@@ -34,6 +72,14 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
       <Text className="mt-2 text-ui-fg-interactive">
         Order number: <span data-testid="order-id">{order.display_id}</span>
       </Text>
+      <Button 
+        variant="secondary" 
+        onClick={downloadInvoice} 
+        disabled={isDownloading} 
+        isLoading={isDownloading}
+      >
+        Download Invoice
+      </Button>
 
       <div className="flex items-center text-compact-small gap-x-4 mt-4">
         {showStatus && (

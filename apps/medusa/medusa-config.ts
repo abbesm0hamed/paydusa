@@ -106,6 +106,9 @@ module.exports = defineConfig({
         ],
       },
     },
+    {
+      resolve: "./src/modules/invoice-generator"
+    },
   ],
   projectConfig: {
     databaseUrl: getDatabaseUrl(),

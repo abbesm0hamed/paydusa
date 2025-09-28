@@ -10,6 +10,7 @@ import {
 import { MedusaError } from "@medusajs/framework/utils"
 import * as Sentry from "@sentry/node"
 import { SearchSchema } from "./store/products/search/route"
+import { PostInvoiceConfigSchema } from "./admin/invoice-config/route"
 
 const originalErrorHandler = errorHandler()
 
@@ -36,6 +37,13 @@ export default defineMiddlewares({
       method: ["POST"],
       middlewares: [
         authenticate("user", ["session", "bearer"]),
+      ],
+    },
+    {
+      matcher: "/admin/invoice-config",
+      methods: ["POST"],
+      middlewares: [
+        validateAndTransformBody(PostInvoiceConfigSchema),
       ],
     },
   ],
