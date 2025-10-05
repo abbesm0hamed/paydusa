@@ -28,6 +28,7 @@
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types"
   },
   "dependencies": {
+    "@repo/design-system": "workspace:*",
     "@aws-sdk/client-s3": "^3.726.1",
     "@headlessui/react": "^2.2.8",
     "@medusajs/icons": "latest",
