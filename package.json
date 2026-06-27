@@ -1,56 +1,44 @@
 {
   "name": "ecommerce",
-  "version": "0.0.1",
+  "private": true,
   "type": "module",
-  "bin": {
-    "next-forge": "dist/index.js"
-  },
-  "files": [
-    "dist/index.js"
-  ],
   "scripts": {
-    "build": "turbo build",
     "dev": "turbo dev",
-    "lint": "ultracite lint",
-    "format": "ultracite format",
-    "test": "turbo test",
-    "analyze": "turbo analyze",
-    "translate": "turbo translate",
-    "boundaries": "turbo boundaries",
-    "bump-deps": "npx npm-check-updates --deep -u -x react-day-picker && pnpm install",
-    "bump-ui": "npx shadcn@latest add --all --overwrite -c packages/design-system",
-    "docker:up": "sudo docker-compose up -d",
-    "docker:down": "sudo docker-compose down",
-    "migrate": "cd packages/database && npx prisma format && npx prisma generate && npx prisma db push",
-    "clean": "git clean -xdf node_modules"
+    "build": "turbo build",
+    "check-types": "turbo check-types",
+    "dev:web": "turbo -F web dev",
+    "dev:storefront": "turbo -F storefront dev",
+    "dev:store": "turbo -F store dev",
+    "dev:medusa": "turbo -F medusa dev",
+    "bump-deps": "turbo bump-deps",
+    "db:start": "docker compose -f docker/docker-compose.yml up -d",
+    "db:stop": "docker compose -f docker/docker-compose.yml stop",
+    "db:down": "docker compose -f docker/docker-compose.yml down",
+    "db:setup": "bash docker/db-setup.sh",
+    "check": "ultracite check",
+    "fix": "ultracite fix",
+    "clean:lockfile": "rm -f pnpm-lock.yaml && pnpm install",
+    "clean:node_modules": "rm -rf node_modules && find . -name 'node_modules' -type d -prune -exec rm -rf {} +"
+  },
+  "dependencies": {
+    "@ecommerce/env": "workspace:*",
+    "axios": "^1.18.0",
+    "dotenv": "catalog:",
+    "pdfmake": "^0.3.11",
+    "zod": "catalog:"
   },
   "devDependencies": {
-    "@auto-it/first-time-contributor": "^11.3.0",
-    "@biomejs/biome": "1.9.4",
-    "@repo/typescript-config": "workspace:*",
-    "@turbo/gen": "^2.5.3",
-    "@types/node": "^22.15.17",
-    "tsup": "^8.4.0",
-    "turbo": "^2.5.3",
-    "typescript": "^5.8.3",
-    "ultracite": "^4.2.4",
-    "vitest": "^3.1.3"
+    "@ecommerce/config": "workspace:*",
+    "@types/node": "catalog:",
+    "lefthook": "latest",
+    "oxfmt": "latest",
+    "oxlint": "latest",
+    "turbo": "^2.9.18",
+    "typescript": "catalog:",
+    "ultracite": "7.8.3"
   },
-  "engines": {
-    "node": ">=20"
+  "overrides": {
+    "undici": "5.20.0"
   },
-  "packageManager": "pnpm@10.17.1",
-  "dependencies": {
-    "@clack/prompts": "^0.10.1",
-    "commander": "^13.1.0"
-  },
-  "resolutions": {
-    "@types/react": "npm:types-react@19.0.0-rc.1",
-    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "sharp"
-    ]
-  }
+  "packageManager": "pnpm@11.8.0"
 }

@@ -1,6 +1,7 @@
-import { defineLink } from "@medusajs/framework/utils"
-import ProductModule from "@medusajs/medusa/product"
-import { PAYLOAD_MODULE } from "../modules/payload"
+import { defineLink } from "@medusajs/framework/utils";
+import ProductModule from "@medusajs/medusa/product";
+
+import { PAYLOAD_MODULE } from "../modules/payload";
 
 export default defineLink(
   {
@@ -17,4 +18,4 @@ export default defineLink(
   {
     readOnly: true,
   }
-)
+);

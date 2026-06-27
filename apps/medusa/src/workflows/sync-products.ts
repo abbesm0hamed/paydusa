@@ -1,12 +1,16 @@
-import { createWorkflow, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
-import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
-import { syncProductsStep, SyncProductsStepInput } from "./steps/sync-products"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk";
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows";
+
+import { syncProductsStep, SyncProductsStepInput } from "./steps/sync-products";
 
 type SyncProductsWorkflowInput = {
-  filters?: Record<string, unknown>
-  limit?: number
-  offset?: number
-}
+  filters?: Record<string, unknown>;
+  limit?: number;
+  offset?: number;
+};
 
 export const syncProductsWorkflow = createWorkflow(
   "sync-products",
@@ -14,14 +18,14 @@ export const syncProductsWorkflow = createWorkflow(
     const { data, metadata } = useQueryGraphStep({
       entity: "product",
       fields: [
-        "id", 
-        "title", 
-        "description", 
-        "handle", 
-        "thumbnail", 
+        "id",
+        "title",
+        "description",
+        "handle",
+        "thumbnail",
         "images.*",
-        "categories.*", 
-        "tags.*"
+        "categories.*",
+        "tags.*",
       ],
       pagination: {
         take: limit,
@@ -31,15 +35,15 @@ export const syncProductsWorkflow = createWorkflow(
         status: "published",
         ...filters,
       },
-    })
+    });
 
     syncProductsStep({
       products: data,
-    } as SyncProductsStepInput)
+    } as SyncProductsStepInput);
 
     return new WorkflowResponse({
       products: data,
       metadata,
-    })
+    });
   }
-)
+);

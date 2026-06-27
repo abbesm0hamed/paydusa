@@ -1,10 +1,14 @@
-import { createWorkflow, WorkflowResponse } from "@medusajs/framework/workflows-sdk";
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk";
 import { useQueryGraphStep } from "@medusajs/medusa/core-flows";
+
 import { sendNotificationStep } from "./steps/send-notification";
 
 type WorkflowInput = {
-  id: string
-}
+  id: string;
+};
 
 export const sendOrderConfirmationWorkflow = createWorkflow(
   "send-order-confirmation",
@@ -32,19 +36,21 @@ export const sendOrderConfirmationWorkflow = createWorkflow(
         "item_tax_total",
       ],
       filters: {
-        id
-      }
-    })
-    
-    const notification = sendNotificationStep([{
-      to: orders[0].email,
-      channel: "email",
-      template: "order-placed",
-      data: {
-        order: orders[0]
-      }
-    }])
+        id,
+      },
+    });
 
-    return new WorkflowResponse(notification)
+    const notification = sendNotificationStep([
+      {
+        to: orders[0].email,
+        channel: "email",
+        template: "order-placed",
+        data: {
+          order: orders[0],
+        },
+      },
+    ]);
+
+    return new WorkflowResponse(notification);
   }
-)
+);

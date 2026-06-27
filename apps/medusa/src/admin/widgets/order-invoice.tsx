@@ -1,39 +1,43 @@
-import { defineWidgetConfig } from "@medusajs/admin-sdk"
-import { Button, Container, Heading, Text, toast } from "@medusajs/ui"
-import { AdminOrder, DetailWidgetProps } from "@medusajs/framework/types"
-import { sdk } from "../lib/sdk"
-import { useState } from "react"
+import { defineWidgetConfig } from "@medusajs/admin-sdk";
+import { AdminOrder, DetailWidgetProps } from "@medusajs/framework/types";
+import { Button, Container, Heading, Text, toast } from "@medusajs/ui";
+import { useState } from "react";
+
+import { sdk } from "../lib/sdk";
 
 const OrderInvoiceWidget = ({ data: order }: DetailWidgetProps<AdminOrder>) => {
-  const [isDownloading, setIsDownloading] = useState(false)
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const downloadInvoice = async () => {
-    setIsDownloading(true)
-    
+    setIsDownloading(true);
+
     try {
-      const response: Response = await sdk.client.fetch(`/admin/orders/${order.id}/invoices`, {
-        method: "GET",
-        headers: {
-          "accept": "application/pdf",
-        },
-      })
-  
-      const blob = await response.blob()
-      const url = window.URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `invoice-${order.id}.pdf`
-      document.body.appendChild(a)
-      a.click()
-      window.URL.revokeObjectURL(url)
-      document.body.removeChild(a)
-      setIsDownloading(false)
-      toast.success("Invoice generated and downloaded successfully")
+      const response: Response = await sdk.client.fetch(
+        `/admin/orders/${order.id}/invoices`,
+        {
+          method: "GET",
+          headers: {
+            accept: "application/pdf",
+          },
+        }
+      );
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `invoice-${order.id}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      setIsDownloading(false);
+      toast.success("Invoice generated and downloaded successfully");
     } catch (error) {
-      toast.error(`Failed to generate invoice: ${error}`)
-      setIsDownloading(false)
+      toast.error(`Failed to generate invoice: ${error}`);
+      setIsDownloading(false);
     }
-  }
+  };
 
   return (
     <Container className="divide-y p-0">
@@ -57,11 +61,11 @@ const OrderInvoiceWidget = ({ data: order }: DetailWidgetProps<AdminOrder>) => {
         </Button>
       </div>
     </Container>
-  )
-}
+  );
+};
 
 export const config = defineWidgetConfig({
   zone: "order.details.side.before",
-})
+});
 
-export default OrderInvoiceWidget 
+export default OrderInvoiceWidget;

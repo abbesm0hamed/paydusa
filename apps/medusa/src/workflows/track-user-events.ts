@@ -1,17 +1,20 @@
-import { createWorkflow, createStep } from "@medusajs/framework/workflows-sdk"
-import { Modules } from "@medusajs/framework/utils"
+import { Modules } from "@medusajs/framework/utils";
+import { createWorkflow, createStep } from "@medusajs/framework/workflows-sdk";
 
 type UserWorkflowInput = {
-  customer_id: string
-  email?: string
-  first_name?: string
-  last_name?: string
-}
+  customer_id: string;
+  email?: string;
+  first_name?: string;
+  last_name?: string;
+};
 
 const trackUserSignupStep = createStep(
   "track-user-signup-step",
-  async ({ customer_id, email, first_name, last_name }: UserWorkflowInput, { container }) => {
-    const analyticsModuleService = container.resolve(Modules.ANALYTICS)
+  async (
+    { customer_id, email, first_name, last_name }: UserWorkflowInput,
+    { container }
+  ) => {
+    const analyticsModuleService = container.resolve(Modules.ANALYTICS);
 
     await analyticsModuleService.track({
       event: "user_signed_up",
@@ -23,9 +26,9 @@ const trackUserSignupStep = createStep(
         last_name: last_name || "",
         timestamp: new Date(),
       },
-    })
+    });
   }
-)
+);
 
 export const trackUserSignupWorkflow = createWorkflow(
   "track-user-signup",
@@ -35,22 +38,30 @@ export const trackUserSignupWorkflow = createWorkflow(
       email,
       first_name,
       last_name,
-    })
+    });
   }
-)
+);
 
 // Track product views
 type ProductViewInput = {
-  product_id: string
-  customer_id?: string
-  product_title?: string
-  product_handle?: string
-}
+  product_id: string;
+  customer_id?: string;
+  product_title?: string;
+  product_handle?: string;
+};
 
 const trackProductViewStep = createStep(
   "track-product-view-step",
-  async ({ product_id, customer_id, product_title, product_handle }: ProductViewInput, { container }) => {
-    const analyticsModuleService = container.resolve(Modules.ANALYTICS)
+  async (
+    {
+      product_id,
+      customer_id,
+      product_title,
+      product_handle,
+    }: ProductViewInput,
+    { container }
+  ) => {
+    const analyticsModuleService = container.resolve(Modules.ANALYTICS);
 
     await analyticsModuleService.track({
       event: "product_viewed",
@@ -62,33 +73,41 @@ const trackProductViewStep = createStep(
         customer_id,
         timestamp: new Date(),
       },
-    })
+    });
   }
-)
+);
 
 export const trackProductViewWorkflow = createWorkflow(
   "track-product-view",
-  ({ product_id, customer_id, product_title, product_handle }: ProductViewInput) => {
+  ({
+    product_id,
+    customer_id,
+    product_title,
+    product_handle,
+  }: ProductViewInput) => {
     trackProductViewStep({
       product_id,
       customer_id,
       product_title,
       product_handle,
-    })
+    });
   }
-)
+);
 
 // Track search events
 type SearchEventInput = {
-  query: string
-  results_count: number
-  customer_id?: string
-}
+  query: string;
+  results_count: number;
+  customer_id?: string;
+};
 
 const trackSearchEventStep = createStep(
   "track-search-event-step",
-  async ({ query, results_count, customer_id }: SearchEventInput, { container }) => {
-    const analyticsModuleService = container.resolve(Modules.ANALYTICS)
+  async (
+    { query, results_count, customer_id }: SearchEventInput,
+    { container }
+  ) => {
+    const analyticsModuleService = container.resolve(Modules.ANALYTICS);
 
     await analyticsModuleService.track({
       event: "search_performed",
@@ -99,9 +118,9 @@ const trackSearchEventStep = createStep(
         customer_id,
         timestamp: new Date(),
       },
-    })
+    });
   }
-)
+);
 
 export const trackSearchEventWorkflow = createWorkflow(
   "track-search-event",
@@ -110,6 +129,6 @@ export const trackSearchEventWorkflow = createWorkflow(
       query,
       results_count,
       customer_id,
-    })
+    });
   }
-)
+);

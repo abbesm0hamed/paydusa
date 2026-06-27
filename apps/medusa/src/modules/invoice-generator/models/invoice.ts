@@ -1,4 +1,4 @@
-import { model } from "@medusajs/framework/utils"
+import { model } from "@medusajs/framework/utils";
 
 export enum InvoiceStatus {
   LATEST = "latest",
@@ -11,4 +11,4 @@ export const Invoice = model.define("invoice", {
   order_id: model.text(),
   status: model.enum(InvoiceStatus).default(InvoiceStatus.LATEST),
   pdfContent: model.json(),
-})
+});

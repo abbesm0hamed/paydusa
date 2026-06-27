@@ -46,6 +46,18 @@ export interface PayloadBulkResult<T = PayloadCollectionItem> {
   pagingCounter: number;
 }
 
+export interface PayloadMediaResult {
+  doc: {
+    id: number;
+    url: string;
+    filename?: string;
+    mimeType?: string;
+    alt?: string;
+    sizes?: Record<string, { url: string; width: number; height: number }>;
+  };
+  message: string;
+}
+
 export interface PayloadApiResponse<T = any> {
   data?: T;
   errors?: Array<{

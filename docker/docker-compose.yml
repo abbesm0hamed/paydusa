@@ -1,0 +1,51 @@
+name: ecommerce
+
+services:
+  ecommerce-db:
+    image: postgres
+    container_name: ecommerce-postgres
+    environment:
+      POSTGRES_USER: ecommerce_admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ecommerce_medusa
+    ports:
+      - "5555:5432"
+    volumes:
+      - ecommerce_postgres_data:/var/lib/postgresql
+      - ./initdb:/docker-entrypoint-initdb.d:z
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ecommerce_admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: ecommerce-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ecommerce_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: ecommerce-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@ecommerce.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    volumes:
+      - ./pgadmin/servers.json:/pgadmin4/servers.json:z
+    restart: unless-stopped
+
+volumes:
+  ecommerce_postgres_data:
+  ecommerce_redis_data:

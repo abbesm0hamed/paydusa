@@ -1,34 +1,36 @@
-import { algoliasearch, SearchClient } from "algoliasearch"
+import { algoliasearch, SearchClient } from "algoliasearch";
 
 type AlgoliaOptions = {
   apiKey: string;
   appId: string;
   productIndexName: string;
-}
+};
 
-export type AlgoliaIndexType = "product"
+export type AlgoliaIndexType = "product";
 
 export default class AlgoliaModuleService {
-  private client: SearchClient
-  private options: AlgoliaOptions
+  private client: SearchClient;
+  private options: AlgoliaOptions;
 
   constructor({}, options: AlgoliaOptions) {
-    this.client = algoliasearch(options.appId, options.apiKey)
-    this.options = options
+    this.client = algoliasearch(options.appId, options.apiKey);
+    this.options = options;
   }
 
   async getIndexName(type: AlgoliaIndexType) {
     switch (type) {
       case "product":
-        return this.options.productIndexName
+        return this.options.productIndexName;
       default:
-        throw new Error(`Invalid index type: ${type}`)
+        throw new Error(`Invalid index type: ${type}`);
     }
   }
 
-
-  async indexData(data: Record<string, unknown>[], type: AlgoliaIndexType = "product") {
-    const indexName = await this.getIndexName(type)
+  async indexData(
+    data: Record<string, unknown>[],
+    type: AlgoliaIndexType = "product"
+  ) {
+    const indexName = await this.getIndexName(type);
     this.client.saveObjects({
       indexName,
       objects: data.map((item) => ({
@@ -36,30 +38,35 @@ export default class AlgoliaModuleService {
         // set the object ID to allow updating later
         objectID: item.id,
       })),
-    })
+    });
   }
 
-  async retrieveFromIndex(objectIDs: string[], type: AlgoliaIndexType = "product") {
-    const indexName = await this.getIndexName(type)
+  async retrieveFromIndex(
+    objectIDs: string[],
+    type: AlgoliaIndexType = "product"
+  ) {
+    const indexName = await this.getIndexName(type);
     return await this.client.getObjects<Record<string, unknown>>({
       requests: objectIDs.map((objectID) => ({
         indexName,
         objectID,
       })),
-    })
+    });
   }
 
-
-  async deleteFromIndex(objectIDs: string[], type: AlgoliaIndexType = "product") {
-    const indexName = await this.getIndexName(type)
+  async deleteFromIndex(
+    objectIDs: string[],
+    type: AlgoliaIndexType = "product"
+  ) {
+    const indexName = await this.getIndexName(type);
     await this.client.deleteObjects({
       indexName,
       objectIDs,
-    })
+    });
   }
 
   async search(query: string, type: AlgoliaIndexType = "product") {
-    const indexName = await this.getIndexName(type)
+    const indexName = await this.getIndexName(type);
     return await this.client.search({
       requests: [
         {
@@ -67,6 +74,6 @@ export default class AlgoliaModuleService {
           query,
         },
       ],
-    })
+    });
   }
 }

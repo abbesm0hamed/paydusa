@@ -57,17 +57,14 @@ To create an API route that accepts a path parameter, create a directory within 
 For example, if you want to define a route that takes a `productId` parameter, you can do so by creating a file called `/api/products/[productId]/route.ts`:
 
 ```ts
-import type {
-  MedusaRequest,
-  MedusaResponse,
-} from "@medusajs/framework/http"
+import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http";
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const { productId } = req.params;
 
   res.json({
-    message: `You're looking for product ${productId}`
-  })
+    message: `You're looking for product ${productId}`,
+  });
 }
 ```
 
@@ -80,23 +77,17 @@ For example, if you want to define a route that takes both a `productId` and a `
 The Medusa container is available on `req.scope`. Use it to access modules' main services and other registered resources:
 
 ```ts
-import type {
-  MedusaRequest,
-  MedusaResponse,
-} from "@medusajs/framework/http"
+import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http";
 
-export const GET = async (
-  req: MedusaRequest,
-  res: MedusaResponse
-) => {
-  const productModuleService = req.scope.resolve("product")
+export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+  const productModuleService = req.scope.resolve("product");
 
-  const [, count] = await productModuleService.listAndCount()
+  const [, count] = await productModuleService.listAndCount();
 
   res.json({
     count,
-  })
-}
+  });
+};
 ```
 
 ## Middleware
@@ -106,7 +97,7 @@ You can apply middleware to your routes by creating a file called `/api/middlewa
 For example, if you want to apply a custom middleware function to the `/store/custom` route, you can do so by adding the following to your `/api/middlewares.ts` file:
 
 ```ts
-import { defineMiddlewares } from "@medusajs/framework/http"
+import { defineMiddlewares } from "@medusajs/framework/http";
 import type {
   MedusaRequest,
   MedusaResponse,
@@ -129,7 +120,7 @@ export default defineMiddlewares({
       middlewares: [logger],
     },
   ],
-})
+});
 ```
 
 The `matcher` property can be either a string or a regular expression. The `middlewares` property accepts an array of middleware functions.

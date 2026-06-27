@@ -1,0 +1,14 @@
+# Lefthook configuration
+# https://github.com/evilmartians/lefthook
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: oxlint
+      glob: "*.{ts,tsx,js,jsx,mjs,cjs}"
+      run: pnpm exec oxlint --fix {staged_files}
+      stage_fixed: true
+    - name: oxfmt
+      glob: "*.{ts,tsx,js,jsx,mjs,cjs,json,md,css,scss}"
+      run: pnpm exec oxfmt --write {staged_files}
+      stage_fixed: true

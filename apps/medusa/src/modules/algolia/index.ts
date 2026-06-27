@@ -1,10 +1,11 @@
-import { Module } from "@medusajs/framework/utils"
-import AlgoliaModuleService from "./service"
+import { Module } from "@medusajs/framework/utils";
 
-export const ALGOLIA_MODULE = "algolia"
+import AlgoliaModuleService from "./service";
+
+export const ALGOLIA_MODULE = "algolia";
 
 export default Module(ALGOLIA_MODULE, {
   service: AlgoliaModuleService,
-})
+});
 
-export * from "./service"
+export * from "./service";

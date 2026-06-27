@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "Ecommerce Monorepo",
+      "Group": "Servers",
+      "Host": "ecommerce-db",
+      "Port": 5432,
+      "MaintenanceDB": "postgres",
+      "Username": "ecommerce_admin",
+      "SSLMode": "prefer"
+    }
+  }
+}

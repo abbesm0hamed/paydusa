@@ -1,15 +1,25 @@
-import { defineRouteConfig } from "@medusajs/admin-sdk"
-import { Container, Heading, Button, Input, Label, Textarea, toast } from "@medusajs/ui"
-import { useMutation, useQuery, QueryClientProvider } from "@tanstack/react-query"
-import { sdk } from "../../../lib/sdk"
-import { queryClient } from "../../../lib/query-client"
-import { useForm } from "react-hook-form"
-import * as zod from "zod"
-import { 
-  FormProvider,
-  Controller,
-} from "react-hook-form"
-import { useCallback, useEffect } from "react"
+import { defineRouteConfig } from "@medusajs/admin-sdk";
+import {
+  Container,
+  Heading,
+  Button,
+  Input,
+  Label,
+  Textarea,
+  toast,
+} from "@medusajs/ui";
+import {
+  useMutation,
+  useQuery,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import { useCallback, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { FormProvider, Controller } from "react-hook-form";
+import * as zod from "zod";
+
+import { queryClient } from "../../../lib/query-client";
+import { sdk } from "../../../lib/sdk";
 
 type InvoiceConfig = {
   id: string;
@@ -19,7 +29,7 @@ type InvoiceConfig = {
   company_email: string;
   company_logo?: string;
   notes?: string;
-}
+};
 
 const schema = zod.object({
   company_name: zod.string().optional(),
@@ -28,26 +38,26 @@ const schema = zod.object({
   company_email: zod.string().email().optional(),
   company_logo: zod.string().url().optional(),
   notes: zod.string().optional(),
-})
+});
 
 const InvoiceConfigPageContent = () => {
   const { data, isLoading, refetch } = useQuery<{
-    invoice_config: InvoiceConfig
+    invoice_config: InvoiceConfig;
   }>({
     queryFn: () => sdk.client.fetch("/admin/invoice-config"),
     queryKey: ["invoice-config"],
-  })
+  });
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: (payload: zod.infer<typeof schema>) => 
+    mutationFn: (payload: zod.infer<typeof schema>) =>
       sdk.client.fetch("/admin/invoice-config", {
         method: "POST",
         body: payload,
       }),
     onSuccess: () => {
-      refetch()
-      toast.success("Invoice config updated successfully")
+      refetch();
+      toast.success("Invoice config updated successfully");
     },
-  })
+  });
 
   const getFormDefaultValues = useCallback(() => {
     return {
@@ -57,32 +67,31 @@ const InvoiceConfigPageContent = () => {
       company_email: data?.invoice_config.company_email || "",
       company_logo: data?.invoice_config.company_logo || "",
       notes: data?.invoice_config.notes || "",
-    }
-  }, [data])
+    };
+  }, [data]);
 
   const form = useForm<zod.infer<typeof schema>>({
     defaultValues: getFormDefaultValues(),
-  })
+  });
 
-  const handleSubmit = form.handleSubmit((formData) => mutateAsync(formData))
+  const handleSubmit = form.handleSubmit((formData) => mutateAsync(formData));
 
   const uploadLogo = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+    const file = event.target.files?.[0];
     if (!file) {
-      return
+      return;
     }
 
     const { files } = await sdk.admin.upload.create({
       files: [file],
-    })
+    });
 
-    form.setValue("company_logo", files[0].url)
-  }
+    form.setValue("company_logo", files[0].url);
+  };
 
   useEffect(() => {
-    form.reset(getFormDefaultValues())
-  }, [getFormDefaultValues])
-
+    form.reset(getFormDefaultValues());
+  }, [getFormDefaultValues]);
 
   return (
     <Container className="divide-y p-0">
@@ -90,7 +99,7 @@ const InvoiceConfigPageContent = () => {
         <Heading level="h1">Invoice Config</Heading>
       </div>
       <FormProvider {...form}>
-        <form 
+        <form
           onSubmit={handleSubmit}
           className="flex h-full flex-col overflow-hidden p-2 gap-2"
         >
@@ -105,9 +114,13 @@ const InvoiceConfigPageContent = () => {
                       Company Name
                     </Label>
                   </div>
-                  <Input {...field} onChange={field.onChange} value={field.value} />
+                  <Input
+                    {...field}
+                    onChange={field.onChange}
+                    value={field.value}
+                  />
                 </div>
-              )
+              );
             }}
           />
           <Controller
@@ -123,7 +136,7 @@ const InvoiceConfigPageContent = () => {
                   </div>
                   <Textarea {...field} />
                 </div>
-              )
+              );
             }}
           />
           <Controller
@@ -139,7 +152,7 @@ const InvoiceConfigPageContent = () => {
                   </div>
                   <Input {...field} />
                 </div>
-              )
+              );
             }}
           />
           <Controller
@@ -155,7 +168,7 @@ const InvoiceConfigPageContent = () => {
                   </div>
                   <Input {...field} />
                 </div>
-              )
+              );
             }}
           />
           <Controller
@@ -171,7 +184,7 @@ const InvoiceConfigPageContent = () => {
                   </div>
                   <Textarea {...field} />
                 </div>
-              )
+              );
             }}
           />
           <Controller
@@ -194,7 +207,7 @@ const InvoiceConfigPageContent = () => {
                     />
                   )}
                 </div>
-              )
+              );
             }}
           />
           <Button type="submit" disabled={isLoading || isPending}>
@@ -203,19 +216,19 @@ const InvoiceConfigPageContent = () => {
         </form>
       </FormProvider>
     </Container>
-  ) 
-}
+  );
+};
 
 export const config = defineRouteConfig({
   label: "Default Invoice Config",
-})
+});
 
 const InvoiceConfigPage = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <InvoiceConfigPageContent />
     </QueryClientProvider>
-  )
-}
+  );
+};
 
-export default InvoiceConfigPage
+export default InvoiceConfigPage;

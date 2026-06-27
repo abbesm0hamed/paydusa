@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -41,10 +39,7 @@
           "primary": false,
           "nullable": false,
           "default": "'latest'",
-          "enumItems": [
-            "latest",
-            "stale"
-          ],
+          "enumItems": ["latest", "stale"],
           "mappedType": "enum"
         },
         "pdfContent": {
@@ -103,9 +98,7 @@
         },
         {
           "keyName": "invoice_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -228,9 +221,7 @@
         },
         {
           "keyName": "invoice_config_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,

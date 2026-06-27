@@ -1,20 +1,26 @@
-import { defineRouteConfig } from "@medusajs/admin-sdk"
-import { Button, Container, Heading, toast } from "@medusajs/ui"
-import { useMutation, QueryClientProvider } from "@tanstack/react-query"
-import { sdk } from "../../../lib/sdk"
-import { queryClient } from "../../../lib/query-client"
+import { defineRouteConfig } from "@medusajs/admin-sdk";
+import { Button, Container, Heading, toast } from "@medusajs/ui";
+import { useMutation, QueryClientProvider } from "@tanstack/react-query";
+
+import { queryClient } from "../../../lib/query-client";
+import { sdk } from "../../../lib/sdk";
 
 const PayloadSettingsPageContent = () => {
-  const { 
+  const {
     mutateAsync: syncProductsToPayload,
     isPending: isSyncingProductsToPayload,
   } = useMutation({
-    mutationFn: (collection: string) => 
+    mutationFn: (collection: string) =>
       sdk.client.fetch(`/admin/payload/sync/${collection}`, {
         method: "POST",
       }),
-    onSuccess: () => toast.success(`Triggered syncing collection data with Payload`),
-  })
+    onSuccess: () =>
+      toast.success("Triggered syncing collection data with Payload"),
+    onError: (err) => {
+      console.error(err);
+      toast.error("Failed to sync data with Payload");
+    },
+  });
 
   return (
     <Container className="divide-y p-0">
@@ -23,8 +29,8 @@ const PayloadSettingsPageContent = () => {
       </div>
       <div className="flex flex-col gap-4 px-6 py-4">
         <p>
-          This page allows you to trigger syncing your Medusa data with Payload. It
-          will only create items not in Payload.
+          This page allows you to trigger syncing your Medusa data with Payload.
+          It will only create items not in Payload.
         </p>
         <Button
           variant="primary"
@@ -35,19 +41,19 @@ const PayloadSettingsPageContent = () => {
         </Button>
       </div>
     </Container>
-  )
-}
+  );
+};
 
 const PayloadSettingsPage = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <PayloadSettingsPageContent />
     </QueryClientProvider>
-  )
-}
+  );
+};
 
 export const config = defineRouteConfig({
   label: "Payload",
-})
+});
 
-export default PayloadSettingsPage
+export default PayloadSettingsPage;

@@ -1,23 +1,26 @@
-import { 
-  Text, 
-  Container, 
-  Heading, 
-  Html, 
-  Section, 
-  Tailwind, 
-  Head, 
-  Preview, 
-  Body, 
+import {
+  Text,
+  Container,
+  Heading,
+  Html,
+  Section,
+  Tailwind,
+  Head,
+  Preview,
+  Body,
   Link,
-  Button 
-} from "@react-email/components"
+  Button,
+} from "@react-email/components";
 
 type UserInvitedEmailProps = {
-  invite_url: string
-  email?: string
-}
+  invite_url: string;
+  email?: string;
+};
 
-function UserInvitedEmailComponent({ invite_url, email }: UserInvitedEmailProps) {
+function UserInvitedEmailComponent({
+  invite_url,
+  email,
+}: UserInvitedEmailProps) {
   return (
     <Html>
       <Head />
@@ -33,10 +36,11 @@ function UserInvitedEmailComponent({ invite_url, email }: UserInvitedEmailProps)
 
             <Section className="my-[32px]">
               <Text className="text-black text-[14px] leading-[24px]">
-                Hello{email ? ` ${email}` : ''},
+                Hello{email ? ` ${email}` : ""},
               </Text>
               <Text className="text-black text-[14px] leading-[24px]">
-                You've been invited to join our platform. Click the button below to accept your invitation and set up your account.
+                You've been invited to join our platform. Click the button below
+                to accept your invitation and set up your account.
               </Text>
             </Section>
 
@@ -63,24 +67,25 @@ function UserInvitedEmailComponent({ invite_url, email }: UserInvitedEmailProps)
 
             <Section className="mt-[32px]">
               <Text className="text-[#666666] text-[12px] leading-[24px]">
-                If you weren't expecting this invitation, you can ignore this email.
+                If you weren't expecting this invitation, you can ignore this
+                email.
               </Text>
             </Section>
           </Container>
         </Body>
       </Tailwind>
     </Html>
-  )
+  );
 }
 
 export const userInvitedEmail = (props: UserInvitedEmailProps) => (
   <UserInvitedEmailComponent {...props} />
-)
+);
 
 // Mock data for preview/development
 const mockInvite: UserInvitedEmailProps = {
   invite_url: "https://your-app.com/app/invite/sample-token-123",
-  email: "user@example.com"
-}
+  email: "user@example.com",
+};
 
-export default () => <UserInvitedEmailComponent {...mockInvite} />
+export default () => <UserInvitedEmailComponent {...mockInvite} />;

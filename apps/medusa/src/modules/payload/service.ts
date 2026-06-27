@@ -1,4 +1,6 @@
 import { MedusaError } from "@medusajs/framework/utils";
+import qs from "qs";
+
 import {
   PayloadModuleOptions,
   PayloadCollectionItem,
@@ -8,30 +10,24 @@ import {
   PayloadApiResponse,
   PayloadItemResult,
 } from "./types";
-import qs from "qs";
 
-type InjectedDependencies = {
-  
-};
+type InjectedDependencies = {};
 
 export default class PayloadModuleService {
   private baseUrl: string;
   private headers: Record<string, string>;
   private defaultOptions: Record<string, any> = {
     is_from_medusa: true,
-  }
+  };
 
-  constructor(
-    container: InjectedDependencies,
-    options: PayloadModuleOptions
-  ) {
+  constructor(container: InjectedDependencies, options: PayloadModuleOptions) {
     this.validateOptions(options);
     this.baseUrl = `${options.serverUrl}/api`;
-    
+
     // Set up authentication headers
     this.headers = {
       "Content-Type": "application/json",
-      "Authorization": `${options.userCollection || "users"} API-Key ${options.apiKey}`,
+      Authorization: `${options.userCollection || "users"} API-Key ${options.apiKey}`,
     };
   }
 
@@ -45,7 +41,7 @@ export default class PayloadModuleService {
         "Payload server URL is required"
       );
     }
-    
+
     if (!options.apiKey) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -62,7 +58,7 @@ export default class PayloadModuleService {
     options: RequestInit = {}
   ): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
-    
+
     try {
       const response = await fetch(url, {
         ...options,
@@ -99,12 +95,15 @@ export default class PayloadModuleService {
     data: PayloadUpsertData,
     options: PayloadQueryOptions = {}
   ): Promise<PayloadItemResult<T>> {
-    const stringifiedQuery = qs.stringify({
-      ...options,
-      ...this.defaultOptions
-    }, {
-      addQueryPrefix: true
-    })
+    const stringifiedQuery = qs.stringify(
+      {
+        ...options,
+        ...this.defaultOptions,
+      },
+      {
+        addQueryPrefix: true,
+      }
+    );
     const endpoint = `/${collection}/${stringifiedQuery}`;
 
     const result = await this.makeRequest<PayloadItemResult<T>>(endpoint, {
@@ -122,12 +121,15 @@ export default class PayloadModuleService {
     data: PayloadUpsertData,
     options: PayloadQueryOptions = {}
   ): Promise<PayloadItemResult<T>> {
-    const stringifiedQuery = qs.stringify({
-      ...options,
-      ...this.defaultOptions
-    }, {
-      addQueryPrefix: true
-    })
+    const stringifiedQuery = qs.stringify(
+      {
+        ...options,
+        ...this.defaultOptions,
+      },
+      {
+        addQueryPrefix: true,
+      }
+    );
     const endpoint = `/${collection}/${stringifiedQuery}`;
 
     const result = await this.makeRequest<PayloadItemResult<T>>(endpoint, {
@@ -145,12 +147,15 @@ export default class PayloadModuleService {
     collection: string,
     options: PayloadQueryOptions = {}
   ): Promise<PayloadApiResponse> {
-    const stringifiedQuery = qs.stringify({
-      ...options,
-      ...this.defaultOptions
-    }, {
-      addQueryPrefix: true
-    })
+    const stringifiedQuery = qs.stringify(
+      {
+        ...options,
+        ...this.defaultOptions,
+      },
+      {
+        addQueryPrefix: true,
+      }
+    );
     const endpoint = `/${collection}/${stringifiedQuery}`;
 
     const result = await this.makeRequest<PayloadApiResponse>(endpoint, {
@@ -164,41 +169,90 @@ export default class PayloadModuleService {
     collection: string,
     options: PayloadQueryOptions = {}
   ): Promise<PayloadBulkResult<PayloadCollectionItem>> {
-    const stringifiedQuery = qs.stringify({
-      ...options,
-      ...this.defaultOptions
-    }, {
-      addQueryPrefix: true
-    });
+    const stringifiedQuery = qs.stringify(
+      {
+        ...options,
+        ...this.defaultOptions,
+      },
+      {
+        addQueryPrefix: true,
+      }
+    );
     const endpoint = `/${collection}${stringifiedQuery}`;
 
-    const result = await this.makeRequest<PayloadBulkResult<PayloadCollectionItem>>(endpoint);
+    const result =
+      await this.makeRequest<PayloadBulkResult<PayloadCollectionItem>>(
+        endpoint
+      );
 
     return result;
   }
 
-  async list(
-    filter: {
-      product_id: string | string[]
+  async uploadFile(
+    fileUrl: string,
+    filename?: string
+  ): Promise<{ doc: { id: number; url: string } }> {
+    const downloadResponse = await fetch(fileUrl);
+
+    if (!downloadResponse.ok) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        `Failed to download file from ${fileUrl}: ${downloadResponse.statusText}`
+      );
     }
-  ) {
+
+    const arrayBuffer = await downloadResponse.arrayBuffer();
+    const blob = new Blob([arrayBuffer], {
+      type:
+        downloadResponse.headers.get("content-type") || "image/jpeg",
+    });
+    const name =
+      filename ||
+      fileUrl.split("/").pop() ||
+      `image-${Date.now()}`;
+
+    const formData = new FormData();
+    formData.append("file", blob, name);
+
+    const url = `${this.baseUrl}/media?is_from_medusa=true`;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: this.headers.Authorization,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        `Payload media upload failed: ${response.status}. ${
+          errorData.message || ""
+        }`
+      );
+    }
+
+    return response.json();
+  }
+
+  async list(filter: { product_id: string | string[] }) {
     const collection = filter.product_id ? "products" : "unknown";
-    const ids = Array.isArray(filter.product_id) ? filter.product_id : [filter.product_id];
-    const result = await this.find(
-      collection,
-      {
-        where: {
-          medusa_id: {
-            in: ids.join(","),
-          }
+    const ids = Array.isArray(filter.product_id)
+      ? filter.product_id
+      : [filter.product_id];
+    const result = await this.find(collection, {
+      where: {
+        medusa_id: {
+          in: ids.join(","),
         },
-        depth: 2,
-      }
-    )
+      },
+      depth: 2,
+    });
 
     return result.docs.map((doc) => ({
       ...doc,
       product_id: doc.medusa_id,
-    }))
+    }));
   }
 }

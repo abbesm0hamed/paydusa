@@ -1,16 +1,19 @@
-import { createWorkflow, createStep } from "@medusajs/framework/workflows-sdk"
-import { Modules } from "@medusajs/framework/utils"
+import { Modules } from "@medusajs/framework/utils";
+import { createWorkflow, createStep } from "@medusajs/framework/workflows-sdk";
 
 type CartWorkflowInput = {
-  cart_id: string
-  event_type: "item_added" | "item_removed" | "item_updated"
-  customer_id?: string
-}
+  cart_id: string;
+  event_type: "item_added" | "item_removed" | "item_updated";
+  customer_id?: string;
+};
 
 const trackCartEventStep = createStep(
   "track-cart-event-step",
-  async ({ cart_id, event_type, customer_id }: CartWorkflowInput, { container }) => {
-    const analyticsModuleService = container.resolve(Modules.ANALYTICS)
+  async (
+    { cart_id, event_type, customer_id }: CartWorkflowInput,
+    { container }
+  ) => {
+    const analyticsModuleService = container.resolve(Modules.ANALYTICS);
 
     await analyticsModuleService.track({
       event: `cart_${event_type}`,
@@ -21,9 +24,9 @@ const trackCartEventStep = createStep(
         customer_id,
         timestamp: new Date(),
       },
-    })
+    });
   }
-)
+);
 
 export const trackCartEventWorkflow = createWorkflow(
   "track-cart-event",
@@ -32,22 +35,25 @@ export const trackCartEventWorkflow = createWorkflow(
       cart_id,
       event_type,
       customer_id,
-    })
+    });
   }
-)
+);
 
 // Separate workflow for checkout started
 type CheckoutWorkflowInput = {
-  cart_id: string
-  customer_id?: string
-  total?: number
-  currency?: string
-}
+  cart_id: string;
+  customer_id?: string;
+  total?: number;
+  currency?: string;
+};
 
 const trackCheckoutStartedStep = createStep(
   "track-checkout-started-step",
-  async ({ cart_id, customer_id, total, currency }: CheckoutWorkflowInput, { container }) => {
-    const analyticsModuleService = container.resolve(Modules.ANALYTICS)
+  async (
+    { cart_id, customer_id, total, currency }: CheckoutWorkflowInput,
+    { container }
+  ) => {
+    const analyticsModuleService = container.resolve(Modules.ANALYTICS);
 
     await analyticsModuleService.track({
       event: "checkout_started",
@@ -59,9 +65,9 @@ const trackCheckoutStartedStep = createStep(
         currency: currency || "USD",
         timestamp: new Date(),
       },
-    })
+    });
   }
-)
+);
 
 export const trackCheckoutStartedWorkflow = createWorkflow(
   "track-checkout-started",
@@ -71,6 +77,6 @@ export const trackCheckoutStartedWorkflow = createWorkflow(
       customer_id,
       total,
       currency,
-    })
+    });
   }
-)
+);

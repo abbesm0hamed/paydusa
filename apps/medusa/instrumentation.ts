@@ -1,20 +1,20 @@
-import Sentry from "@sentry/node"
-import otelApi from "@opentelemetry/api"
-import { registerOtel } from "@medusajs/medusa"
-import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-grpc" 
-import { 
-  SentrySpanProcessor, 
+import { registerOtel } from "@medusajs/medusa";
+import otelApi from "@opentelemetry/api";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-grpc";
+import Sentry from "@sentry/node";
+import {
+  SentrySpanProcessor,
   SentryPropagator,
-} from "@sentry/opentelemetry-node"
+} from "@sentry/opentelemetry-node";
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
   tracesSampleRate: 1.0,
   // @ts-ignore
   instrumenter: "otel",
-})
+});
 
-otelApi.propagation.setGlobalPropagator(new SentryPropagator())
+otelApi.propagation.setGlobalPropagator(new SentryPropagator());
 
 export function register() {
   registerOtel({
@@ -27,5 +27,5 @@ export function register() {
       query: true,
       db: true,
     },
-  })
+  });
 }

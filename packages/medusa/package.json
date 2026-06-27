@@ -1,0 +1,13 @@
+{
+  "name": "@ecommerce/medusa",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./auth": "./src/medusa-auth.ts",
+    "./products": "./src/medusa-products.ts"
+  },
+  "dependencies": {
+    "@medusajs/js-sdk": "^2.16.0"
+  }
+}

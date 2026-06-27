@@ -1,4 +1,4 @@
-import { 
+import {
   defineMiddlewares,
   validateAndTransformBody,
   authenticate,
@@ -6,45 +6,40 @@ import {
   MedusaNextFunction,
   MedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
-import { MedusaError } from "@medusajs/framework/utils"
-import * as Sentry from "@sentry/node"
-import { SearchSchema } from "./store/products/search/route"
-import { PostInvoiceConfigSchema } from "./admin/invoice-config/route"
+} from "@medusajs/framework/http";
+import { MedusaError } from "@medusajs/framework/utils";
+import * as Sentry from "@sentry/node";
 
-const originalErrorHandler = errorHandler()
+import { PostInvoiceConfigSchema } from "./admin/invoice-config/route";
+import { SearchSchema } from "./store/products/search/route";
+
+const originalErrorHandler = errorHandler();
 
 export default defineMiddlewares({
   errorHandler: (
-    error: MedusaError | any, 
-    req: MedusaRequest, 
-    res: MedusaResponse, 
+    error: MedusaError | any,
+    req: MedusaRequest,
+    res: MedusaResponse,
     next: MedusaNextFunction
   ) => {
-    Sentry.captureException(error)
-    return originalErrorHandler(error, req, res, next)
+    Sentry.captureException(error);
+    return originalErrorHandler(error, req, res, next);
   },
   routes: [
     {
       matcher: "/store/products/search",
       method: ["POST"],
-      middlewares: [
-        validateAndTransformBody(SearchSchema),
-      ],
+      middlewares: [validateAndTransformBody(SearchSchema)],
     },
     {
       matcher: "/admin/algolia/sync",
       method: ["POST"],
-      middlewares: [
-        authenticate("user", ["session", "bearer"]),
-      ],
+      middlewares: [authenticate("user", ["session", "bearer"])],
     },
     {
       matcher: "/admin/invoice-config",
       methods: ["POST"],
-      middlewares: [
-        validateAndTransformBody(PostInvoiceConfigSchema),
-      ],
+      middlewares: [validateAndTransformBody(PostInvoiceConfigSchema)],
     },
   ],
-})
+});

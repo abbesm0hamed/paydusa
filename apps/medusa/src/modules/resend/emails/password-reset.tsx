@@ -1,23 +1,26 @@
-import { 
-  Text, 
-  Container, 
-  Heading, 
-  Html, 
-  Section, 
-  Tailwind, 
-  Head, 
-  Preview, 
-  Body, 
+import {
+  Text,
+  Container,
+  Heading,
+  Html,
+  Section,
+  Tailwind,
+  Head,
+  Preview,
+  Body,
   Link,
-  Button 
-} from "@react-email/components"
+  Button,
+} from "@react-email/components";
 
 type PasswordResetEmailProps = {
-  reset_url: string
-  email?: string
-}
+  reset_url: string;
+  email?: string;
+};
 
-function PasswordResetEmailComponent({ reset_url, email }: PasswordResetEmailProps) {
+function PasswordResetEmailComponent({
+  reset_url,
+  email,
+}: PasswordResetEmailProps) {
   return (
     <Html>
       <Head />
@@ -33,10 +36,11 @@ function PasswordResetEmailComponent({ reset_url, email }: PasswordResetEmailPro
 
             <Section className="my-[32px]">
               <Text className="text-black text-[14px] leading-[24px]">
-                Hello{email ? ` ${email}` : ''},
+                Hello{email ? ` ${email}` : ""},
               </Text>
               <Text className="text-black text-[14px] leading-[24px]">
-                We received a request to reset your password. Click the button below to create a new password for your account.
+                We received a request to reset your password. Click the button
+                below to create a new password for your account.
               </Text>
             </Section>
 
@@ -66,30 +70,33 @@ function PasswordResetEmailComponent({ reset_url, email }: PasswordResetEmailPro
                 This password reset link will expire soon for security reasons.
               </Text>
               <Text className="text-[#666666] text-[12px] leading-[24px] mt-2">
-                If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged.
+                If you didn't request a password reset, you can safely ignore
+                this email. Your password will remain unchanged.
               </Text>
             </Section>
 
             <Section className="mt-[32px] pt-[20px] border-t border-solid border-[#eaeaea]">
               <Text className="text-[#666666] text-[12px] leading-[24px]">
-                For security reasons, never share this reset link with anyone. If you're having trouble with the button above, copy and paste the URL into your web browser.
+                For security reasons, never share this reset link with anyone.
+                If you're having trouble with the button above, copy and paste
+                the URL into your web browser.
               </Text>
             </Section>
           </Container>
         </Body>
       </Tailwind>
     </Html>
-  )
+  );
 }
 
 export const passwordResetEmail = (props: PasswordResetEmailProps) => (
   <PasswordResetEmailComponent {...props} />
-)
+);
 
 // Mock data for preview/development
 const mockPasswordReset: PasswordResetEmailProps = {
   reset_url: "https://your-app.com/reset-password?token=sample-reset-token-123",
-  email: "user@example.com"
-}
+  email: "user@example.com",
+};
 
-export default () => <PasswordResetEmailComponent {...mockPasswordReset} />
+export default () => <PasswordResetEmailComponent {...mockPasswordReset} />;
