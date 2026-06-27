@@ -14,6 +14,8 @@ type Props = {
   }>;
 };
 
+export const instant = false;
+
 export async function generateStaticParams() {
   const product_categories = await listCategories();
 

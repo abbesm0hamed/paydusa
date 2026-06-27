@@ -1,3 +1,4 @@
+import { listCategories } from "@lib/data/categories";
 import LocalizedClientLink from "@modules/common/components/localized-client-link";
 import CartButton from "@modules/layout/components/cart-button";
 import type { Header as MedusaHeader } from "@payload-types";
@@ -6,12 +7,12 @@ import { Suspense } from "react";
 
 import { getCachedGlobal } from "@/utilities/getGlobals";
 
+import { CategoryDropdown } from "./CategoryDropdown";
 import { HeaderClient } from "./Component.client";
-import { SideMenuFallback } from "./SideMenuFallback";
-import { SideMenuWithRegions } from "./SideMenuWithRegions";
 
 export async function Header({ locale }: { locale: TypedLocale }) {
   const headerData: MedusaHeader = await getCachedGlobal("header", 1, locale);
+  const categories = await listCategories({ limit: 100 });
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
@@ -49,9 +50,7 @@ export async function Header({ locale }: { locale: TypedLocale }) {
         <div className="h-8 mx-auto border-t border-border bg-muted/30">
           <div className="content-container flex items-center justify-between w-full h-full txt-xsmall-plus text-muted-foreground">
             <div className="flex-1 basis-0 h-full flex items-center">
-              <Suspense fallback={<SideMenuFallback />}>
-                <SideMenuWithRegions />
-              </Suspense>
+              <CategoryDropdown categories={categories} />
             </div>
 
             <div className="flex items-center h-full">
