@@ -33,6 +33,9 @@ const getRedisUrl = () => {
 module.exports = defineConfig({
   modules: [
     {
+      resolve: "@medusajs/medusa/product",
+    },
+    {
       resolve: "@medusajs/medusa/auth",
       dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
       options: {
@@ -131,7 +134,7 @@ module.exports = defineConfig({
     },
   ],
   admin: {
-    path: "/",
+    path: process.env.MEDUSA_ADMIN_PATH || "/app",
   },
   projectConfig: {
     databaseUrl: getDatabaseUrl(),
