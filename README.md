@@ -46,7 +46,7 @@ That's it. The apps are available at:
 | App               | URL                                                                     |
 | ----------------- | ----------------------------------------------------------------------- |
 | Storefront        | http://localhost:8000                                                   |
-| Medusa admin      | http://localhost:9100                                                   |
+| Medusa admin      | http://localhost:9100/app                                               |
 | Payload CMS admin | http://localhost:8000/admin                                             |
 | pgAdmin           | http://localhost:5050 (email: `admin@ecommerce.com`, password: `admin`) |
 
@@ -56,10 +56,10 @@ That's it. The apps are available at:
 
 The project has two admin interfaces that are best kept separate:
 
-| Admin                        | Hosting                          | Path                                          |
-| ---------------------------- | -------------------------------- | --------------------------------------------- |
-| **Medusa** (commerce engine) | Subdomain like `api.example.com` | `/` — the subdomain serves the admin directly |
-| **Payload CMS** (content)    | Same domain as the storefront    | `/admin` — embedded in the Next.js app        |
+| Admin                        | Hosting                          | Path                                                                             |
+| ---------------------------- | -------------------------------- | -------------------------------------------------------------------------------- |
+| **Medusa** (commerce engine) | Subdomain like `api.example.com` | `/app` — the admin at `/app` avoids conflicts with store API routes (`/store/*`) |
+| **Payload CMS** (content)    | Same domain as the storefront    | `/admin` — embedded in the Next.js app                                           |
 
 Medusa on a subdomain isolates the commerce backend from the customer-facing site, avoids route conflicts with Payload's `/admin`, and has no SEO impact (admin interfaces aren't indexed).
 
