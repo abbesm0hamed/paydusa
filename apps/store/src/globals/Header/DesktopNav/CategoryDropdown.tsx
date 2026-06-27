@@ -5,6 +5,50 @@ import { ChevronDownMini } from "@medusajs/icons";
 import { HttpTypes } from "@medusajs/types";
 import LocalizedClientLink from "@modules/common/components/localized-client-link";
 
+const CategoryTreeItem = ({
+  category,
+  depth,
+  close,
+}: {
+  category: HttpTypes.StoreProductCategory;
+  depth: number;
+  close: () => void;
+}) => {
+  const hasChildren =
+    category.category_children && category.category_children.length > 0;
+
+  return (
+    <div>
+      <LocalizedClientLink
+        href={`/categories/${category.handle}`}
+        className={`flex items-center justify-between px-4 py-2 txt-xsmall-plus hover:bg-accent hover:text-foreground ${
+          depth === 0 ? "text-muted-foreground" : "text-muted-foreground/70"
+        }`}
+        style={{ paddingLeft: `${12 + depth * 16}px` }}
+        onClick={close}
+      >
+        <span>{category.name}</span>
+        {hasChildren && (
+          <ChevronDownMini className="w-3 h-3 -rotate-90 text-muted-foreground/50 shrink-0" />
+        )}
+      </LocalizedClientLink>
+
+      {hasChildren && (
+        <div>
+          {category.category_children.map((child) => (
+            <CategoryTreeItem
+              key={child.id}
+              category={child}
+              depth={depth + 1}
+              close={close}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const CategoryDropdown = ({
   categories,
 }: {
@@ -39,35 +83,12 @@ const CategoryDropdown = ({
             <PopoverPanel className="absolute top-full left-0 bg-background border border-border shadow-lg min-w-[220px] z-50">
               <div className="py-1">
                 {topLevelCategories.map((category) => (
-                  <div key={category.id}>
-                    <LocalizedClientLink
-                      href={`/categories/${category.handle}`}
-                      className="flex items-center justify-between px-4 py-2 txt-xsmall-plus text-muted-foreground hover:bg-accent hover:text-foreground"
-                      onClick={close}
-                    >
-                      <span>{category.name}</span>
-                      {category.category_children &&
-                        category.category_children.length > 0 && (
-                          <ChevronDownMini className="w-3 h-3 -rotate-90 text-muted-foreground/50" />
-                        )}
-                    </LocalizedClientLink>
-
-                    {category.category_children &&
-                      category.category_children.length > 0 && (
-                        <div className="ml-4">
-                          {category.category_children.map((child) => (
-                            <LocalizedClientLink
-                              key={child.id}
-                              href={`/categories/${child.handle}`}
-                              className="block px-4 py-1.5 txt-xsmall-plus text-muted-foreground/70 hover:bg-accent hover:text-foreground"
-                              onClick={close}
-                            >
-                              {child.name}
-                            </LocalizedClientLink>
-                          ))}
-                        </div>
-                      )}
-                  </div>
+                  <CategoryTreeItem
+                    key={category.id}
+                    category={category}
+                    depth={0}
+                    close={close}
+                  />
                 ))}
               </div>
             </PopoverPanel>

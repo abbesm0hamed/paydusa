@@ -6,7 +6,6 @@ import {
   type TypedLocale,
   getPayload,
 } from "payload";
-import { cache } from "react";
 
 import { RenderBlocks } from "@/blocks/RenderBlocks";
 import { PayloadRedirects } from "@/components/PayloadRedirects";
@@ -39,8 +38,6 @@ import PageClient from "./page.client";
 //   return params;
 // }
 
-export const dynamic = "force-dynamic";
-
 type Args = {
   params: Promise<{
     slug?: string;
@@ -58,6 +55,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   page = await queryPageBySlug({
     slug,
     locale,
+    draft,
   });
 
   if (!page) {
@@ -85,31 +83,38 @@ export async function generateMetadata({
   const page = await queryPageBySlug({
     slug,
     locale,
+    draft: false,
   });
 
   return generateMeta({ doc: page });
 }
 
-const queryPageBySlug = cache(
-  async ({ locale, slug }: { locale: TypedLocale; slug: string }) => {
-    const { isEnabled: draft } = await draftMode();
+async function queryPageBySlug({
+  locale,
+  slug,
+  draft,
+}: {
+  locale: TypedLocale;
+  slug: string;
+  draft: boolean;
+}) {
+  "use cache";
 
-    const payload = await getPayload({ config });
+  const payload = await getPayload({ config });
 
-    const result = await payload.find({
-      collection: "pages",
-      draft,
-      limit: 1,
-      pagination: false,
-      overrideAccess: draft,
-      locale: locale,
-      where: {
-        slug: {
-          equals: slug,
-        },
+  const result = await payload.find({
+    collection: "pages",
+    draft,
+    limit: 1,
+    pagination: false,
+    overrideAccess: draft,
+    locale: locale,
+    where: {
+      slug: {
+        equals: slug,
       },
-    });
+    },
+  });
 
-    return result.docs?.[0] || null;
-  }
-);
+  return result.docs?.[0] || null;
+}
