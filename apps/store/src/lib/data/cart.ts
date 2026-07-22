@@ -391,7 +391,7 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
  * @param cartId - optional - The ID of the cart to place an order for.
  * @returns The cart object if the order was successful, or null if not.
  */
-export async function placeOrder(cartId?: string) {
+export async function placeOrder(locale: string, cartId?: string) {
   const id = cartId || (await getCartId());
 
   if (!id) {
@@ -419,7 +419,7 @@ export async function placeOrder(cartId?: string) {
     revalidateTag(orderCacheTag);
 
     removeCartId();
-    redirect(`/${countryCode}/order/${cartRes?.order.id}/confirmed`);
+    redirect(`/${locale}/${countryCode}/order/${cartRes?.order.id}/confirmed`);
   }
 
   return cartRes.cart;
@@ -430,7 +430,11 @@ export async function placeOrder(cartId?: string) {
  * @param regionId
  * @param countryCode
  */
-export async function updateRegion(countryCode: string, currentPath: string) {
+export async function updateRegion(
+  countryCode: string,
+  currentPath: string,
+  locale: string
+) {
   const cartId = await getCartId();
   const region = await getRegion(countryCode);
 
@@ -450,7 +454,7 @@ export async function updateRegion(countryCode: string, currentPath: string) {
   const productsCacheTag = await getCacheTag("products");
   revalidateTag(productsCacheTag);
 
-  redirect(`/${countryCode}${currentPath}`);
+  redirect(`/${locale}/${countryCode}${currentPath}`);
 }
 
 export async function listCartOptions() {

@@ -31,7 +31,7 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
     | undefined
   >(undefined);
 
-  const { countryCode } = useParams();
+  const { countryCode, locale } = useParams();
   const currentPath = usePathname().split(`/${countryCode}`)[1];
 
   const { state, close } = toggleState;
@@ -57,7 +57,7 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
   }, [options, countryCode]);
 
   const handleChange = (option: CountryOption) => {
-    updateRegion(option.country, currentPath);
+    updateRegion(option.country, currentPath, locale as string);
     close();
   };
 

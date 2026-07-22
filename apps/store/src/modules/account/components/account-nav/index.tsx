@@ -17,10 +17,13 @@ const AccountNav = ({
   customer: HttpTypes.StoreCustomer | null;
 }) => {
   const route = usePathname();
-  const { countryCode } = useParams() as { countryCode: string };
+  const { countryCode, locale } = useParams() as {
+    countryCode: string;
+    locale: string;
+  };
 
   const handleLogout = async () => {
-    await signout(countryCode);
+    await signout(countryCode, locale);
   };
 
   return (
