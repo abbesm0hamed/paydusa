@@ -6,6 +6,7 @@ import { localization } from "./localization";
 export const routing = defineRouting({
   locales: localization.locales.map((locale) => locale.code),
   defaultLocale: localization.defaultLocale,
+  localePrefix: "always",
 });
 
 // Lightweight wrappers around Next.js' navigation APIs

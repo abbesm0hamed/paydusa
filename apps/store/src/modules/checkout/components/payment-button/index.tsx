@@ -5,6 +5,7 @@ import { placeOrder } from "@lib/data/cart";
 import { HttpTypes } from "@medusajs/types";
 import { Button } from "@medusajs/ui";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
+import { useParams } from "next/navigation";
 import React, { useState } from "react";
 
 import ErrorMessage from "../error-message";
@@ -18,6 +19,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
   cart,
   "data-testid": dataTestId,
 }) => {
+  const { locale } = useParams<{ locale: string }>();
   const notReady =
     !cart ||
     !cart.shipping_address ||
@@ -34,11 +36,16 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
           notReady={notReady}
           cart={cart}
           data-testid={dataTestId}
+          locale={locale}
         />
       );
     case isManual(paymentSession?.provider_id):
       return (
-        <ManualTestPaymentButton notReady={notReady} data-testid={dataTestId} />
+        <ManualTestPaymentButton
+          notReady={notReady}
+          data-testid={dataTestId}
+          locale={locale}
+        />
       );
     default:
       return <Button disabled>Select a payment method</Button>;
@@ -49,16 +56,18 @@ const StripePaymentButton = ({
   cart,
   notReady,
   "data-testid": dataTestId,
+  locale,
 }: {
   cart: HttpTypes.StoreCart;
   notReady: boolean;
   "data-testid"?: string;
+  locale: string;
 }) => {
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const onPaymentCompleted = async () => {
-    await placeOrder()
+    await placeOrder(locale)
       .catch((err) => {
         setErrorMessage(err.message);
       })
@@ -152,12 +161,18 @@ const StripePaymentButton = ({
   );
 };
 
-const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
+const ManualTestPaymentButton = ({
+  notReady,
+  locale,
+}: {
+  notReady: boolean;
+  locale: string;
+}) => {
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const onPaymentCompleted = async () => {
-    await placeOrder()
+    await placeOrder(locale)
       .catch((err) => {
         setErrorMessage(err.message);
       })
