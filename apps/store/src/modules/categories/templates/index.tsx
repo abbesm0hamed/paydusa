@@ -1,3 +1,4 @@
+import type { OptionValueGroup } from "@lib/data/product-options";
 import { HttpTypes } from "@medusajs/types";
 import InteractiveLink from "@modules/common/components/interactive-link";
 import LocalizedClientLink from "@modules/common/components/localized-client-link";
@@ -8,16 +9,34 @@ import PaginatedProducts from "@modules/store/templates/paginated-products";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+import type { FilterOption } from "../../../types/filters";
+
 export default function CategoryTemplate({
   category,
   sortBy,
   page,
   countryCode,
+  subcategories,
+  types,
+  tags,
+  optionValues,
+  typeId,
+  tagId,
+  priceFrom,
+  priceTo,
 }: {
   category: HttpTypes.StoreProductCategory;
   sortBy?: SortOptions;
   page?: string;
   countryCode: string;
+  subcategories?: FilterOption[];
+  types?: FilterOption[];
+  tags?: FilterOption[];
+  optionValues?: Record<string, OptionValueGroup>;
+  typeId?: string[];
+  tagId?: string[];
+  priceFrom?: string;
+  priceTo?: string;
 }) {
   const pageNumber = page ? parseInt(page) : 1;
   const sort = sortBy || "created_at";
@@ -40,7 +59,13 @@ export default function CategoryTemplate({
       className="flex flex-col small:flex-row small:items-start py-6 content-container"
       data-testid="category-container"
     >
-      <RefinementList sortBy={sort} data-testid="sort-by-container" />
+      <RefinementList
+        sortBy={sort}
+        categories={subcategories}
+        types={types}
+        tags={tags}
+        optionValues={optionValues}
+      />
       <div className="w-full">
         <div className="flex flex-row mb-8 text-2xl-semi gap-4">
           {parents &&
@@ -88,6 +113,10 @@ export default function CategoryTemplate({
             page={pageNumber}
             categoryId={category.id}
             countryCode={countryCode}
+            typeId={typeId}
+            tagId={tagId}
+            priceFrom={priceFrom}
+            priceTo={priceTo}
           />
         </Suspense>
       </div>

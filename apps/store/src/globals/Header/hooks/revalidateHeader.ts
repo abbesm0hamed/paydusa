@@ -8,7 +8,7 @@ export const revalidateHeader: GlobalAfterChangeHook = ({
   if (!context.disableRevalidate) {
     payload.logger.info(`Revalidating header`);
 
-    revalidateTag("global_header");
+    revalidateTag("global_header", { expire: 60 });
   }
 
   return doc;

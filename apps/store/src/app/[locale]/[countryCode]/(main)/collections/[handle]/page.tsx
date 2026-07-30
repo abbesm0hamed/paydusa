@@ -1,4 +1,7 @@
 import { getCollectionByHandle, listCollections } from "@lib/data/collections";
+import { listProductFilterOptions } from "@lib/data/product-options";
+import { listProductTags } from "@lib/data/product-tags";
+import { listProductTypes } from "@lib/data/product-types";
 import { listRegions } from "@lib/data/regions";
 import { StoreCollection, StoreRegion } from "@medusajs/types";
 import CollectionTemplate from "@modules/collections/templates";
@@ -11,8 +14,19 @@ type Props = {
   searchParams: Promise<{
     page?: string;
     sortBy?: SortOptions;
+    type_id?: string | string[];
+    tag_id?: string | string[];
+    category_id?: string | string[];
+    option_value_id?: string | string[];
+    price_from?: string;
+    price_to?: string;
   }>;
 };
+
+function toArray(value: string | string[] | undefined): string[] {
+  if (!value) return [];
+  return Array.isArray(value) ? value : [value];
+}
 
 export const PRODUCT_LIMIT = 12;
 
@@ -68,7 +82,8 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function CollectionPage(props: Props) {
   const searchParams = await props.searchParams;
   const params = await props.params;
-  const { sortBy, page } = searchParams;
+  const { sortBy, page, type_id, tag_id, category_id, price_from, price_to } =
+    searchParams;
 
   const collection = await getCollectionByHandle(params.handle).then(
     (collection: StoreCollection) => collection
@@ -78,12 +93,29 @@ export default async function CollectionPage(props: Props) {
     notFound();
   }
 
+  const typeId = toArray(type_id);
+  const tagId = toArray(tag_id);
+  const categoryId = toArray(category_id);
+
+  const [types, tags, optionValues] = await Promise.all([
+    listProductTypes(),
+    listProductTags(),
+    listProductFilterOptions({ collection_id: collection.id }),
+  ]);
+
   return (
     <CollectionTemplate
       collection={collection}
       page={page}
       sortBy={sortBy}
       countryCode={params.countryCode}
+      types={types.map((t) => ({ value: t.id, label: t.value }))}
+      tags={tags.map((t) => ({ value: t.id, label: t.value }))}
+      optionValues={optionValues.option_values}
+      typeId={typeId}
+      tagId={tagId}
+      priceFrom={price_from}
+      priceTo={price_to}
     />
   );
 }
