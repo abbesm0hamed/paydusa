@@ -1,11 +1,11 @@
 "use server";
 
 import { sdk } from "@lib/config";
-import { sortProducts } from "@lib/util/sort-products";
+import { filterProductsByPrice, sortProducts } from "@lib/util/sort-products";
 import { HttpTypes } from "@medusajs/types";
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products";
 
-import { getAuthHeaders, getCacheOptions } from "./cookies";
+import { getAuthHeaders } from "./cookies";
 import { getRegion, retrieveRegion } from "./regions";
 
 export const listProducts = async ({
@@ -50,58 +50,58 @@ export const listProducts = async ({
     ...(await getAuthHeaders()),
   };
 
-  const next = {
-    ...(await getCacheOptions("products")),
-  };
+  try {
+    return await sdk.client
+      .fetch<{ products: HttpTypes.StoreProduct[]; count: number }>(
+        `/store/products`,
+        {
+          method: "GET",
+          query: {
+            limit,
+            offset,
+            region_id: region?.id,
+            fields:
+              "*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags,*payload_product",
+            ...queryParams,
+          },
+          headers,
+        }
+      )
+      .then(({ products, count }) => {
+        const nextPage = count > offset + limit ? pageParam + 1 : null;
 
-  return sdk.client
-    .fetch<{ products: HttpTypes.StoreProduct[]; count: number }>(
-      `/store/products`,
-      {
-        method: "GET",
-        query: {
-          limit,
-          offset,
-          region_id: region?.id,
-          fields:
-            "*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags,*payload_product",
-          ...queryParams,
-        },
-        headers,
-        // cache: "force-cache",
-        // next: {
-        //   revalidate: 60, // Revalidate every 60 seconds
-        // }
-      }
-    )
-    .then(({ products, count }) => {
-      const nextPage = count > offset + limit ? pageParam + 1 : null;
-
-      return {
-        response: {
-          products,
-          count,
-        },
-        nextPage: nextPage,
-        queryParams,
-      };
-    });
+        return {
+          response: {
+            products,
+            count,
+          },
+          nextPage: nextPage,
+          queryParams,
+        };
+      });
+  } catch {
+    return {
+      response: { products: [], count: 0 },
+      nextPage: null,
+      queryParams,
+    };
+  }
 };
 
-/**
- * This will fetch 100 products to the Next.js cache and sort them based on the sortBy parameter.
- * It will then return the paginated products based on the page and limit parameters.
- */
 export const listProductsWithSort = async ({
   page = 0,
   queryParams,
   sortBy = "created_at",
   countryCode,
+  priceFrom,
+  priceTo,
 }: {
   page?: number;
   queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams;
   sortBy?: SortOptions;
   countryCode: string;
+  priceFrom?: number;
+  priceTo?: number;
 }): Promise<{
   response: { products: HttpTypes.StoreProduct[]; count: number };
   nextPage: number | null;
@@ -110,7 +110,7 @@ export const listProductsWithSort = async ({
   const limit = queryParams?.limit || 12;
 
   const {
-    response: { products, count },
+    response: { products },
   } = await listProducts({
     pageParam: 0,
     queryParams: {
@@ -120,18 +120,21 @@ export const listProductsWithSort = async ({
     countryCode,
   });
 
-  const sortedProducts = sortProducts(products, sortBy);
+  const priceFiltered = filterProductsByPrice(products, priceFrom, priceTo);
+
+  const sortedProducts = sortProducts(priceFiltered, sortBy);
 
   const pageParam = (page - 1) * limit;
 
-  const nextPage = count > pageParam + limit ? pageParam + limit : null;
+  const nextPage =
+    sortedProducts.length > pageParam + limit ? sortedProducts.length : null;
 
   const paginatedProducts = sortedProducts.slice(pageParam, pageParam + limit);
 
   return {
     response: {
       products: paginatedProducts,
-      count,
+      count: priceFiltered.length,
     },
     nextPage,
     queryParams,

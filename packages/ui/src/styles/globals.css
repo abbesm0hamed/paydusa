@@ -128,3 +128,105 @@
     @apply font-sans;
   }
 }
+
+/* /* Components layer */
+@layer components {
+  .content-container {
+    @apply w-full mx-auto px-4 lg:px-6;
+  }
+
+  .contrast-btn {
+    @apply px-4 py-2 border border-black rounded-full hover:bg-black hover:text-white transition-colors duration-200 ease-in;
+  }
+
+  .text-xsmall-regular {
+    @apply text-[10px] leading-4 font-normal;
+  }
+
+  .text-small-regular {
+    @apply text-xs leading-5 font-normal;
+  }
+
+  .text-small-semi {
+    @apply text-xs leading-5 font-semibold;
+  }
+
+  .text-base-regular {
+    @apply text-sm leading-6 font-normal;
+  }
+
+  .text-base-semi {
+    @apply text-sm leading-6 font-semibold;
+  }
+
+  .text-large-regular {
+    @apply text-base leading-6 font-normal;
+  }
+
+  .text-large-semi {
+    @apply text-base leading-6 font-semibold;
+  }
+
+  .text-xl-regular {
+    @apply text-2xl leading-[36px] font-normal;
+  }
+
+  .text-xl-semi {
+    @apply text-2xl leading-[36px] font-semibold;
+  }
+
+  .text-2xl-regular {
+    @apply text-[30px] leading-[48px] font-normal;
+  }
+
+  .text-2xl-semi {
+    @apply text-[30px] leading-[48px] font-semibold;
+  }
+
+  .text-3xl-regular {
+    @apply text-[32px] leading-[44px] font-normal;
+  }
+
+  .text-3xl-semi {
+    @apply text-[32px] leading-[44px] font-semibold;
+  }
+
+  .table-zebra tbody tr:nth-child(even) {
+    @apply bg-muted/70;
+  }
+
+  .dark .table-zebra tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+
+  .table-zebra tbody tr:hover {
+    @apply bg-muted/80 transition-colors;
+  }
+
+  .dark .table-zebra tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    transition: background-color 0.2s ease;
+  }
+
+  .center-elem {
+    @apply flex items-center justify-center;
+  }
+
+  .bg-pattern-diagonal {
+    background-image: linear-gradient(
+      45deg,
+      transparent 25%,
+      rgba(0, 0, 0, 0.05) 25%,
+      rgba(0, 0, 0, 0.05) 50%,
+      transparent 50%,
+      transparent 75%,
+      rgba(0, 0, 0, 0.05) 75%,
+      rgba(0, 0, 0, 0.05) 100%
+    );
+    background-size: 8px 8px;
+  }
+  .tiptap p.is-editor-empty:first-child::before {
+    @apply text-muted-foreground float-left h-0 pointer-events-none;
+    content: attr(data-placeholder);
+  }
+}

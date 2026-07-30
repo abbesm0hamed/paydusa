@@ -12,6 +12,9 @@ type PaginatedProductsParams = {
   category_id?: string[];
   id?: string[];
   order?: string;
+  type_id?: string[];
+  tag_id?: string[];
+  option_value_id?: string[];
 };
 
 export default async function PaginatedProducts({
@@ -21,20 +24,32 @@ export default async function PaginatedProducts({
   categoryId,
   productsIds,
   countryCode,
+  typeId,
+  tagId,
+  optionValueId,
+  priceFrom,
+  priceTo,
 }: {
   sortBy?: SortOptions;
   page: number;
-  collectionId?: string;
+  collectionId?: string | string[];
   categoryId?: string;
   productsIds?: string[];
   countryCode: string;
+  typeId?: string[];
+  tagId?: string[];
+  optionValueId?: string[];
+  priceFrom?: string;
+  priceTo?: string;
 }) {
   const queryParams: PaginatedProductsParams = {
     limit: 12,
   };
 
   if (collectionId) {
-    queryParams["collection_id"] = [collectionId];
+    queryParams["collection_id"] = Array.isArray(collectionId)
+      ? collectionId
+      : [collectionId];
   }
 
   if (categoryId) {
@@ -47,6 +62,18 @@ export default async function PaginatedProducts({
 
   if (sortBy === "created_at") {
     queryParams["order"] = "created_at";
+  }
+
+  if (typeId && typeId.length > 0) {
+    queryParams["type_id"] = typeId;
+  }
+
+  if (tagId && tagId.length > 0) {
+    queryParams["tag_id"] = tagId;
+  }
+
+  if (optionValueId && optionValueId.length > 0) {
+    queryParams["option_value_id"] = optionValueId;
   }
 
   const region = await getRegion(countryCode);
@@ -62,6 +89,8 @@ export default async function PaginatedProducts({
     queryParams,
     sortBy,
     countryCode,
+    priceFrom: priceFrom ? Number(priceFrom) : undefined,
+    priceTo: priceTo ? Number(priceTo) : undefined,
   });
 
   const totalPages = Math.ceil(count / PRODUCT_LIMIT);

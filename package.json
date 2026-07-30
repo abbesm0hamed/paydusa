@@ -17,12 +17,11 @@
     "db:setup": "bash docker/db-setup.sh",
     "check": "ultracite check",
     "fix": "ultracite fix",
-    "clean:lockfile": "rm -f pnpm-lock.yaml && pnpm install",
-    "clean:node_modules": "rm -rf node_modules && find . -name 'node_modules' -type d -prune -exec rm -rf {} +"
+    "clean:lockfile": "pnpm clean --lockfile && pnpm install"
   },
   "dependencies": {
     "@ecommerce/env": "workspace:*",
-    "axios": "^1.18.0",
+    "axios": "^1.18.1",
     "dotenv": "catalog:",
     "pdfmake": "^0.3.11",
     "zod": "catalog:"
@@ -33,12 +32,12 @@
     "lefthook": "latest",
     "oxfmt": "latest",
     "oxlint": "latest",
-    "turbo": "^2.9.18",
+    "turbo": "^2.10.3",
     "typescript": "catalog:",
-    "ultracite": "7.8.3"
+    "ultracite": "7.8.4"
   },
   "overrides": {
     "undici": "5.20.0"
   },
-  "packageManager": "pnpm@11.8.0"
+  "packageManager": "pnpm@11.9.0"
 }
