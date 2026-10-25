@@ -14,14 +14,14 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@base-ui/react": "^1.6.0",
+    "@base-ui/react": "^1.9.0",
     "class-variance-authority": "catalog:",
-    "cnfast": "^0.0.8",
+    "cn": "^0.5.0",
     "lucide-react": "catalog:",
     "next-themes": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "shadcn": "^4.11.0",
+    "shadcn": "^4.22.1",
     "sonner": "catalog:",
     "tw-animate-css": "catalog:"
   },

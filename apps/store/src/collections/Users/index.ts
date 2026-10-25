@@ -7,6 +7,8 @@ import { authenticated } from "../../access/authenticated";
 
 export const Users: CollectionConfig = {
   slug: "users",
+  versions: false,
+  authorship: false,
   access: {
     admin: authenticated,
     create: isAdmin,

@@ -6,8 +6,6 @@
     "dev": "turbo dev",
     "build": "turbo build",
     "check-types": "turbo check-types",
-    "dev:web": "turbo -F web dev",
-    "dev:storefront": "turbo -F storefront dev",
     "dev:store": "turbo -F store dev",
     "dev:medusa": "turbo -F medusa dev",
     "bump-deps": "turbo bump-deps",
@@ -21,9 +19,9 @@
   },
   "dependencies": {
     "@ecommerce/env": "workspace:*",
-    "axios": "^1.18.1",
+    "axios": "^1.20.0",
     "dotenv": "catalog:",
-    "pdfmake": "^0.3.11",
+    "pdfmake": "^0.3.12",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -32,12 +30,12 @@
     "lefthook": "latest",
     "oxfmt": "latest",
     "oxlint": "latest",
-    "turbo": "^2.10.3",
+    "turbo": "^2.11.10",
     "typescript": "catalog:",
-    "ultracite": "7.8.4"
+    "ultracite": "8.0.2"
   },
   "overrides": {
     "undici": "5.20.0"
   },
-  "packageManager": "pnpm@11.9.0"
+  "packageManager": "pnpm@12.15.0"
 }

@@ -1,16 +1,13 @@
-import config from "@payload-config";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next/types";
-import { getPayload } from "payload";
 import React from "react";
 
 import { CollectionArchive } from "@/components/CollectionArchive";
 import { PageRange } from "@/components/PageRange";
 import { Pagination } from "@/components/Pagination";
+import { getCachedPosts } from "@/utilities/getPosts";
 
 import PageClient from "./page.client";
-
-export const revalidate = 600;
 
 type Args = {
   params: Promise<{
@@ -20,19 +17,14 @@ type Args = {
 
 export default async function Page({ params: paramsPromise }: Args) {
   const { pageNumber } = await paramsPromise;
-  const payload = await getPayload({ config });
 
   const sanitizedPageNumber = Number(pageNumber);
 
-  if (!Number.isInteger(sanitizedPageNumber)) notFound();
+  if (!Number.isInteger(sanitizedPageNumber) || sanitizedPageNumber < 1) {
+    notFound();
+  }
 
-  const posts = await payload.find({
-    collection: "posts",
-    depth: 1,
-    limit: 12,
-    page: sanitizedPageNumber,
-    overrideAccess: false,
-  });
+  const posts = await getCachedPosts(sanitizedPageNumber);
 
   return (
     <div className="pt-24 pb-24">
@@ -73,13 +65,7 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config });
-  const { totalDocs } = await payload.count({
-    collection: "posts",
-    overrideAccess: false,
-  });
-
-  const totalPages = Math.ceil(totalDocs / 10);
+  const { totalPages } = await getCachedPosts();
 
   const pages: { pageNumber: string }[] = [];
 

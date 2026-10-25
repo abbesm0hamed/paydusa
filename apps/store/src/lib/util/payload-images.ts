@@ -1,4 +1,4 @@
-import { StoreProductWithPayload } from "../../types/global";
+import type { StoreProductWithPayload } from "../../types/global";
 
 const PAYLOAD_SERVER_URL = process.env.PAYLOAD_SERVER_URL;
 
@@ -6,16 +6,16 @@ export function getProductThumbnail(product: StoreProductWithPayload) {
   if (product?.payload_product?.thumbnail) {
     const thumb = product.payload_product.thumbnail;
 
-    if (thumb.sizes_thumbnail_url) {
+    if (thumb.variants_thumbnail_url) {
       return {
-        url: thumb.sizes_thumbnail_url,
+        url: thumb.variants_thumbnail_url,
         alt: thumb.alt || product.title || "Product image",
       };
     }
 
-    if (thumb.sizes?.thumbnail?.url) {
+    if (thumb.variants?.thumbnail?.url) {
       return {
-        url: thumb.sizes.thumbnail.url,
+        url: thumb.variants.thumbnail.url,
         alt: thumb.alt || product.title || "Product image",
       };
     }

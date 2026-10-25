@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import { connection } from "next/server";
 import { Suspense } from "react";
 
-import { importMap } from "../../importMap";
+import { importMap } from "../importMap";
 
 type Args = {
   params: Promise<{

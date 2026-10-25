@@ -238,7 +238,7 @@ export const CustomField: TextFieldClientComponent = () => {
 
 ```tsx
 "use client";
-import { DefaultTemplate } from "@payloadcms/next/templates";
+import { DefaultTemplate } from "@payloadcms/ui/rsc";
 
 export const CustomView = () => {
   return (
@@ -292,9 +292,9 @@ export default buildConfig({
 ### Using Plugins
 
 ```ts
-import { buildConfig } from "payload";
-import { seoPlugin } from "@payloadcms/plugin-seo";
 import { redirectsPlugin } from "@payloadcms/plugin-redirects";
+import { seoPlugin } from "@payloadcms/plugin-seo";
+import { buildConfig } from "payload";
 
 export default buildConfig({
   plugins: [

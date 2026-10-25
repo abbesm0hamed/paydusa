@@ -28,12 +28,14 @@ import { generatePreviewPath } from "@/utilities/generatePreviewPath";
 
 import { revalidateDelete, revalidatePage } from "./hooks/revalidatePage";
 
-export const Pages: CollectionConfig<"pages"> = {
+export const Pages = {
   slug: "pages",
+  authorship: false,
   access: {
     create: authenticated,
     delete: authenticated,
     read: authenticatedOrPublished,
+    readVersions: authenticated,
     update: authenticated,
   },
   // This config controls what's populated by default when a page is referenced
@@ -159,4 +161,4 @@ export const Pages: CollectionConfig<"pages"> = {
     },
     maxPerDoc: 50,
   },
-};
+} satisfies CollectionConfig<"pages">;

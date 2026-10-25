@@ -4,11 +4,11 @@ import type {
   MediaBlock as MediaBlockProps,
 } from "@payload-types";
 import {
-  DefaultNodeTypes,
   SerializedBlockNode,
   SerializedLinkNode,
-  type DefaultTypedEditorState,
+  type WithDefaultNodes,
 } from "@payloadcms/richtext-lexical";
+import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical";
 import {
   JSXConvertersFunction,
   LinkJSXConverter,
@@ -21,11 +21,11 @@ import { CodeBlock, CodeBlockProps } from "@/blocks/Code/Component";
 import { MediaBlock } from "@/blocks/MediaBlock/Component";
 import { cn } from "@/utilities/ui";
 
-type NodeTypes =
-  | DefaultNodeTypes
-  | SerializedBlockNode<
-      CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps
-    >;
+type NodeTypes = WithDefaultNodes<
+  SerializedBlockNode<
+    CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps
+  >
+>;
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   const { value, relationTo } = linkNode.fields.doc!;
@@ -61,7 +61,7 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({
 });
 
 type Props = {
-  data: DefaultTypedEditorState;
+  data: SerializedEditorState;
   enableGutter?: boolean;
   enableProse?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>;

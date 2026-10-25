@@ -10,9 +10,10 @@ const getImageURL = (image?: Media | Config["db"]["defaultIDType"] | null) => {
   let url = serverUrl + "/website-template-OG.webp";
 
   if (image && typeof image === "object" && "url" in image) {
-    const ogUrl = image.sizes?.og?.url;
-
-    url = ogUrl ? serverUrl + ogUrl : serverUrl + image.url;
+    const imageURL = image.variants?.card?.url ?? image.url;
+    if (imageURL) {
+      url = new URL(imageURL, serverUrl).href;
+    }
   }
 
   return url;

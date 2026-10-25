@@ -39,10 +39,10 @@ export type StoreProductWithPayload = StoreProduct & {
       alt?: string;
       filename?: string;
       thumbnailURL?: string;
-      sizes_thumbnail_url?: string;
-      sizes_card_url?: string;
-      sizes_tablet_url?: string;
-      sizes?: {
+      variants_thumbnail_url?: string;
+      variants_card_url?: string;
+      variants_tablet_url?: string;
+      variants?: {
         thumbnail?: {
           url: string;
           width: number;

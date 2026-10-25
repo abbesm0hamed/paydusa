@@ -1,7 +1,7 @@
 import config from "@payload-config";
 import { draftMode } from "next/headers";
 import { redirect } from "next/navigation";
-import type { CollectionSlug, PayloadRequest } from "payload";
+import type { AuthenticatedUser, CollectionSlug } from "payload";
 import { getPayload, TypedLocale } from "payload";
 
 export async function GET(
@@ -32,20 +32,19 @@ export async function GET(
     return new Response("Insufficient search params", { status: 404 });
   }
 
-  if (typeof path !== "string" || !path.startsWith("/")) {
+  if (!path.startsWith("/") || path.startsWith("//")) {
     return new Response(
       "This endpoint can only be used for relative previews",
       { status: 500 }
     );
   }
 
-  let user;
+  let user: AuthenticatedUser | null;
 
   try {
-    user = await payload.auth({
-      req: req as unknown as PayloadRequest,
+    ({ user } = await payload.auth({
       headers: req.headers,
-    });
+    }));
   } catch (error) {
     payload.logger.error(
       { err: error },
@@ -70,7 +69,9 @@ export async function GET(
     const docs = await payload.find({
       collection: collection,
       draft: true,
-      locale: path.split("/")[0] as TypedLocale,
+      locale: path.split("/")[1] as TypedLocale,
+      user,
+      overrideAccess: false,
       where: {
         slug: {
           equals: slug,
@@ -86,6 +87,9 @@ export async function GET(
       { err: error },
       "Error verifying token for live preview:"
     );
+    return new Response("You are not allowed to preview this page", {
+      status: 403,
+    });
   }
 
   draft.enable();

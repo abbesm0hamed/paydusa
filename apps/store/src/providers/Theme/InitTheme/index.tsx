@@ -1,12 +1,15 @@
-import Script from "next/script";
+"use client";
+
 import React from "react";
 
 import { defaultTheme, themeLocalStorageKey } from "../ThemeSelector/types";
 
 export const InitTheme: React.FC = () => {
   return (
-    // eslint-disable-next-line @next/next/no-before-interactive-script-outside-document
-    <Script
+    // Execute before hydration on hard loads; the ThemeProvider handles client updates.
+    <script
+      type={typeof window === "undefined" ? "text/javascript" : "text/plain"}
+      suppressHydrationWarning
       dangerouslySetInnerHTML={{
         __html: `
   (function () {
@@ -46,7 +49,6 @@ export const InitTheme: React.FC = () => {
   `,
       }}
       id="theme-script"
-      strategy="beforeInteractive"
     />
   );
 };

@@ -4,6 +4,8 @@ import { fileURLToPath } from "url";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { resendAdapter } from "@payloadcms/email-resend";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { s3Storage } from "@payloadcms/storage-s3";
+import { sharpTransformer } from "@payloadcms/transformer-sharp";
 import { buildConfig, PayloadRequest } from "payload";
 import sharp from "sharp";
 
@@ -44,6 +46,7 @@ const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 const serverURL = getServerSideURL();
+const mediaPrefix = "cms/media";
 
 if (!process.env.PAYLOAD_SECRET) {
   throw new Error(
@@ -55,6 +58,7 @@ export default buildConfig({
   i18n,
   localization,
   serverURL,
+  defaultDepth: 2,
   cors: [
     serverURL,
     process.env.NEXT_PUBLIC_BASE_URL,
@@ -64,7 +68,6 @@ export default buildConfig({
     (url): url is string => typeof url === "string" && url.length > 0
   ),
   cookiePrefix: "paydusa",
-  trustProxy: true,
   graphQL: {
     maxComplexity: 1000,
   },
@@ -249,38 +252,42 @@ export default buildConfig({
     Products,
     {
       slug: "video",
+      versions: false,
+      authorship: false,
       fields: [
         {
           name: "url",
           type: "text",
         },
       ],
-      interfaceName: "VideoBlock",
     },
     {
       slug: "br",
+      versions: false,
+      authorship: false,
       fields: [
         {
           name: "ignore",
           type: "text",
         },
       ],
-
-      interfaceName: "BrBlock",
     },
     // VideoDrawerBlock,
     {
       slug: "commandLine",
+      versions: false,
+      authorship: false,
       fields: [
         {
           name: "command",
           type: "text",
         },
       ],
-      interfaceName: "CommandLineBlock",
     },
     {
       slug: "command",
+      versions: false,
+      authorship: false,
       fields: [
         {
           name: "command",
@@ -295,6 +302,8 @@ export default buildConfig({
     },
     {
       slug: "link",
+      versions: false,
+      authorship: false,
       fields: [link()],
       labels: {
         plural: "Links",
@@ -303,6 +312,8 @@ export default buildConfig({
     },
     {
       slug: "templateCards",
+      versions: false,
+      authorship: false,
       fields: [
         {
           name: "templates",
@@ -340,7 +351,6 @@ export default buildConfig({
           },
         },
       ],
-      interfaceName: "TemplateCardsBlock",
     },
   ],
   editor: lexicalEditor(),
@@ -349,6 +359,8 @@ export default buildConfig({
     outputFile: path.resolve(dirname, "payload-types.ts"),
   },
   db: postgresAdapter({
+    // Apply reviewed migrations instead of dropping legacy media columns in dev.
+    push: false,
     pool: {
       connectionString: process.env.DATABASE_URL,
       max: 10,
@@ -356,9 +368,59 @@ export default buildConfig({
     },
     migrationDir: resolvePath.migrations,
   }),
-  sharp,
   plugins: [...plugins],
+  storage: [
+    s3Storage({
+      collections: {
+        media: {
+          disablePayloadAccessControl: true,
+          prefix: mediaPrefix,
+          generateFileURL: ({ filename }: { filename: string }) => {
+            return `${process.env.S3_FILE_URL}/${mediaPrefix}/${filename}`;
+          },
+        },
+      },
+      bucket: process.env.S3_BUCKET!,
+      config: {
+        endpoint: process.env.S3_ENDPOINT!,
+        region: process.env.S3_REGION || "auto",
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID!,
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
+        },
+        forcePathStyle: true,
+      },
+    }),
+  ],
   upload: {
+    transformers: [
+      sharpTransformer({
+        sharp,
+        collections: {
+          media: {
+            variants: [
+              {
+                name: "thumbnail",
+                width: 400,
+                height: 300,
+                position: "centre",
+              },
+              {
+                name: "card",
+                width: 768,
+                height: 1024,
+                position: "centre",
+              },
+              {
+                name: "tablet",
+                width: 1024,
+                position: "centre",
+              },
+            ],
+          },
+        },
+      }),
+    ],
     limits: {
       fileSize: 5000000, // 5MB, written in bytes
     },
@@ -377,8 +439,11 @@ export default buildConfig({
         // If there is no logged in user, then check
         // for the Vercel Cron secret to be present as an
         // Authorization header:
+        const secret = process.env.CRON_SECRET;
+        if (!secret) return false;
+
         const authHeader = req.headers.get("authorization");
-        return authHeader === `Bearer ${process.env.CRON_SECRET}`;
+        return authHeader === `Bearer ${secret}`;
       },
     },
     tasks: [],

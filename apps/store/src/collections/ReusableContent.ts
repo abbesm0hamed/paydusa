@@ -6,6 +6,8 @@ import { isAdmin } from "../access/isAdmin";
 
 export const ReusableContent: CollectionConfig = {
   slug: "reusable-content",
+  versions: false,
+  authorship: false,
   access: {
     create: isAdmin,
     delete: isAdmin,

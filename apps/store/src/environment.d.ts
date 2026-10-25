@@ -13,7 +13,6 @@ declare global {
       NEXT_PUBLIC_WWW_URL: string;
       NEXT_PUBLIC_R2_HOSTNAME: string;
       NEXT_PUBLIC_ALGOLIA_APP_ID: string;
-      NEXT_PUBLIC_ALGOLIA_API_KEY: string;
       NEXT_PUBLIC_ALGOLIA_PRODUCT_INDEX_NAME: string;
       NEXT_PUBLIC_VERCEL_URL: string;
       PREVIEW_SECRET: string;

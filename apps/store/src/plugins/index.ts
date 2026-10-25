@@ -9,7 +9,6 @@ import {
   HeadingFeature,
   lexicalEditor,
 } from "@payloadcms/richtext-lexical";
-import { s3Storage } from "@payloadcms/storage-s3";
 import { Plugin } from "payload";
 
 import { revalidateRedirects } from "@/hooks/revalidateRedirects";
@@ -30,12 +29,12 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
   return doc?.slug ? `${url}/${doc.slug}` : url;
 };
 
-const prefix = "cms/media";
-
 export const plugins: Plugin[] = [
   redirectsPlugin({
     collections: ["pages", "posts"],
     overrides: {
+      versions: false,
+      authorship: false,
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
@@ -69,6 +68,8 @@ export const plugins: Plugin[] = [
       payment: false,
     },
     formOverrides: {
+      versions: false,
+      authorship: false,
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
           if ("name" in field && field.name === "confirmationMessage") {
@@ -91,51 +92,19 @@ export const plugins: Plugin[] = [
         });
       },
     },
+    formSubmissionOverrides: {
+      versions: false,
+      authorship: false,
+    },
   }),
   searchPlugin({
     collections: ["posts"],
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
+      versions: false,
+      authorship: false,
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields];
-      },
-    },
-  }),
-  s3Storage({
-    collections: {
-      media: {
-        disablePayloadAccessControl: true,
-        prefix,
-        generateFileURL: ({ filename }: { filename: string }) => {
-          return `${process.env.S3_FILE_URL}/${prefix}/${filename}`;
-        },
-      },
-    },
-    bucket: process.env.S3_BUCKET!,
-    config: {
-      endpoint: process.env.S3_ENDPOINT!,
-      region: process.env.S3_REGION || "auto",
-      credentials: {
-        accessKeyId: process.env.S3_ACCESS_KEY_ID!,
-        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
-      },
-      forcePathStyle: true,
-    },
-  }),
-  (config) => ({
-    ...config,
-    admin: {
-      ...config.admin,
-      components: {
-        ...config.admin?.components,
-        providers: (config.admin?.components?.providers || []).filter(
-          (provider) => {
-            if (typeof provider === "object" && "path" in provider) {
-              return !provider.path.includes("S3ClientUploadHandler");
-            }
-            return true;
-          }
-        ),
       },
     },
   }),

@@ -26,12 +26,14 @@ import { generatePreviewPath } from "../../utilities/generatePreviewPath";
 import { populateAuthors } from "./hooks/populateAuthors";
 import { revalidateDelete, revalidatePost } from "./hooks/revalidatePost";
 
-export const Posts: CollectionConfig<"posts"> = {
+export const Posts = {
   slug: "posts",
+  authorship: false,
   access: {
     create: authenticated,
     delete: authenticated,
     read: authenticatedOrPublished,
+    readVersions: authenticated,
     update: authenticated,
   },
   // This config controls what's populated by default when a post is referenced
@@ -242,4 +244,4 @@ export const Posts: CollectionConfig<"posts"> = {
     },
     maxPerDoc: 50,
   },
-};
+} satisfies CollectionConfig<"posts">;

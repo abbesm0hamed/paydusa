@@ -12,7 +12,7 @@ export const populateAuthors: CollectionAfterReadHook = async ({
   req: { payload },
 }) => {
   if (doc?.authors && doc?.authors?.length > 0) {
-    const authorDocs: User[] = [];
+    const authorDocs: Pick<User, "id" | "name">[] = [];
 
     for (const author of doc.authors) {
       try {
@@ -20,6 +20,9 @@ export const populateAuthors: CollectionAfterReadHook = async ({
           id: typeof author === "object" ? author?.id : author,
           collection: "users",
           depth: 0,
+          overrideAccess: true,
+          req,
+          select: { name: true },
         });
 
         if (authorDoc) {

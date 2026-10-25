@@ -6,6 +6,8 @@ import { revalidateHeader } from "./hooks/revalidateHeader";
 
 export const Header: GlobalConfig = {
   slug: "header",
+  versions: false,
+  authorship: false,
   access: {
     read: () => true,
   },

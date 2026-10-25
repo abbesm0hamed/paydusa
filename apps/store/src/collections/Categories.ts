@@ -7,6 +7,8 @@ import { authenticated } from "../access/authenticated";
 
 export const Categories: CollectionConfig = {
   slug: "categories",
+  versions: false,
+  authorship: false,
   access: {
     create: authenticated,
     delete: authenticated,

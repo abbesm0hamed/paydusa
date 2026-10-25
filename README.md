@@ -45,12 +45,21 @@ That's it. The apps are available at:
 
 | App               | URL                                                                     |
 | ----------------- | ----------------------------------------------------------------------- |
-| Storefront        | http://localhost:8000                                                   |
+| Storefront        | http://localhost:3000                                                   |
 | Medusa admin      | http://localhost:9100/app                                               |
-| Payload CMS admin | http://localhost:8000/admin                                             |
+| Payload CMS admin | http://localhost:3000/admin                                             |
 | pgAdmin           | http://localhost:5050 (email: `admin@ecommerce.com`, password: `admin`) |
 
 > **First Medusa login**: email `admin@medusajs.com`, password set via `MEDUSA_ADMIN_PASSWORD` in `apps/medusa/.env`.
+
+The storefront and embedded Payload CMS share port **3000**. Set
+`NEXT_PUBLIC_BASE_URL`, `NEXT_PUBLIC_SERVER_URL`, and `PAYLOAD_SERVER_URL` in
+`apps/store/.env` to `http://localhost:3000`. In `apps/medusa/.env`, use the same
+`PAYLOAD_SERVER_URL` and include `http://localhost:3000` in `STORE_CORS` and
+`AUTH_CORS`, as shown in the environment templates.
+
+After changing these values, restart the affected development servers. Request a
+new password-reset email: previously sent links retain their original URL.
 
 ## Deployment
 

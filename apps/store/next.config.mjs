@@ -11,6 +11,7 @@ const r2Hostname = process.env.NEXT_PUBLIC_R2_HOSTNAME;
  */
 const nextConfig = {
   cacheComponents: true,
+  partialPrefetching: true,
   transpilePackages: ["@ecommerce/medusa"],
   turbopack: {
     root: new URL("../../", import.meta.url).pathname,

@@ -6,6 +6,8 @@ import { CollectionConfig } from "payload";
 
 export const Products: CollectionConfig = {
   slug: "products",
+  versions: false,
+  authorship: false,
   admin: {
     useAsTitle: "title",
   },
