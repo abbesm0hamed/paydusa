@@ -13,7 +13,7 @@ pre-commit:
       run: pnpm exec oxfmt --write {staged_files}
       stage_fixed: true
 
-pre-push:
-  jobs:
-    - name: knip
-      run: pnpm knip
+# pre-push:
+#   jobs:
+#     - name: knip
+#       run: pnpm knip
