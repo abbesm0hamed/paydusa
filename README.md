@@ -8,6 +8,12 @@ Manage pages, posts, media, and site navigation from the embedded Payload CMS ad
 
 ![Payload CMS admin dashboard](apps/store/public/screenshots/payload-dashboard.png)
 
+## Medusa Admin Panel
+
+Manage products, inventory, orders, and customers from the Medusa admin panel.
+
+![Medusa admin products page](apps/store/public/screenshots/medusa-products-page.png)
+
 ## Architecture
 
 - **`apps/store`**: Next.js storefront with embedded Payload CMS admin, consuming Medusa APIs.
