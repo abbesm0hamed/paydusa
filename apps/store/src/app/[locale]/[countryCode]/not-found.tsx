@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@ecommerce/ui/components/button";
+import { Button } from "@ecommerce/design-system/components/button";
 import { useTranslations } from "next-intl";
 import React from "react";
 

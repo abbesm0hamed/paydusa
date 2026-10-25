@@ -6,7 +6,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@ecommerce/ui/components/select";
+} from "@ecommerce/design-system/components/select";
 import React, { useState } from "react";
 
 import { useTheme } from "..";

@@ -1,11 +1,11 @@
-import { Label } from "@ecommerce/ui/components/label";
+import { Label } from "@ecommerce/design-system/components/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@ecommerce/ui/components/select";
+} from "@ecommerce/design-system/components/select";
 import type { CountryField } from "@payloadcms/plugin-form-builder/types";
 import React from "react";
 import type { Control, FieldErrorsImpl } from "react-hook-form";

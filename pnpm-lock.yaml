@@ -196,14 +196,17 @@ catalogs:
       specifier: ^26.6.5
       version: 26.6.5
     '@types/react':
-      specifier: ^19.3.0
+      specifier: 19.3.0
       version: 19.3.0
     '@types/react-dom':
-      specifier: ^19.3.0
+      specifier: 19.3.0
       version: 19.3.0
     algoliasearch:
       specifier: ^5.60.0
       version: 5.60.0
+    axios:
+      specifier: ^1.20.0
+      version: 1.20.0
     class-variance-authority:
       specifier: ^0.7.1
       version: 0.7.1
@@ -231,6 +234,9 @@ catalogs:
     next-themes:
       specifier: ^0.4.6
       version: 0.4.6
+    pdfmake:
+      specifier: ^0.3.12
+      version: 0.3.12
     postcss:
       specifier: ^8.5.31
       version: 8.5.31
@@ -241,10 +247,10 @@ catalogs:
       specifier: ^6.16.1
       version: 6.16.1
     react:
-      specifier: ^19.3.1
+      specifier: 19.3.1
       version: 19.3.1
     react-dom:
-      specifier: ^19.3.1
+      specifier: 19.3.1
       version: 19.3.1
     react-email:
       specifier: ^6.11.3
@@ -252,6 +258,9 @@ catalogs:
     react-hook-form:
       specifier: ^7.91.0
       version: 7.91.0
+    resend:
+      specifier: ^6.34.1
+      version: 6.34.1
     sharp:
       specifier: ^0.35.5
       version: 0.35.5
@@ -273,6 +282,115 @@ catalogs:
     zod:
       specifier: ^4.6.7
       version: 4.6.7
+  medusa:
+    '@medusajs/admin-sdk':
+      specifier: 2.22.1
+      version: 2.22.1
+    '@medusajs/admin-shared':
+      specifier: 2.22.1
+      version: 2.22.1
+    '@medusajs/analytics-posthog':
+      specifier: 2.22.1
+      version: 2.22.1
+    '@medusajs/cli':
+      specifier: 2.22.1
+      version: 2.22.1
+    '@medusajs/dashboard':
+      specifier: 2.22.1
+      version: 2.22.1
+    '@medusajs/draft-order':
+      specifier: 2.22.1
+      version: 2.22.1
+    '@medusajs/framework':
+      specifier: 2.22.1
+      version: 2.22.1
+    '@medusajs/icons':
+      specifier: 2.22.1
+      version: 2.22.1
+    '@medusajs/js-sdk':
+      specifier: 2.22.1
+      version: 2.22.1
+    '@medusajs/medusa':
+      specifier: 2.22.1
+      version: 2.22.1
+    '@medusajs/types':
+      specifier: 2.22.1
+      version: 2.22.1
+    '@medusajs/ui':
+      specifier: 4.2.8
+      version: 4.2.8
+    '@medusajs/ui-preset':
+      specifier: 2.22.1
+      version: 2.22.1
+  mikro-orm:
+    '@mikro-orm/cli':
+      specifier: 6.6.14
+      version: 6.6.14
+    '@mikro-orm/core':
+      specifier: 6.6.14
+      version: 6.6.14
+    '@mikro-orm/knex':
+      specifier: 6.6.14
+      version: 6.6.14
+    '@mikro-orm/migrations':
+      specifier: 6.6.14
+      version: 6.6.14
+    '@mikro-orm/postgresql':
+      specifier: 6.6.14
+      version: 6.6.14
+  payload:
+    '@payloadcms/db-postgres':
+      specifier: 4.0.0-beta.4
+      version: 4.0.0-beta.4
+    '@payloadcms/email-resend':
+      specifier: 4.0.0-beta.4
+      version: 4.0.0-beta.4
+    '@payloadcms/live-preview-react':
+      specifier: 4.0.0-beta.4
+      version: 4.0.0-beta.4
+    '@payloadcms/next':
+      specifier: 4.0.0-beta.4
+      version: 4.0.0-beta.4
+    '@payloadcms/plugin-form-builder':
+      specifier: 4.0.0-beta.4
+      version: 4.0.0-beta.4
+    '@payloadcms/plugin-nested-docs':
+      specifier: 4.0.0-beta.4
+      version: 4.0.0-beta.4
+    '@payloadcms/plugin-redirects':
+      specifier: 4.0.0-beta.4
+      version: 4.0.0-beta.4
+    '@payloadcms/plugin-search':
+      specifier: 4.0.0-beta.4
+      version: 4.0.0-beta.4
+    '@payloadcms/plugin-seo':
+      specifier: 4.0.0-beta.4
+      version: 4.0.0-beta.4
+    '@payloadcms/richtext-lexical':
+      specifier: 4.0.0-beta.4
+      version: 4.0.0-beta.4
+    '@payloadcms/storage-s3':
+      specifier: 4.0.0-beta.4
+      version: 4.0.0-beta.4
+    '@payloadcms/transformer-sharp':
+      specifier: 4.0.0-beta.4
+      version: 4.0.0-beta.4
+    '@payloadcms/translations':
+      specifier: 4.0.0-beta.4
+      version: 4.0.0-beta.4
+    '@payloadcms/ui':
+      specifier: 4.0.0-beta.4
+      version: 4.0.0-beta.4
+    payload:
+      specifier: 4.0.0-beta.4
+      version: 4.0.0-beta.4
+  storefront:
+    next:
+      specifier: 16.4.3
+      version: 16.4.3
+    typescript:
+      specifier: ^7.0.2
+      version: 7.0.2
 
 importers:
 
@@ -281,15 +399,9 @@ importers:
       '@ecommerce/env':
         specifier: workspace:*
         version: link:packages/env
-      axios:
-        specifier: ^1.20.0
-        version: 1.20.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
       dotenv:
         specifier: 'catalog:'
         version: 18.0.9
-      pdfmake:
-        specifier: ^0.3.12
-        version: 0.3.12
       zod:
         specifier: 'catalog:'
         version: 4.6.7
@@ -304,13 +416,13 @@ importers:
         specifier: ^6.43.0
         version: 6.43.0
       lefthook:
-        specifier: latest
+        specifier: 2.2.2
         version: 2.2.2
       oxfmt:
-        specifier: latest
+        specifier: 0.74.0
         version: 0.74.0
       oxlint:
-        specifier: latest
+        specifier: 1.89.0
         version: 1.89.0
       turbo:
         specifier: ^2.11.10
@@ -328,49 +440,49 @@ importers:
         specifier: workspace:*
         version: link:../../packages/email
       '@medusajs/admin-sdk':
-        specifier: 2.22.1
+        specifier: catalog:medusa
         version: 2.22.1
       '@medusajs/admin-shared':
-        specifier: 2.22.1
+        specifier: catalog:medusa
         version: 2.22.1
       '@medusajs/analytics-posthog':
-        specifier: 2.22.1
+        specifier: catalog:medusa
         version: 2.22.1(@medusajs/framework@2.22.1(@medusajs/cli@2.22.1(@types/node@26.6.5)(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(@types/node@26.6.5)(debug@4.4.3(supports-color@8.1.1))(ioredis@5.11.1(supports-color@8.1.1))(supports-color@8.1.1)(vite@8.3.5(@types/node@26.6.5)(esbuild@0.28.2)(jiti@1.21.7)(sass@1.106.1)(tsx@4.23.15)(yaml@2.9.1))(zod@4.6.7))(posthog-node@5.57.1(@opentelemetry/api@1.10.0)(rxjs@7.8.2))
       '@medusajs/cli':
-        specifier: 2.22.1
+        specifier: catalog:medusa
         version: 2.22.1(@types/node@26.6.5)(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
       '@medusajs/dashboard':
-        specifier: 2.22.1
+        specifier: catalog:medusa
         version: 2.22.1(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(typescript@6.0.3)
       '@medusajs/draft-order':
-        specifier: 2.22.1
+        specifier: catalog:medusa
         version: 2.22.1(fb6bac8785a178dbf8748f656ab2c770)
       '@medusajs/framework':
-        specifier: 2.22.1
+        specifier: catalog:medusa
         version: 2.22.1(@medusajs/cli@2.22.1(@types/node@26.6.5)(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(@types/node@26.6.5)(debug@4.4.3(supports-color@8.1.1))(ioredis@5.11.1(supports-color@8.1.1))(supports-color@8.1.1)(vite@8.3.5(@types/node@26.6.5)(esbuild@0.28.2)(jiti@1.21.7)(sass@1.106.1)(tsx@4.23.15)(yaml@2.9.1))(zod@4.6.7)
       '@medusajs/js-sdk':
-        specifier: 2.22.1
+        specifier: catalog:medusa
         version: 2.22.1
       '@medusajs/medusa':
-        specifier: 2.22.1
+        specifier: catalog:medusa
         version: 2.22.1(5ad312567d3db896d2ab9186dab4e419)
       '@medusajs/ui':
-        specifier: 4.2.8
+        specifier: catalog:medusa
         version: 4.2.8(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@6.0.3)
       '@mikro-orm/cli':
-        specifier: 6.6.14
+        specifier: catalog:mikro-orm
         version: 6.6.14(pg@8.23.1)(supports-color@8.1.1)
       '@mikro-orm/core':
-        specifier: 6.6.14
+        specifier: catalog:mikro-orm
         version: 6.6.14
       '@mikro-orm/knex':
-        specifier: 6.6.14
+        specifier: catalog:mikro-orm
         version: 6.6.14(@mikro-orm/core@6.6.14)(pg@8.23.1)(supports-color@8.1.1)
       '@mikro-orm/migrations':
-        specifier: 6.6.14
+        specifier: catalog:mikro-orm
         version: 6.6.14(@mikro-orm/core@6.6.14)(@types/node@26.6.5)(pg@8.23.1)(supports-color@8.1.1)
       '@mikro-orm/postgresql':
-        specifier: 6.6.14
+        specifier: catalog:mikro-orm
         version: 6.6.14(@mikro-orm/core@6.6.14)(supports-color@8.1.1)
       '@opentelemetry/api':
         specifier: ^1.10.0
@@ -390,6 +502,12 @@ importers:
       algoliasearch:
         specifier: 'catalog:'
         version: 5.60.0
+      axios:
+        specifier: 'catalog:'
+        version: 1.20.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
+      pdfmake:
+        specifier: 'catalog:'
+        version: 0.3.12
       qs:
         specifier: 'catalog:'
         version: 6.16.1
@@ -397,8 +515,11 @@ importers:
         specifier: 'catalog:'
         version: 7.91.0(@types/react@19.3.0)(react@19.3.1)
       resend:
-        specifier: ^6.34.1
+        specifier: 'catalog:'
         version: 6.34.1(@react-email/render@2.1.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))
+      zod:
+        specifier: 'catalog:'
+        version: 4.6.7
     devDependencies:
       '@swc/core':
         specifier: 1.16.20
@@ -410,19 +531,19 @@ importers:
         specifier: ^0.3.3
         version: 0.3.3
       '@types/react':
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
       '@types/react-dom':
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0(@types/react@19.3.0)
       prop-types:
         specifier: ^15.8.1
         version: 15.8.1
       react:
-        specifier: 19.3.1
+        specifier: 'catalog:'
         version: 19.3.1
       react-dom:
-        specifier: 19.3.1
+        specifier: 'catalog:'
         version: 19.3.1(react@19.3.1)
       ts-node:
         specifier: ^10.9.2
@@ -439,65 +560,65 @@ importers:
 
   apps/store:
     dependencies:
+      '@ecommerce/design-system':
+        specifier: workspace:*
+        version: link:../../packages/design-system
       '@ecommerce/medusa':
         specifier: workspace:*
         version: link:../../packages/medusa
-      '@ecommerce/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
       '@headlessui/react':
         specifier: ^2.2.10
         version: 2.2.10(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@medusajs/icons':
-        specifier: latest
+        specifier: catalog:medusa
         version: 2.22.1(react@19.3.1)
       '@medusajs/js-sdk':
-        specifier: latest
+        specifier: catalog:medusa
         version: 2.22.1
       '@medusajs/ui':
-        specifier: latest
+        specifier: catalog:medusa
         version: 4.2.8(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(typescript@7.0.2)
       '@payloadcms/db-postgres':
-        specifier: 4.0.0-beta.4
+        specifier: catalog:payload
         version: 4.0.0-beta.4(@opentelemetry/api@1.10.0)(knex@3.2.10(pg@8.23.1)(supports-color@8.1.1))(payload@4.0.0-beta.4(graphql@17.0.2)(supports-color@8.1.1)(typescript@7.0.2))(supports-color@8.1.1)
       '@payloadcms/email-resend':
-        specifier: 4.0.0-beta.4
+        specifier: catalog:payload
         version: 4.0.0-beta.4(payload@4.0.0-beta.4(graphql@17.0.2)(supports-color@8.1.1)(typescript@7.0.2))
       '@payloadcms/live-preview-react':
-        specifier: 4.0.0-beta.4
+        specifier: catalog:payload
         version: 4.0.0-beta.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@payloadcms/next':
-        specifier: 4.0.0-beta.4
+        specifier: catalog:payload
         version: 4.0.0-beta.4(@types/react@19.3.0)(graphql@17.0.2)(monaco-editor@0.57.0)(next@16.4.3(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.10.0)(@types/node@26.6.5)(babel-plugin-macros@3.1.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.106.1))(payload@4.0.0-beta.4(graphql@17.0.2)(supports-color@8.1.1)(typescript@7.0.2))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(supports-color@8.1.1)(typescript@7.0.2)
       '@payloadcms/plugin-form-builder':
-        specifier: 4.0.0-beta.4
+        specifier: catalog:payload
         version: 4.0.0-beta.4(@types/react@19.3.0)(monaco-editor@0.57.0)(payload@4.0.0-beta.4(graphql@17.0.2)(supports-color@8.1.1)(typescript@7.0.2))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(supports-color@8.1.1)(typescript@7.0.2)
       '@payloadcms/plugin-nested-docs':
-        specifier: 4.0.0-beta.4
+        specifier: catalog:payload
         version: 4.0.0-beta.4(payload@4.0.0-beta.4(graphql@17.0.2)(supports-color@8.1.1)(typescript@7.0.2))
       '@payloadcms/plugin-redirects':
-        specifier: 4.0.0-beta.4
+        specifier: catalog:payload
         version: 4.0.0-beta.4(payload@4.0.0-beta.4(graphql@17.0.2)(supports-color@8.1.1)(typescript@7.0.2))
       '@payloadcms/plugin-search':
-        specifier: 4.0.0-beta.4
+        specifier: catalog:payload
         version: 4.0.0-beta.4(@types/react@19.3.0)(graphql@17.0.2)(monaco-editor@0.57.0)(next@16.4.3(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.10.0)(@types/node@26.6.5)(babel-plugin-macros@3.1.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.106.1))(payload@4.0.0-beta.4(graphql@17.0.2)(supports-color@8.1.1)(typescript@7.0.2))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(supports-color@8.1.1)(typescript@7.0.2)
       '@payloadcms/plugin-seo':
-        specifier: 4.0.0-beta.4
+        specifier: catalog:payload
         version: 4.0.0-beta.4(@types/react@19.3.0)(monaco-editor@0.57.0)(payload@4.0.0-beta.4(graphql@17.0.2)(supports-color@8.1.1)(typescript@7.0.2))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(supports-color@8.1.1)(typescript@7.0.2)
       '@payloadcms/richtext-lexical':
-        specifier: 4.0.0-beta.4
+        specifier: catalog:payload
         version: 4.0.0-beta.4(@faceless-ui/modal@3.0.2(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@faceless-ui/scroll-info@2.0.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@types/react@19.3.0)(monaco-editor@0.57.0)(payload@4.0.0-beta.4(graphql@17.0.2)(supports-color@8.1.1)(typescript@7.0.2))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(supports-color@8.1.1)(typescript@7.0.2)(yjs@13.6.33)
       '@payloadcms/storage-s3':
-        specifier: 4.0.0-beta.4
+        specifier: catalog:payload
         version: 4.0.0-beta.4(@types/react@19.3.0)(monaco-editor@0.57.0)(payload@4.0.0-beta.4(graphql@17.0.2)(supports-color@8.1.1)(typescript@7.0.2))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(supports-color@8.1.1)(typescript@7.0.2)
       '@payloadcms/transformer-sharp':
-        specifier: 4.0.0-beta.4
+        specifier: catalog:payload
         version: 4.0.0-beta.4(@types/node@26.6.5)(payload@4.0.0-beta.4(graphql@17.0.2)(supports-color@8.1.1)(typescript@7.0.2))
       '@payloadcms/translations':
-        specifier: 4.0.0-beta.4
+        specifier: catalog:payload
         version: 4.0.0-beta.4
       '@payloadcms/ui':
-        specifier: 4.0.0-beta.4
+        specifier: catalog:payload
         version: 4.0.0-beta.4(@types/react@19.3.0)(monaco-editor@0.57.0)(payload@4.0.0-beta.4(graphql@17.0.2)(supports-color@8.1.1)(typescript@7.0.2))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(supports-color@8.1.1)(typescript@7.0.2)
       '@radix-ui/react-accordion':
         specifier: ^1.3.1
@@ -539,7 +660,7 @@ importers:
         specifier: 'catalog:'
         version: 14.6.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       next:
-        specifier: 16.4.3
+        specifier: catalog:storefront
         version: 16.4.3(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.10.0)(@types/node@26.6.5)(babel-plugin-macros@3.1.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.106.1)
       next-intl:
         specifier: ^4.14.9
@@ -548,7 +669,7 @@ importers:
         specifier: ^4.2.3
         version: 4.2.3(next@16.4.3(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.10.0)(@types/node@26.6.5)(babel-plugin-macros@3.1.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.106.1))
       payload:
-        specifier: 4.0.0-beta.4
+        specifier: catalog:payload
         version: 4.0.0-beta.4(graphql@17.0.2)(supports-color@8.1.1)(typescript@7.0.2)
       payload-components:
         specifier: ^1.7.0
@@ -609,10 +730,10 @@ importers:
         version: 4.6.7
     devDependencies:
       '@medusajs/types':
-        specifier: latest
+        specifier: catalog:medusa
         version: 2.22.1(ioredis@5.11.1(supports-color@8.1.1))(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.33.0)(sass@1.106.1)(tsx@4.23.15)(yaml@2.9.1))
       '@medusajs/ui-preset':
-        specifier: latest
+        specifier: catalog:medusa
         version: 2.22.1(tailwindcss@4.3.3)
       '@tailwindcss/postcss':
         specifier: 'catalog:'
@@ -651,71 +772,12 @@ importers:
         specifier: 'catalog:'
         version: 4.3.3
       typescript:
-        specifier: ^7.0.2
+        specifier: catalog:storefront
         version: 7.0.2
 
   packages/config: {}
 
-  packages/email:
-    dependencies:
-      react:
-        specifier: ^19.3.1
-        version: 19.3.1
-      react-dom:
-        specifier: ^19.3.1
-        version: 19.3.1(react@19.3.1)
-      react-email:
-        specifier: 'catalog:'
-        version: 6.11.3(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(supports-color@8.1.1)
-      resend:
-        specifier: ^6.34.1
-        version: 6.34.1(@react-email/render@2.1.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))
-    devDependencies:
-      '@ecommerce/config':
-        specifier: workspace:*
-        version: link:../config
-      '@types/react':
-        specifier: 'catalog:'
-        version: 19.3.0
-      '@types/react-dom':
-        specifier: 'catalog:'
-        version: 19.3.0(@types/react@19.3.0)
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-
-  packages/env:
-    dependencies:
-      '@t3-oss/env-core':
-        specifier: ^0.13.11
-        version: 0.13.11(typescript@6.0.3)(zod@4.6.7)
-      '@t3-oss/env-nextjs':
-        specifier: ^0.13.11
-        version: 0.13.11(typescript@6.0.3)(zod@4.6.7)
-      dotenv:
-        specifier: 'catalog:'
-        version: 18.0.9
-      zod:
-        specifier: 'catalog:'
-        version: 4.6.7
-    devDependencies:
-      '@ecommerce/config':
-        specifier: workspace:*
-        version: link:../config
-      '@types/node':
-        specifier: 'catalog:'
-        version: 26.6.5
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-
-  packages/medusa:
-    dependencies:
-      '@medusajs/js-sdk':
-        specifier: ^2.22.1
-        version: 2.22.1
-
-  packages/ui:
+  packages/design-system:
     dependencies:
       '@base-ui/react':
         specifier: ^1.9.0
@@ -763,6 +825,68 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
+
+  packages/email:
+    dependencies:
+      react:
+        specifier: 'catalog:'
+        version: 19.3.1
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.3.1(react@19.3.1)
+      react-email:
+        specifier: 'catalog:'
+        version: 6.11.3(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(supports-color@8.1.1)
+      resend:
+        specifier: 'catalog:'
+        version: 6.34.1(@react-email/render@2.1.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))
+    devDependencies:
+      '@ecommerce/config':
+        specifier: workspace:*
+        version: link:../config
+      '@medusajs/framework':
+        specifier: catalog:medusa
+        version: 2.22.1(@medusajs/cli@2.22.1(@types/node@26.6.5)(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(@types/node@26.6.5)(debug@4.4.3(supports-color@8.1.1))(ioredis@5.11.1(supports-color@8.1.1))(supports-color@8.1.1)(vite@8.3.5(@types/node@26.6.5)(esbuild@0.28.2)(jiti@1.21.7)(sass@1.106.1)(tsx@4.23.15)(yaml@2.9.1))(zod@4.6.7)
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.3.0
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.3.0(@types/react@19.3.0)
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  packages/env:
+    dependencies:
+      '@t3-oss/env-core':
+        specifier: ^0.13.11
+        version: 0.13.11(typescript@6.0.3)(zod@4.6.7)
+      '@t3-oss/env-nextjs':
+        specifier: ^0.13.11
+        version: 0.13.11(typescript@6.0.3)(zod@4.6.7)
+      dotenv:
+        specifier: 'catalog:'
+        version: 18.0.9
+      zod:
+        specifier: 'catalog:'
+        version: 4.6.7
+    devDependencies:
+      '@ecommerce/config':
+        specifier: workspace:*
+        version: link:../config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.6.5
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  packages/medusa:
+    dependencies:
+      '@medusajs/js-sdk':
+        specifier: catalog:medusa
+        version: 2.22.1
 
 packages:
 

@@ -6,9 +6,14 @@ pre-commit:
   jobs:
     - name: oxlint
       glob: "*.{ts,tsx,js,jsx,mjs,cjs}"
-      run: pnpm exec oxlint --fix {staged_files}
+      run: pnpm exec oxlint --fix --no-error-on-unmatched-pattern {staged_files}
       stage_fixed: true
     - name: oxfmt
-      glob: "*.{ts,tsx,js,jsx,mjs,cjs,json,md,css,scss}"
+      glob: "*.{ts,tsx,js,jsx,mjs,cjs,json,md,css,scss,md,mdx}"
       run: pnpm exec oxfmt --write {staged_files}
       stage_fixed: true
+
+pre-push:
+  jobs:
+    - name: knip
+      run: pnpm knip

@@ -12,11 +12,11 @@
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@ecommerce/ui/components",
-    "utils": "@ecommerce/ui/lib/utils",
-    "hooks": "@ecommerce/ui/hooks",
-    "lib": "@ecommerce/ui/lib",
-    "ui": "@ecommerce/ui/components"
+    "components": "@ecommerce/design-system/components",
+    "utils": "@ecommerce/design-system/lib/utils",
+    "hooks": "@ecommerce/design-system/hooks",
+    "lib": "@ecommerce/design-system/lib",
+    "ui": "@ecommerce/design-system/components"
   },
   "menuColor": "default",
   "menuAccent": "subtle",

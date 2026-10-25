@@ -5,7 +5,7 @@
     "jsx": "react-jsx",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "paths": {
-      "@ecommerce/ui/*": ["./src/*"]
+      "@ecommerce/design-system/*": ["./src/*"]
     },
     "strictNullChecks": true
   },

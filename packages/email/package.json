@@ -13,13 +13,14 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "react-email": "catalog:",
-    "resend": "^6.34.1"
+    "resend": "catalog:"
   },
   "devDependencies": {
     "@ecommerce/config": "workspace:*",
+    "@medusajs/framework": "catalog:medusa",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "typescript": "catalog:"

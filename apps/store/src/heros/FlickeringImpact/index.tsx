@@ -1,5 +1,5 @@
-import { FlickeringGrid } from "@ecommerce/ui/components/flickeringPatterns/flickeringDots";
-import { cn } from "@ecommerce/ui/lib/utils";
+import { FlickeringGrid } from "@ecommerce/design-system/components/flickeringPatterns/flickeringDots";
+import { cn } from "@ecommerce/design-system/lib/utils";
 import type { Page } from "@payload-types";
 import React from "react";
 

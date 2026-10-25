@@ -1,5 +1,5 @@
-import { Label } from "@ecommerce/ui/components/label";
-import { Textarea as TextAreaComponent } from "@ecommerce/ui/components/textarea";
+import { Label } from "@ecommerce/design-system/components/label";
+import { Textarea as TextAreaComponent } from "@ecommerce/design-system/components/textarea";
 import type { TextField } from "@payloadcms/plugin-form-builder/types";
 import React from "react";
 import type {

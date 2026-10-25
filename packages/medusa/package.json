@@ -8,6 +8,6 @@
     "./products": "./src/medusa-products.ts"
   },
   "dependencies": {
-    "@medusajs/js-sdk": "^2.22.1"
+    "@medusajs/js-sdk": "catalog:medusa"
   }
 }

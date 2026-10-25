@@ -1,6 +1,6 @@
 "use client";
-import { Input } from "@ecommerce/ui/components/input";
-import { Label } from "@ecommerce/ui/components/label";
+import { Input } from "@ecommerce/design-system/components/input";
+import { Label } from "@ecommerce/design-system/components/label";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";

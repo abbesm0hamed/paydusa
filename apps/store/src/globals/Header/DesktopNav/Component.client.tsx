@@ -1,6 +1,6 @@
 "use client";
 
-import { FlickeringGrid } from "@ecommerce/ui/components/flickeringPatterns/flickeringDots";
+import { FlickeringGrid } from "@ecommerce/design-system/components/flickeringPatterns/flickeringDots";
 import type { Header } from "@payload-types";
 import { SearchIcon } from "lucide-react";
 import { useTranslations } from "next-intl";

@@ -6,7 +6,7 @@ A modern ecommerce stack built with Next.js (storefront + embedded Payload CMS) 
 
 - **`apps/store`**: Next.js storefront with embedded Payload CMS admin, consuming Medusa APIs.
 - **`apps/medusa`**: Medusa backend for commerce logic (Products, Cart, Orders).
-- **`packages/ui`**: Shared shadcn/ui components and design system.
+- **`packages/design-system`**: Shared shadcn/ui components and design system.
 - **`packages/medusa`**: Shared Medusa client, types, and utilities.
 - **`packages/db`**: Shared database infrastructure (Docker, migrations).
 - **`packages/config`**: Shared linting and TypeScript configuration.
@@ -16,8 +16,8 @@ A modern ecommerce stack built with Next.js (storefront + embedded Payload CMS) 
 
 ### Prerequisites
 
-- **Node.js** >= 22
-- **pnpm** >= 9 (`corepack enable && corepack install`)
+- **Node.js** >= 24.22.1 (the storefront's engine requirement)
+- **pnpm** 12.15.0 (pinned in `package.json`; `corepack enable && corepack install`)
 - **Docker** (for PostgreSQL + Redis)
 
 ### Setup
@@ -80,6 +80,48 @@ Medusa on a subdomain isolates the commerce backend from the customer-facing sit
 - `node --run check`: Run linting and formatting (Ultracite).
 - `node --run db:start` / `node --run db:stop` / `node --run db:down`: Manage Docker services.
 - `node --run db:setup`: Reset and scaffold all databases.
+
+## Dependency versions
+
+`pnpm-workspace.yaml` is the source of truth for shared dependency versions:
+
+- Use `workspace:*` for internal `@ecommerce/*` dependencies. Each consumer must
+  declare its own dependencies; do not rely on packages installed at the root.
+- Use `catalog:` for shared libraries, including the exact React/React DOM pair
+  and their types. `catalogMode: strict` rejects conflicting default-catalog
+  versions when adding dependencies; it is not a full manifest linter.
+- Use `catalog:medusa`, `catalog:mikro-orm`, and `catalog:payload` for coordinated
+  framework releases. Upgrade each family together; Medusa UI has a separate
+  version from the commerce packages.
+- `catalog:storefront` keeps Next.js and the storefront's existing TypeScript 7
+  version explicit. Other packages retain TypeScript 6 from the default catalog.
+- App-specific dependencies may keep local version ranges. Repository tooling
+  belongs in the root; avoid floating `latest` tags.
+
+Run installs from the repository root. For example:
+
+```bash
+pnpm --filter store add 'react@catalog:'
+pnpm --filter @ecommerce/medusa add '@medusajs/js-sdk@catalog:medusa'
+pnpm install --frozen-lockfile # CI
+pnpm peers check
+```
+
+Edit coordinated version sets in `pnpm-workspace.yaml`, run `pnpm install`, and
+commit the manifest and lockfile together. `node --run bump-deps` uses pnpm's
+interactive updater instead of rewriting manifests with npm-check-updates.
+In pnpm 12, `.npmrc` is for registry/auth configuration only; build approvals and
+other workspace settings belong in `pnpm-workspace.yaml`.
+
+### Known compatibility gaps
+
+Centralizing versions does not resolve existing upstream peer incompatibilities:
+Medusa UI/draft-order expect React 18, the Medusa UI preset expects Tailwind 3,
+Payload expects GraphQL 16 (currently 17), and several telemetry packages require
+OpenTelemetry API below 1.10 (currently 1.10). The transitive `cva` package also
+requires TypeScript below 6. `pnpm peers check` reports these and additional
+transitive peer warnings. Resolve these through tested framework migrations;
+do not hide them with broad overrides or peer-warning suppression.
 
 ---
 

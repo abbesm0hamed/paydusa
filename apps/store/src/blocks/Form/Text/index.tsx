@@ -1,5 +1,5 @@
-import { Input } from "@ecommerce/ui/components/input";
-import { Label } from "@ecommerce/ui/components/label";
+import { Input } from "@ecommerce/design-system/components/input";
+import { Label } from "@ecommerce/design-system/components/label";
 import type { TextField } from "@payloadcms/plugin-form-builder/types";
 import React from "react";
 import type {

@@ -7,7 +7,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@ecommerce/ui/components/pagination";
+} from "@ecommerce/design-system/components/pagination";
 import { useRouter } from "next/navigation";
 import React from "react";
 

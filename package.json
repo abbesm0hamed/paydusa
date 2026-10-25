@@ -3,41 +3,36 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "turbo dev",
-    "build": "turbo build",
-    "check-types": "turbo check-types",
-    "dev:store": "turbo -F store dev",
-    "dev:medusa": "turbo -F medusa dev",
-    "bump-deps": "turbo bump-deps",
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "check-types": "turbo run check-types",
+    "knip": "node scripts/knip.mjs",
+    "dev:store": "turbo run dev -F store",
+    "dev:medusa": "turbo run dev -F medusa",
+    "bump-deps": "pnpm update --recursive --interactive",
     "db:start": "docker compose -f docker/docker-compose.yml up -d",
     "db:stop": "docker compose -f docker/docker-compose.yml stop",
     "db:down": "docker compose -f docker/docker-compose.yml down",
     "db:setup": "bash docker/db-setup.sh",
     "check": "ultracite check",
     "fix": "ultracite fix",
-    "clean:lockfile": "pnpm clean --lockfile && pnpm install",
-    "knip": "node scripts/knip.mjs"
+    "clean:lockfile": "pnpm clean --lockfile && pnpm install"
   },
   "dependencies": {
     "@ecommerce/env": "workspace:*",
-    "axios": "^1.20.0",
     "dotenv": "catalog:",
-    "pdfmake": "^0.3.12",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@ecommerce/config": "workspace:*",
     "@types/node": "catalog:",
-    "lefthook": "latest",
-    "oxfmt": "latest",
-    "oxlint": "latest",
+    "knip": "^6.43.0",
+    "lefthook": "2.2.2",
+    "oxfmt": "0.74.0",
+    "oxlint": "1.89.0",
     "turbo": "^2.11.10",
     "typescript": "catalog:",
-    "ultracite": "8.0.2",
-    "knip": "^6.43.0"
-  },
-  "overrides": {
-    "undici": "5.20.0"
+    "ultracite": "8.0.2"
   },
   "packageManager": "pnpm@12.15.0"
 }

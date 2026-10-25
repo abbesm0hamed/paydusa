@@ -1,5 +1,5 @@
-import { Checkbox as CheckboxUi } from "@ecommerce/ui/components/checkbox";
-import { Label } from "@ecommerce/ui/components/label";
+import { Checkbox as CheckboxUi } from "@ecommerce/design-system/components/checkbox";
+import { Label } from "@ecommerce/design-system/components/label";
 import type { CheckboxField } from "@payloadcms/plugin-form-builder/types";
 import React from "react";
 import type {

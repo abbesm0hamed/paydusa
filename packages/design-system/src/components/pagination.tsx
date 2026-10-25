@@ -1,5 +1,5 @@
-import { Button } from "@ecommerce/ui/components/button";
-import { cn } from "@ecommerce/ui/lib/utils";
+import { Button } from "@ecommerce/design-system/components/button";
+import { cn } from "@ecommerce/design-system/lib/utils";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,

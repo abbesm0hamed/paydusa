@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@ecommerce/ui/lib/utils";
+import { cn } from "@ecommerce/design-system/lib/utils";
 import type React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
