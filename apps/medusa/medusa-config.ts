@@ -86,7 +86,7 @@ module.exports = defineConfig({
               region: process.env.R2_REGION,
               bucket: process.env.R2_BUCKET,
               endpoint: process.env.R2_ENDPOINT,
-              // other options...
+              prefix: "medusa/",
             },
           },
         ],

@@ -30,7 +30,7 @@ The two views cross-check each other.
 
 ## requires
 
-- Next.js **16.3+** with **Turbopack** — `/_next/mcp` plus the
+- Next.js **16.4+** with **Turbopack** — `/_next/mcp` plus the
   proactive compile check via `get_compilation_issues`.
 - `agent-browser` **>= 0.31.1** — React introspection, worktree-scoped
   `session id`, idempotent `--restore`, and launch flag reconciliation.
@@ -92,8 +92,8 @@ Once per session, confirm both views are live.
    `next dev` banner; if it isn't 3000, set
    `NEXT_MCP_URL=http://localhost:<port>/_next/mcp` before probing:
    - Unreachable → either `next dev` isn't running, or Next.js is
-     below 16.3. Check `package.json` to disambiguate, then refuse.
-   - `get_compilation_issues` not in the list → Next.js below 16.3.
+     below 16.4. Check `package.json` to disambiguate, then refuse.
+   - `get_compilation_issues` not in the list → Next.js below 16.4.
      Refuse and tell the user to upgrade.
 3. `get_compilation_issues` doubles as a Turbopack probe. An error
    response of `"Turbopack project is not available..."` means the
