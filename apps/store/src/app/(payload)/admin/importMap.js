@@ -43,6 +43,7 @@ import { CollectionQueryWidget as CollectionQueryWidget_ab83ff7e88da8d3530831f29
 import { ActivityWidget as ActivityWidget_ab83ff7e88da8d3530831f296ec4756a } from "@payloadcms/ui/rsc";
 import { UploadDropzoneWidget as UploadDropzoneWidget_ab83ff7e88da8d3530831f296ec4756a } from "@payloadcms/ui/rsc";
 
+import { BlogMarkdownField as BlogMarkdownField_56d4480acc26516a7f77c240ba7b194a } from "@/blocks/BlogMarkdown/Field";
 import { default as default_d0335e7a62aec198e4416a8134eda638 } from "@/components/Logo/AdminLogo";
 import { SlugComponent as SlugComponent_92cc057d0a2abb4f6cf0307edf59f986 } from "@/fields/slug/SlugComponent";
 import { RowLabel as RowLabel_e5f2ea2a3ff3620de63526e885e3b034 } from "@/globals/Footer/RowLabel";
@@ -127,6 +128,8 @@ export const importMap = {
     RowLabel_17c6ef4bfe47bfa29d923fb5718170b7,
   "@/globals/Footer/RowLabel#RowLabel":
     RowLabel_e5f2ea2a3ff3620de63526e885e3b034,
+  "@/blocks/BlogMarkdown/Field#BlogMarkdownField":
+    BlogMarkdownField_56d4480acc26516a7f77c240ba7b194a,
   "@/icons/AdminIcon#default": default_ea366715dec2bdecbc5f39e874150dd3,
   "@/components/Logo/AdminLogo#default":
     default_d0335e7a62aec198e4416a8134eda638,
