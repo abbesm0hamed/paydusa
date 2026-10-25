@@ -1,4 +1,5 @@
 import { withPayload } from "@payloadcms/next/withPayload";
+import { withSentryConfig } from "@sentry/nextjs/config";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin();
@@ -58,7 +59,24 @@ const nextConfig = {
   },
 };
 
-// Export the config with Payload integration
-export default withPayload(withNextIntl(nextConfig), {
+const configWithPayload = withPayload(withNextIntl(nextConfig), {
   devBundleServerPackages: false,
+});
+
+export default withSentryConfig(configWithPayload, {
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  bundleSizeOptimizations: {
+    excludeDebugStatements: true,
+  },
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  silent: !process.env.CI,
+  sourcemaps: {
+    deleteSourcemapsAfterUpload: true,
+    disable: !(
+      process.env.SENTRY_AUTH_TOKEN &&
+      process.env.SENTRY_ORG &&
+      process.env.SENTRY_PROJECT
+    ),
+  },
 });

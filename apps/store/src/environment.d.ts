@@ -13,10 +13,15 @@ declare global {
       NEXT_PUBLIC_WWW_URL: string;
       NEXT_PUBLIC_ALGOLIA_APP_ID: string;
       NEXT_PUBLIC_ALGOLIA_PRODUCT_INDEX_NAME: string;
+      NEXT_PUBLIC_SENTRY_DSN?: string;
+      NEXT_PUBLIC_SENTRY_ENVIRONMENT?: string;
       NEXT_PUBLIC_VERCEL_URL: string;
       PREVIEW_SECRET: string;
       PAYLOAD_SERVER_URL: string;
       REVALIDATE_SECRET: string;
+      SENTRY_ORG?: string;
+      SENTRY_PROJECT?: string;
+      SENTRY_AUTH_TOKEN?: string;
       FACEBOOK_DOMAIN_VERIFICATION: string;
       R2_PUBLIC_URL: string;
       R2_ACCESS_KEY_ID: string;

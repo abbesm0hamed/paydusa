@@ -17,6 +17,7 @@ allowBuilds:
   sharp: true
 
 catalog:
+  "@sentry/nextjs": ^11.9.0
   "@tailwindcss/postcss": ^4.3.3
   "@types/node": ^26.6.5
   "@types/react": 19.3.0
