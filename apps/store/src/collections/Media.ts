@@ -1,12 +1,15 @@
 import type { CollectionConfig } from "payload";
 
+import { getMediaThumbnailURL } from "../utilities/mediaURLs";
+
 export const Media: CollectionConfig = {
   slug: "media",
   versions: false,
   authorship: false,
   upload: {
     disableLocalStorage: true,
-    adminThumbnail: "thumbnail",
+    // A callback makes Payload select the storage metadata needed by grid thumbnails.
+    adminThumbnail: ({ doc }) => getMediaThumbnailURL(doc),
     mimeTypes: ["image/*"],
     pasteURL: {
       allowList: [

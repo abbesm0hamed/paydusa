@@ -11,7 +11,6 @@ declare global {
       NEXT_PUBLIC_DEFAULT_REGION: string;
       NEXT_PUBLIC_STRIPE_KEY: string;
       NEXT_PUBLIC_WWW_URL: string;
-      NEXT_PUBLIC_R2_HOSTNAME: string;
       NEXT_PUBLIC_ALGOLIA_APP_ID: string;
       NEXT_PUBLIC_ALGOLIA_PRODUCT_INDEX_NAME: string;
       NEXT_PUBLIC_VERCEL_URL: string;
@@ -19,12 +18,11 @@ declare global {
       PAYLOAD_SERVER_URL: string;
       REVALIDATE_SECRET: string;
       FACEBOOK_DOMAIN_VERIFICATION: string;
-      S3_FILE_URL: string;
-      S3_ACCESS_KEY_ID: string;
-      S3_SECRET_ACCESS_KEY: string;
-      S3_REGION: string;
-      S3_BUCKET: string;
-      S3_ENDPOINT: string;
+      R2_PUBLIC_URL: string;
+      R2_ACCESS_KEY_ID: string;
+      R2_SECRET_ACCESS_KEY: string;
+      R2_BUCKET: string;
+      R2_ENDPOINT: string;
       VERCEL_PROJECT_PRODUCTION_URL: string;
     }
   }

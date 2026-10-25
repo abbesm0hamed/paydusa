@@ -2,6 +2,12 @@
 
 A modern ecommerce stack built with Next.js (storefront + embedded Payload CMS) and Medusa.
 
+## Payload Admin Panel
+
+Manage pages, posts, media, and site navigation from the embedded Payload CMS admin panel.
+
+![Payload CMS admin dashboard](apps/store/public/screenshots/payload-dashboard.png)
+
 ## Architecture
 
 - **`apps/store`**: Next.js storefront with embedded Payload CMS admin, consuming Medusa APIs.

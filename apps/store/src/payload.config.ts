@@ -41,6 +41,7 @@ import { plugins } from "@/plugins";
 
 import { Products } from "./collections/Products";
 import { getServerSideURL } from "./utilities/getURL";
+import { getMediaFileURL } from "./utilities/mediaURLs";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -370,23 +371,22 @@ export default buildConfig({
   }),
   plugins: [...plugins],
   storage: [
+    // R2 uses the S3-compatible adapter in Node.js (storage-r2 requires Workers bindings).
     s3Storage({
       collections: {
         media: {
           disablePayloadAccessControl: true,
           prefix: mediaPrefix,
-          generateFileURL: ({ filename }: { filename: string }) => {
-            return `${process.env.S3_FILE_URL}/${mediaPrefix}/${filename}`;
-          },
+          generateFileURL: getMediaFileURL,
         },
       },
-      bucket: process.env.S3_BUCKET!,
+      bucket: process.env.R2_BUCKET!,
       config: {
-        endpoint: process.env.S3_ENDPOINT!,
-        region: process.env.S3_REGION || "auto",
+        endpoint: process.env.R2_ENDPOINT!,
+        region: "auto",
         credentials: {
-          accessKeyId: process.env.S3_ACCESS_KEY_ID!,
-          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
+          accessKeyId: process.env.R2_ACCESS_KEY_ID!,
+          secretAccessKey: process.env.R2_SECRET_ACCESS_KEY!,
         },
         forcePathStyle: true,
       },

@@ -3,8 +3,10 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin();
 
-// Run environment variable check
-const r2Hostname = process.env.NEXT_PUBLIC_R2_HOSTNAME;
+// Share the public R2 URL with Payload instead of configuring the hostname twice.
+const r2Hostname = process.env.R2_PUBLIC_URL
+  ? new URL(process.env.R2_PUBLIC_URL).hostname
+  : undefined;
 
 /**
  * @type {import('next').NextConfig}
