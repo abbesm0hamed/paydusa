@@ -1,5 +1,5 @@
 {
-  "name": "ecommerce",
+  "name": "paydusa",
   "private": true,
   "type": "module",
   "scripts": {
@@ -7,8 +7,8 @@
     "build": "turbo run build",
     "check-types": "turbo run check-types",
     "knip": "node scripts/knip.mjs",
-    "dev:store": "turbo run dev -F store",
-    "dev:medusa": "turbo run dev -F medusa",
+    "dev:store": "turbo run dev -F @paydusa/store",
+    "dev:medusa": "turbo run dev -F @paydusa/medusa",
     "bump-deps": "pnpm update --recursive --interactive",
     "db:start": "docker compose -f docker/docker-compose.yml up -d",
     "db:stop": "docker compose -f docker/docker-compose.yml stop",
@@ -19,12 +19,12 @@
     "clean:lockfile": "pnpm clean --lockfile && pnpm install"
   },
   "dependencies": {
-    "@ecommerce/env": "workspace:*",
+    "@paydusa/env": "workspace:*",
     "dotenv": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@ecommerce/config": "workspace:*",
+    "@paydusa/config": "workspace:*",
     "@types/node": "catalog:",
     "knip": "^6.43.0",
     "lefthook": "2.2.2",

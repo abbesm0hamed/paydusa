@@ -1,7 +1,7 @@
 "use client";
 
-import { Checkbox } from "@ecommerce/design-system/components/checkbox";
-import { cn } from "@ecommerce/design-system/lib/utils";
+import { Checkbox } from "@paydusa/design-system/components/checkbox";
+import { cn } from "@paydusa/design-system/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { useCallback, useState } from "react";
 

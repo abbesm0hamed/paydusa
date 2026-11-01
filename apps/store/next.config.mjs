@@ -15,7 +15,6 @@ const r2Hostname = process.env.R2_PUBLIC_URL
 const nextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
-  transpilePackages: ["@ecommerce/medusa"],
   turbopack: {
     root: new URL("../../", import.meta.url).pathname,
   },

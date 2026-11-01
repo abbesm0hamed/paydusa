@@ -6,7 +6,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@ecommerce/design-system/components/select";
+} from "@paydusa/design-system/components/select";
 import { useLocale } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import type { TypedLocale } from "payload";

@@ -56,14 +56,6 @@ module.exports = defineConfig({
       },
     },
     {
-      resolve: "./src/modules/payload",
-      options: {
-        serverUrl: process.env.PAYLOAD_SERVER_URL,
-        apiKey: process.env.PAYLOAD_API_KEY,
-        userCollection: process.env.PAYLOAD_USER_COLLECTION || "users",
-      },
-    },
-    {
       resolve: "./src/modules/algolia",
       options: {
         appId: process.env.ALGOLIA_APP_ID!,

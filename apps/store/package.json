@@ -1,5 +1,5 @@
 {
-  "name": "store",
+  "name": "@paydusa/store",
   "version": "1.0.5",
   "private": true,
   "description": "complete ecommerce app for tunisians and international businesses",
@@ -28,12 +28,11 @@
     "bump-deps": "pnpm update --interactive"
   },
   "dependencies": {
-    "@ecommerce/design-system": "workspace:*",
-    "@ecommerce/medusa": "workspace:*",
     "@headlessui/react": "^2.2.10",
     "@medusajs/icons": "catalog:medusa",
     "@medusajs/js-sdk": "catalog:medusa",
     "@medusajs/ui": "catalog:medusa",
+    "@paydusa/design-system": "workspace:*",
     "@payloadcms/db-postgres": "catalog:payload",
     "@payloadcms/email-resend": "catalog:payload",
     "@payloadcms/live-preview-react": "catalog:payload",

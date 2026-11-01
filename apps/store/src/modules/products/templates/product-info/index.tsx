@@ -1,12 +1,9 @@
+import type { HttpTypes } from "@medusajs/types";
 import { Heading, Text } from "@medusajs/ui";
 import LocalizedClientLink from "@modules/common/components/localized-client-link";
-// @ts-ignore
-import { RichText } from "@payloadcms/richtext-lexical/react";
-
-import { StoreProductWithPayload } from "../../../../types/global";
 
 type ProductInfoProps = {
-  product: StoreProductWithPayload;
+  product: HttpTypes.StoreProduct;
 };
 
 const ProductInfo = ({ product }: ProductInfoProps) => {
@@ -26,21 +23,15 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
           className="text-3xl leading-10 text-ui-fg-base"
           data-testid="product-title"
         >
-          {product?.payload_product?.title || product.title}
+          {product.title}
         </Heading>
 
-        {product?.payload_product?.description !== undefined && (
-          <RichText data={product.payload_product.description} />
-        )}
-
-        {product?.payload_product?.description === undefined && (
-          <Text
-            className="text-medium text-ui-fg-subtle whitespace-pre-line"
-            data-testid="product-description"
-          >
-            {product.description}
-          </Text>
-        )}
+        <Text
+          className="text-medium text-ui-fg-subtle whitespace-pre-line"
+          data-testid="product-description"
+        >
+          {product.description}
+        </Text>
       </div>
     </div>
   );

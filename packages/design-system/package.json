@@ -1,5 +1,5 @@
 {
-  "name": "@ecommerce/design-system",
+  "name": "@paydusa/design-system",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -26,7 +26,7 @@
     "tw-animate-css": "catalog:"
   },
   "devDependencies": {
-    "@ecommerce/config": "workspace:*",
+    "@paydusa/config": "workspace:*",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "tailwindcss": "catalog:",

@@ -1,5 +1,5 @@
-import { Checkbox as CheckboxUi } from "@ecommerce/design-system/components/checkbox";
-import { Label } from "@ecommerce/design-system/components/label";
+import { Checkbox as CheckboxUi } from "@paydusa/design-system/components/checkbox";
+import { Label } from "@paydusa/design-system/components/label";
 import type { CheckboxField } from "@payloadcms/plugin-form-builder/types";
 import React from "react";
 import type {

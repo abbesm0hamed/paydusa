@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import ImageGallery from "@modules/products/components/image-gallery";
 import ProductActions from "@modules/products/components/product-actions";
 import ProductOnboardingCta from "@modules/products/components/product-onboarding-cta";
@@ -9,12 +9,10 @@ import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-relat
 import { notFound } from "next/navigation";
 import React, { Suspense } from "react";
 
-import { getProductImages } from "../../../lib/util/payload-images";
-import { StoreProductWithPayload } from "../../../types/global";
 import ProductActionsWrapper from "./product-actions-wrapper";
 
 type ProductTemplateProps = {
-  product: StoreProductWithPayload;
+  product: HttpTypes.StoreProduct;
   region: HttpTypes.StoreRegion;
   countryCode: string;
 };
@@ -28,8 +26,6 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
     return notFound();
   }
 
-  const productImages = getProductImages(product);
-
   return (
     <>
       <div
@@ -41,7 +37,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
           <ProductTabs product={product} />
         </div>
         <div className="block w-full relative">
-          <ImageGallery images={productImages} />
+          <ImageGallery images={product.images ?? []} />
         </div>
         <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
           <ProductOnboardingCta />

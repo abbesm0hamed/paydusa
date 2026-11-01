@@ -2,7 +2,8 @@
 
 import { addToCart } from "@lib/data/cart";
 import { useIntersection } from "@lib/hooks/use-in-view";
-import { HttpTypes } from "@medusajs/types";
+import { getVariantOptions } from "@lib/util/product-options";
+import type { HttpTypes } from "@medusajs/types";
 import { Button } from "@medusajs/ui";
 import Divider from "@modules/common/components/divider";
 import OptionSelect from "@modules/products/components/product-actions/option-select";
@@ -10,27 +11,13 @@ import { isEqual } from "lodash";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { StoreProductWithPayload } from "../../../../types/global";
 import ProductPrice from "../product-price";
 import MobileActions from "./mobile-actions";
 
 type ProductActionsProps = {
-  product: StoreProductWithPayload;
+  product: HttpTypes.StoreProduct;
   region: HttpTypes.StoreRegion;
   disabled?: boolean;
-};
-
-const optionsAsKeymap = (
-  variantOptions: HttpTypes.StoreProductVariant["options"],
-  payloadData: StoreProductWithPayload["payload_product"]
-) => {
-  const firstVariant = payloadData?.variants?.[0];
-  return variantOptions?.reduce((acc: Record<string, string>, varopt: any) => {
-    acc[varopt.option_id] =
-      firstVariant?.option_values.find((v) => v.medusa_option_id === varopt.id)
-        ?.value || varopt.value;
-    return acc;
-  }, {});
 };
 
 export default function ProductActions({
@@ -46,11 +33,7 @@ export default function ProductActions({
   // If there is only 1 variant, preselect the options
   useEffect(() => {
     if (product.variants?.length === 1) {
-      const variantOptions = optionsAsKeymap(
-        product.variants[0].options,
-        product.payload_product
-      );
-      setOptions(variantOptions ?? {});
+      setOptions(getVariantOptions(product.variants[0].options));
     }
   }, [product.variants]);
 
@@ -60,10 +43,7 @@ export default function ProductActions({
     }
 
     return product.variants.find((v) => {
-      const variantOptions = optionsAsKeymap(
-        v.options,
-        product.payload_product
-      );
+      const variantOptions = getVariantOptions(v.options);
       return isEqual(variantOptions, options);
     });
   }, [product.variants, options]);
@@ -79,10 +59,7 @@ export default function ProductActions({
   //check if the selected options produce a valid variant
   const isValidVariant = useMemo(() => {
     return product.variants?.some((v) => {
-      const variantOptions = optionsAsKeymap(
-        v.options,
-        product.payload_product
-      );
+      const variantOptions = getVariantOptions(v.options);
       return isEqual(variantOptions, options);
     });
   }, [product.variants, options]);
@@ -136,23 +113,18 @@ export default function ProductActions({
         <div>
           {(product.variants?.length ?? 0) > 1 && (
             <div className="flex flex-col gap-y-4">
-              {(product.options || []).map((option) => {
-                const payloadOption = product.payload_product?.options?.find(
-                  (o) => o.medusa_id === option.id
-                );
-                return (
-                  <div key={option.id}>
-                    <OptionSelect
-                      option={option}
-                      current={options[option.id]}
-                      updateOption={setOptionValue}
-                      title={payloadOption?.title || option.title || ""}
-                      data-testid="product-options"
-                      disabled={!!disabled || isAdding}
-                    />
-                  </div>
-                );
-              })}
+              {(product.options || []).map((option) => (
+                <div key={option.id}>
+                  <OptionSelect
+                    option={option}
+                    current={options[option.id]}
+                    updateOption={setOptionValue}
+                    title={option.title || ""}
+                    data-testid="product-options"
+                    disabled={!!disabled || isAdding}
+                  />
+                </div>
+              ))}
               <Divider />
             </div>
           )}

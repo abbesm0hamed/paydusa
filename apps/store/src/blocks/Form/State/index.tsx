@@ -1,11 +1,11 @@
-import { Label } from "@ecommerce/design-system/components/label";
+import { Label } from "@paydusa/design-system/components/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@ecommerce/design-system/components/select";
+} from "@paydusa/design-system/components/select";
 import type { StateField } from "@payloadcms/plugin-form-builder/types";
 import React from "react";
 import type { Control, FieldErrorsImpl } from "react-hook-form";

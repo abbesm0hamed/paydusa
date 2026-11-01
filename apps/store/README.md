@@ -8,16 +8,17 @@ Copy `.env.template` to `.env` and configure your secrets. Local URL settings ar
 ```dotenv
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 NEXT_PUBLIC_SERVER_URL=http://localhost:3000
-PAYLOAD_SERVER_URL=http://localhost:3000
 ```
 
 `NEXT_PUBLIC_SERVER_URL` also determines the origin of Payload password-reset
 emails. Restart the development server after changing environment variables and
 request a new reset email; existing emails keep their old links.
 
-The Medusa backend runs on `http://localhost:9100`. Its environment should use
-`PAYLOAD_SERVER_URL=http://localhost:3000` and allow `http://localhost:3000` in
-`STORE_CORS` and `AUTH_CORS`.
+The Medusa backend runs on `http://localhost:9100`. Its environment should allow
+`http://localhost:3000` in `STORE_CORS` and `AUTH_CORS`.
+
+Products are managed in Medusa only; Payload manages editorial content. Existing
+stores: see [product sync removal notes](./PRODUCT_SYNC_REMOVAL.md).
 
 ## Sentry
 
@@ -31,7 +32,7 @@ NEXT_PUBLIC_SENTRY_DSN=your-storefront-project-dsn
 NEXT_PUBLIC_SENTRY_ENVIRONMENT=development
 ```
 
-Restart `pnpm --filter store dev` after changing these values. Production builds
+Restart `pnpm --filter @paydusa/store dev` after changing these values. Production builds
 must receive the DSN and environment at **build time**, since Next.js embeds
 `NEXT_PUBLIC_*` values in the browser bundle. Leave the DSN empty to disable
 reporting. Medusa keeps its existing project and `SENTRY_DSN` unchanged.
@@ -59,14 +60,14 @@ The token must be authorized to upload source maps to this project. Never prefix
 it with `NEXT_PUBLIC_` or commit it. Uploads are skipped without all three values;
 error reporting still works with just the DSN. Uploaded source maps are deleted
 from the build output. When enabling uploads on a previously cached CI build,
-force a rebuild (`pnpm exec turbo run build --filter=store --force`).
+force a rebuild (`pnpm exec turbo run build --filter=@paydusa/store --force`).
 
 To verify delivery after adding the DSN, trigger a temporary, controlled error in
 development and confirm it appears in the **storefront** project with the
 `service:storefront` tag. Remove the temporary error afterward; development
 render errors may also appear in the Next.js error overlay.
 
-Run `pnpm --filter store test:sentry` to check configuration defaults without
+Run `pnpm --filter @paydusa/store test:sentry` to check configuration defaults without
 sending events to Sentry.
 
 See the [root README](../../README.md) for setup instructions and

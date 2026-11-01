@@ -2,8 +2,8 @@
 
 import { sdk } from "@lib/config";
 import { filterProductsByPrice, sortProducts } from "@lib/util/sort-products";
-import { HttpTypes } from "@medusajs/types";
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products";
+import type { HttpTypes } from "@medusajs/types";
+import type { SortOptions } from "@modules/store/components/refinement-list/sort-products";
 
 import { getAuthHeaders } from "./cookies";
 import { getRegion, retrieveRegion } from "./regions";
@@ -51,34 +51,23 @@ export const listProducts = async ({
   };
 
   try {
-    return await sdk.client
-      .fetch<{ products: HttpTypes.StoreProduct[]; count: number }>(
-        `/store/products`,
-        {
-          method: "GET",
-          query: {
-            limit,
-            offset,
-            region_id: region?.id,
-            fields:
-              "*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags,*payload_product",
-            ...queryParams,
-          },
-          headers,
-        }
-      )
-      .then(({ products, count }) => {
-        const nextPage = count > offset + limit ? pageParam + 1 : null;
+    const { products, count } = await sdk.store.product.list(
+      {
+        limit,
+        offset,
+        region_id: region.id,
+        fields:
+          "*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags",
+        ...queryParams,
+      },
+      headers
+    );
 
-        return {
-          response: {
-            products,
-            count,
-          },
-          nextPage: nextPage,
-          queryParams,
-        };
-      });
+    return {
+      response: { products, count },
+      nextPage: count > offset + limit ? pageParam + 1 : null,
+      queryParams,
+    };
   } catch {
     return {
       response: { products: [], count: 0 },

@@ -1,5 +1,5 @@
-import { Input } from "@ecommerce/design-system/components/input";
-import { Label } from "@ecommerce/design-system/components/label";
+import { Input } from "@paydusa/design-system/components/input";
+import { Label } from "@paydusa/design-system/components/label";
 import type { EmailField } from "@payloadcms/plugin-form-builder/types";
 import type React from "react";
 import type {

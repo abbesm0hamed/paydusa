@@ -3,8 +3,6 @@ declare global {
     interface ProcessEnv {
       MEDUSA_BACKEND_URL: string;
       MEDUSA_PUBLISHABLE_KEY: string;
-      MEDUSA_ADMIN_EMAIL: string;
-      MEDUSA_ADMIN_PASSWORD: string;
       NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: string;
       NEXT_PUBLIC_SERVER_URL: string;
       NEXT_PUBLIC_BASE_URL: string;
@@ -17,7 +15,6 @@ declare global {
       NEXT_PUBLIC_SENTRY_ENVIRONMENT?: string;
       NEXT_PUBLIC_VERCEL_URL: string;
       PREVIEW_SECRET: string;
-      PAYLOAD_SERVER_URL: string;
       REVALIDATE_SECRET: string;
       SENTRY_ORG?: string;
       SENTRY_PROJECT?: string;

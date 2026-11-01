@@ -1,7 +1,7 @@
 import {
   Button,
   type ButtonProps,
-} from "@ecommerce/design-system/components/button";
+} from "@paydusa/design-system/components/button";
 import type { Page, Post } from "@payload-types";
 import NextLink from "next/link";
 import React from "react";

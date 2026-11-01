@@ -39,7 +39,6 @@ import { i18n, localization } from "@/i18n/localization";
 import { resolvePath } from "@/lib/paths";
 import { plugins } from "@/plugins";
 
-import { Products } from "./collections/Products";
 import { getServerSideURL } from "./utilities/getURL";
 import { getMediaFileURL } from "./utilities/mediaURLs";
 
@@ -250,7 +249,6 @@ export default buildConfig({
     Media,
     Categories,
     Users,
-    Products,
     {
       slug: "video",
       versions: false,

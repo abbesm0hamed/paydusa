@@ -19,9 +19,8 @@ Manage products, inventory, orders, and customers from the Medusa admin panel.
 - **`apps/store`**: Next.js storefront with embedded Payload CMS admin, consuming Medusa APIs.
 - **`apps/medusa`**: Medusa backend for commerce logic (Products, Cart, Orders).
 - **`packages/design-system`**: Shared shadcn/ui components and design system.
-- **`packages/medusa`**: Shared Medusa client, types, and utilities.
-- **`packages/db`**: Shared database infrastructure (Docker, migrations).
-- **`packages/config`**: Shared linting and TypeScript configuration.
+- **`packages/email`**: Shared transactional email templates.
+- **`packages/config`**: Shared TypeScript configuration.
 - **`packages/env`**: Shared environment variable validation (Zod).
 
 ## Getting Started
@@ -65,15 +64,20 @@ That's it. The apps are available at:
 > **First Medusa login**: email `admin@medusajs.com`, password set via `MEDUSA_ADMIN_PASSWORD` in `apps/medusa/.env`.
 
 The storefront and embedded Payload CMS share port **3000**. Set
-`NEXT_PUBLIC_BASE_URL`, `NEXT_PUBLIC_SERVER_URL`, and `PAYLOAD_SERVER_URL` in
-`apps/store/.env` to `http://localhost:3000`. In `apps/medusa/.env`, use the same
-`PAYLOAD_SERVER_URL` and include `http://localhost:3000` in `STORE_CORS` and
-`AUTH_CORS`, as shown in the environment templates.
+`NEXT_PUBLIC_BASE_URL` and `NEXT_PUBLIC_SERVER_URL` in `apps/store/.env` to
+`http://localhost:3000`. In `apps/medusa/.env`, include `http://localhost:3000` in
+`STORE_CORS` and `AUTH_CORS`, as shown in the environment templates.
 
 After changing these values, restart the affected development servers. Request a
 new password-reset email: previously sent links retain their original URL.
 
 ## Deployment
+
+### Product and content ownership
+
+Medusa is the sole source of product data; Payload manages editorial content
+(pages, posts, media, navigation). Existing installations: see
+[product sync removal notes](apps/store/PRODUCT_SYNC_REMOVAL.md) before deploying.
 
 The project has two admin interfaces that are best kept separate:
 
@@ -97,7 +101,7 @@ Medusa on a subdomain isolates the commerce backend from the customer-facing sit
 
 `pnpm-workspace.yaml` is the source of truth for shared dependency versions:
 
-- Use `workspace:*` for internal `@ecommerce/*` dependencies. Each consumer must
+- Use `workspace:*` for internal `@paydusa/*` dependencies. Each consumer must
   declare its own dependencies; do not rely on packages installed at the root.
 - Use `catalog:` for shared libraries, including the exact React/React DOM pair
   and their types. `catalogMode: strict` rejects conflicting default-catalog
@@ -113,8 +117,8 @@ Medusa on a subdomain isolates the commerce backend from the customer-facing sit
 Run installs from the repository root. For example:
 
 ```bash
-pnpm --filter store add 'react@catalog:'
-pnpm --filter @ecommerce/medusa add '@medusajs/js-sdk@catalog:medusa'
+pnpm --filter @paydusa/store add 'react@catalog:'
+pnpm --filter @paydusa/medusa add '@medusajs/js-sdk@catalog:medusa'
 pnpm install --frozen-lockfile # CI
 pnpm peers check
 ```

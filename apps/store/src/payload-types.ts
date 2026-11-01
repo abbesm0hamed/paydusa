@@ -62,24 +62,23 @@ export type SupportedTimezones =
   | "Pacific/Fiji";
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "LexicalNodes_B3CEB8CE".
+ * via the `definition` "LexicalNodes_9335DDB7".
  */
-export type LexicalNodes_B3CEB8CE =
+export type LexicalNodes_9335DDB7 =
   | SerializedTextNode
   | SerializedTabNode
   | SerializedLineBreakNode
-  | SerializedParagraphNode<LexicalNodes_B3CEB8CE>
-  | SerializedHeadingNode<LexicalNodes_B3CEB8CE, "h1" | "h2" | "h3" | "h4">
+  | SerializedParagraphNode<LexicalNodes_9335DDB7>
+  | SerializedHeadingNode<LexicalNodes_9335DDB7, "h1" | "h2" | "h3" | "h4">
   | SerializedHorizontalRuleNode
   | SerializedUploadNode<"media">
-  | SerializedQuoteNode<LexicalNodes_B3CEB8CE>
+  | SerializedQuoteNode<LexicalNodes_9335DDB7>
   | SerializedRelationshipNode<
       | "pages"
       | "reusable-content"
       | "posts"
       | "categories"
       | "users"
-      | "products"
       | "video"
       | "br"
       | "commandLine"
@@ -93,30 +92,29 @@ export type LexicalNodes_B3CEB8CE =
       | "payload-preferences"
       | "payload-migrations"
     >
-  | SerializedAutoLinkNode<LexicalNodes_B3CEB8CE, LexicalLinkFields>
-  | SerializedLinkNode<LexicalNodes_B3CEB8CE, LexicalLinkFields>
-  | SerializedListNode<LexicalNodes_B3CEB8CE>
-  | SerializedListItemNode<LexicalNodes_B3CEB8CE>;
+  | SerializedAutoLinkNode<LexicalNodes_9335DDB7, LexicalLinkFields>
+  | SerializedLinkNode<LexicalNodes_9335DDB7, LexicalLinkFields>
+  | SerializedListNode<LexicalNodes_9335DDB7>
+  | SerializedListItemNode<LexicalNodes_9335DDB7>;
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "LexicalNodes_4783DCAE".
+ * via the `definition` "LexicalNodes_67AA858C".
  */
-export type LexicalNodes_4783DCAE =
+export type LexicalNodes_67AA858C =
   | SerializedTextNode
   | SerializedTabNode
   | SerializedLineBreakNode
-  | SerializedParagraphNode<LexicalNodes_4783DCAE>
-  | SerializedHeadingNode<LexicalNodes_4783DCAE, "h2" | "h3" | "h4">
+  | SerializedParagraphNode<LexicalNodes_67AA858C>
+  | SerializedHeadingNode<LexicalNodes_67AA858C, "h2" | "h3" | "h4">
   | SerializedHorizontalRuleNode
   | SerializedUploadNode<"media">
-  | SerializedQuoteNode<LexicalNodes_4783DCAE>
+  | SerializedQuoteNode<LexicalNodes_67AA858C>
   | SerializedRelationshipNode<
       | "pages"
       | "reusable-content"
       | "posts"
       | "categories"
       | "users"
-      | "products"
       | "video"
       | "br"
       | "commandLine"
@@ -130,29 +128,28 @@ export type LexicalNodes_4783DCAE =
       | "payload-preferences"
       | "payload-migrations"
     >
-  | SerializedAutoLinkNode<LexicalNodes_4783DCAE, LexicalLinkFields>
-  | SerializedLinkNode<LexicalNodes_4783DCAE, LexicalLinkFields>
-  | SerializedListNode<LexicalNodes_4783DCAE>
-  | SerializedListItemNode<LexicalNodes_4783DCAE>;
+  | SerializedAutoLinkNode<LexicalNodes_67AA858C, LexicalLinkFields>
+  | SerializedLinkNode<LexicalNodes_67AA858C, LexicalLinkFields>
+  | SerializedListNode<LexicalNodes_67AA858C>
+  | SerializedListItemNode<LexicalNodes_67AA858C>;
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "LexicalNodes_ECA9AE16".
+ * via the `definition` "LexicalNodes_BAE37333".
  */
-export type LexicalNodes_ECA9AE16 =
+export type LexicalNodes_BAE37333 =
   | SerializedTextNode
   | SerializedTabNode
   | SerializedLineBreakNode
-  | SerializedParagraphNode<LexicalNodes_ECA9AE16>
+  | SerializedParagraphNode<LexicalNodes_BAE37333>
   | SerializedHorizontalRuleNode
   | SerializedUploadNode<"media">
-  | SerializedQuoteNode<LexicalNodes_ECA9AE16>
+  | SerializedQuoteNode<LexicalNodes_BAE37333>
   | SerializedRelationshipNode<
       | "pages"
       | "reusable-content"
       | "posts"
       | "categories"
       | "users"
-      | "products"
       | "video"
       | "br"
       | "commandLine"
@@ -166,32 +163,31 @@ export type LexicalNodes_ECA9AE16 =
       | "payload-preferences"
       | "payload-migrations"
     >
-  | SerializedAutoLinkNode<LexicalNodes_ECA9AE16, LexicalLinkFields>
-  | SerializedLinkNode<LexicalNodes_ECA9AE16, LexicalLinkFields>
-  | SerializedListNode<LexicalNodes_ECA9AE16>
-  | SerializedListItemNode<LexicalNodes_ECA9AE16>
-  | SerializedHeadingNode<LexicalNodes_ECA9AE16>;
+  | SerializedAutoLinkNode<LexicalNodes_BAE37333, LexicalLinkFields>
+  | SerializedLinkNode<LexicalNodes_BAE37333, LexicalLinkFields>
+  | SerializedListNode<LexicalNodes_BAE37333>
+  | SerializedListItemNode<LexicalNodes_BAE37333>
+  | SerializedHeadingNode<LexicalNodes_BAE37333>;
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "LexicalNodes_326DEB17".
+ * via the `definition` "LexicalNodes_9593355E".
  */
-export type LexicalNodes_326DEB17 =
+export type LexicalNodes_9593355E =
   | SerializedTextNode
   | SerializedTabNode
   | SerializedLineBreakNode
-  | SerializedParagraphNode<LexicalNodes_326DEB17>
+  | SerializedParagraphNode<LexicalNodes_9593355E>
   | SerializedHorizontalRuleNode
   | SerializedBlockNode<BannerBlock | CodeBlock | MediaBlock_D6C44817>
-  | SerializedHeadingNode<LexicalNodes_326DEB17, "h1" | "h2" | "h3" | "h4">
+  | SerializedHeadingNode<LexicalNodes_9593355E, "h1" | "h2" | "h3" | "h4">
   | SerializedUploadNode<"media">
-  | SerializedQuoteNode<LexicalNodes_326DEB17>
+  | SerializedQuoteNode<LexicalNodes_9593355E>
   | SerializedRelationshipNode<
       | "pages"
       | "reusable-content"
       | "posts"
       | "categories"
       | "users"
-      | "products"
       | "video"
       | "br"
       | "commandLine"
@@ -205,10 +201,10 @@ export type LexicalNodes_326DEB17 =
       | "payload-preferences"
       | "payload-migrations"
     >
-  | SerializedAutoLinkNode<LexicalNodes_326DEB17, LexicalLinkFields>
-  | SerializedLinkNode<LexicalNodes_326DEB17, LexicalLinkFields>
-  | SerializedListNode<LexicalNodes_326DEB17>
-  | SerializedListItemNode<LexicalNodes_326DEB17>;
+  | SerializedAutoLinkNode<LexicalNodes_9593355E, LexicalLinkFields>
+  | SerializedLinkNode<LexicalNodes_9593355E, LexicalLinkFields>
+  | SerializedListNode<LexicalNodes_9593355E>
+  | SerializedListItemNode<LexicalNodes_9593355E>;
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "LexicalNodes_3DE324E4".
@@ -256,7 +252,6 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
-    products: Product;
     video: Video;
     br: Br;
     commandLine: CommandLine;
@@ -284,7 +279,6 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
-    products: ProductsSelect<false> | ProductsSelect<true>;
     video: VideoSelect<false> | VideoSelect<true>;
     br: BrSelect<false> | BrSelect<true>;
     commandLine: CommandLineSelect<false> | CommandLineSelect<true>;
@@ -376,7 +370,7 @@ export interface UserAuthOperations {
  * via the `definition` "BlogContentBlock".
  */
 export interface BlogContentBlock {
-  content: LexicalRichText<LexicalNodes_ECA9AE16>;
+  content: LexicalRichText<LexicalNodes_BAE37333>;
   id?: string | null;
   blockName?: string | null;
   blockType: "blogContent";
@@ -396,7 +390,7 @@ export interface BlogMarkdownBlock {
  * via the `definition` "CalloutBlock".
  */
 export interface CalloutBlock {
-  content: LexicalRichText<LexicalNodes_ECA9AE16>;
+  content: LexicalRichText<LexicalNodes_BAE37333>;
   logo: number | Media;
   author?: string | null;
   role?: string | null;
@@ -478,7 +472,7 @@ export interface Media {
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
-  richText?: LexicalRichText<LexicalNodes_B3CEB8CE> | null;
+  richText?: LexicalRichText<LexicalNodes_9335DDB7> | null;
   links?:
     | {
         link: {
@@ -521,7 +515,7 @@ export interface Page {
       | "highImpact"
       | "mediumImpact"
       | "lowImpact";
-    richText?: LexicalRichText<LexicalNodes_B3CEB8CE> | null;
+    richText?: LexicalRichText<LexicalNodes_9335DDB7> | null;
     links?:
       | {
           link: {
@@ -585,7 +579,7 @@ export interface Post {
   id: number;
   title: string;
   heroImage?: (number | null) | Media;
-  content: LexicalRichText<LexicalNodes_326DEB17>;
+  content: LexicalRichText<LexicalNodes_9593355E>;
   relatedPosts?: (number | Post)[] | null;
   categories?: (number | Category)[] | null;
   meta?: {
@@ -670,7 +664,7 @@ export interface ContentBlock {
   columns?:
     | {
         size?: ("oneThird" | "half" | "twoThirds" | "full") | null;
-        richText?: LexicalRichText<LexicalNodes_4783DCAE> | null;
+        richText?: LexicalRichText<LexicalNodes_67AA858C> | null;
         enableLink?: boolean | null;
         link?: {
           type?: ("reference" | "custom") | null;
@@ -730,7 +724,7 @@ export interface MediaContentAccordionBlock {
          */
         bg?: ("none" | "gradient" | "scanlines") | null;
         label: string;
-        desc: LexicalRichText<LexicalNodes_ECA9AE16>;
+        desc: LexicalRichText<LexicalNodes_BAE37333>;
         hasLink?: boolean | null;
         link?: {
           type?: ("reference" | "custom") | null;
@@ -760,7 +754,7 @@ export interface MediaContentAccordionBlock {
  * via the `definition` "LogoGridBlock".
  */
 export interface LogoGridBlock {
-  content: LexicalRichText<LexicalNodes_ECA9AE16>;
+  content: LexicalRichText<LexicalNodes_BAE37333>;
   hasLink?: boolean | null;
   link?: {
     type?: ("reference" | "custom") | null;
@@ -793,7 +787,7 @@ export interface LogoGridBlock {
  */
 export interface HoverCardsBlock {
   hideBackground?: boolean | null;
-  content: LexicalRichText<LexicalNodes_ECA9AE16>;
+  content: LexicalRichText<LexicalNodes_BAE37333>;
   cards?:
     | {
         title: string;
@@ -877,7 +871,7 @@ export interface HoverHighlightsBlock {
 export interface ContentGridBlock {
   style?: ("gridBelow" | "sideBySide") | null;
   showNumbers?: boolean | null;
-  mainContent?: LexicalRichText<LexicalNodes_ECA9AE16> | null;
+  mainContent?: LexicalRichText<LexicalNodes_BAE37333> | null;
   links?:
     | {
         link: {
@@ -900,7 +894,7 @@ export interface ContentGridBlock {
     | null;
   cells?:
     | {
-        cellContent: LexicalRichText<LexicalNodes_ECA9AE16>;
+        cellContent: LexicalRichText<LexicalNodes_BAE37333>;
         id?: string | null;
       }[]
     | null;
@@ -913,7 +907,7 @@ export interface ContentGridBlock {
  * via the `definition` "CardGridBlock".
  */
 export interface CardGridBlock {
-  content: LexicalRichText<LexicalNodes_ECA9AE16>;
+  content: LexicalRichText<LexicalNodes_BAE37333>;
   /**
    * These links will be placed above the card grid as calls-to-action.
    */
@@ -969,7 +963,7 @@ export interface CardGridBlock {
  * via the `definition` "ArchiveBlock".
  */
 export interface ArchiveBlock {
-  introContent?: LexicalRichText<LexicalNodes_B3CEB8CE> | null;
+  introContent?: LexicalRichText<LexicalNodes_9335DDB7> | null;
   populateBy?: ("collection" | "selection") | null;
   relationTo?: "posts" | null;
   categories?: (number | Category)[] | null;
@@ -990,7 +984,7 @@ export interface ArchiveBlock {
  */
 export interface FormBlock {
   enableIntro?: boolean | null;
-  introContent?: LexicalRichText<LexicalNodes_B3CEB8CE> | null;
+  introContent?: LexicalRichText<LexicalNodes_9335DDB7> | null;
   id?: string | null;
   blockName?: string | null;
   blockType: "formBlock";
@@ -1037,7 +1031,7 @@ export interface MediaContentBlock {
    * Choose how wide the media should be.
    */
   mediaWidth?: ("stretch" | "fit") | null;
-  content: LexicalRichText<LexicalNodes_ECA9AE16>;
+  content: LexicalRichText<LexicalNodes_BAE37333>;
   hasLink?: boolean | null;
   link?: {
     type?: ("reference" | "custom") | null;
@@ -1208,86 +1202,6 @@ export interface ReusableContent {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products".
- */
-export interface Product {
-  id: number;
-  /**
-   * The unique identifier from Medusa
-   */
-  medusa_id: string;
-  /**
-   * The product title
-   */
-  title: string;
-  /**
-   * Product subtitle
-   */
-  subtitle?: string | null;
-  /**
-   * Detailed product description
-   */
-  description?: LexicalRichText<LexicalNodes_ECA9AE16> | null;
-  /**
-   * Product thumbnail image
-   */
-  thumbnail?: (number | null) | Media;
-  /**
-   * Gallery of product images
-   */
-  images?:
-    | {
-        image: number | Media;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * SEO-related fields for better search visibility
-   */
-  seo?: {
-    meta_title?: string | null;
-    meta_description?: string | null;
-    meta_keywords?: string | null;
-  };
-  options?:
-    | {
-        title: string;
-        /**
-         * The unique identifier for the option from Medusa
-         */
-        medusa_id: string;
-        id?: string | null;
-      }[]
-    | null;
-  variants?:
-    | {
-        title: string;
-        /**
-         * The unique identifier for the variant from Medusa
-         */
-        medusa_id: string;
-        option_values?:
-          | {
-              /**
-               * The unique identifier for the option value from Medusa
-               */
-              medusa_id: string;
-              /**
-               * The unique identifier for the option from Medusa
-               */
-              medusa_option_id: string;
-              value: string;
-              id?: string | null;
-            }[]
-          | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "video".
  */
 export interface Video {
@@ -1421,7 +1335,7 @@ export interface Form {
     | null;
   submitButtonLabel?: string | null;
   confirmationType?: ("message" | "redirect") | null;
-  confirmationMessage?: LexicalRichText<LexicalNodes_B3CEB8CE>;
+  confirmationMessage?: LexicalRichText<LexicalNodes_9335DDB7>;
   redirect?: {
     url: string;
   };
@@ -1433,7 +1347,7 @@ export interface Form {
         replyTo?: string | null;
         emailFrom?: string | null;
         subject: string;
-        message?: LexicalRichText<LexicalNodes_ECA9AE16> | null;
+        message?: LexicalRichText<LexicalNodes_BAE37333> | null;
         id?: string | null;
       }[]
     | null;
@@ -1485,7 +1399,7 @@ export interface Email {
  * via the `definition` "Message".
  */
 export interface Message {
-  message?: LexicalRichText<LexicalNodes_ECA9AE16> | null;
+  message?: LexicalRichText<LexicalNodes_BAE37333> | null;
   id?: string | null;
   blockName?: string | null;
   blockType: "message";
@@ -1771,10 +1685,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: "users";
         value: number | User;
-      } | null)
-    | ({
-        relationTo: "products";
-        value: number | Product;
       } | null)
     | ({
         relationTo: "video";
@@ -2391,54 +2301,6 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products_select".
- */
-export interface ProductsSelect<T extends boolean = true> {
-  medusa_id?: T;
-  title?: T;
-  subtitle?: T;
-  description?: T;
-  thumbnail?: T;
-  images?:
-    | T
-    | {
-        image?: T;
-        id?: T;
-      };
-  seo?:
-    | T
-    | {
-        meta_title?: T;
-        meta_description?: T;
-        meta_keywords?: T;
-      };
-  options?:
-    | T
-    | {
-        title?: T;
-        medusa_id?: T;
-        id?: T;
-      };
-  variants?:
-    | T
-    | {
-        title?: T;
-        medusa_id?: T;
-        option_values?:
-          | T
-          | {
-              medusa_id?: T;
-              medusa_option_id?: T;
-              value?: T;
-              id?: T;
-            };
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3062,7 +2924,6 @@ export interface CollectionQueryWidget {
       | "media"
       | "categories"
       | "users"
-      | "products"
       | "video"
       | "br"
       | "commandLine"
@@ -3102,7 +2963,6 @@ export interface ActivityWidget {
           | "media"
           | "categories"
           | "users"
-          | "products"
           | "video"
           | "br"
           | "commandLine"
@@ -3161,7 +3021,7 @@ export interface BannerBlock {
   id: string;
   blockType: "banner";
   style: "info" | "warning" | "error" | "success";
-  content: LexicalRichText<LexicalNodes_ECA9AE16>;
+  content: LexicalRichText<LexicalNodes_BAE37333>;
   blockName?: string | null;
 }
 /**

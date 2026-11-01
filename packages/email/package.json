@@ -1,5 +1,5 @@
 {
-  "name": "@ecommerce/email",
+  "name": "@paydusa/email",
   "version": "0.0.0",
   "private": true,
   "type": "commonjs",
@@ -19,8 +19,8 @@
     "resend": "catalog:"
   },
   "devDependencies": {
-    "@ecommerce/config": "workspace:*",
     "@medusajs/framework": "catalog:medusa",
+    "@paydusa/config": "workspace:*",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "typescript": "catalog:"

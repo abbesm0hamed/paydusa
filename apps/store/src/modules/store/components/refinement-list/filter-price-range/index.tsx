@@ -1,8 +1,8 @@
 "use client";
 
-import { Input } from "@ecommerce/design-system/components/input";
-import { cn } from "@ecommerce/design-system/lib/utils";
 import { useDebounce } from "@lib/hooks/use-debounce";
+import { Input } from "@paydusa/design-system/components/input";
+import { cn } from "@paydusa/design-system/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 

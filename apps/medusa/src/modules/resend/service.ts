@@ -1,4 +1,3 @@
-import { EmailTemplate, emailSubjects, renderTemplate } from "@ecommerce/email";
 import {
   ProviderSendNotificationDTO,
   ProviderSendNotificationResultsDTO,
@@ -8,6 +7,7 @@ import {
   AbstractNotificationProviderService,
   MedusaError,
 } from "@medusajs/framework/utils";
+import { EmailTemplate, emailSubjects, renderTemplate } from "@paydusa/email";
 import { Resend } from "resend";
 
 type ResendOptions = {

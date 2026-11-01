@@ -12,11 +12,11 @@
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@ecommerce/design-system/components",
-    "utils": "@ecommerce/design-system/lib/utils",
-    "hooks": "@ecommerce/design-system/hooks",
-    "lib": "@ecommerce/design-system/lib",
-    "ui": "@ecommerce/design-system/components"
+    "components": "@paydusa/design-system/components",
+    "utils": "@paydusa/design-system/lib/utils",
+    "hooks": "@paydusa/design-system/hooks",
+    "lib": "@paydusa/design-system/lib",
+    "ui": "@paydusa/design-system/components"
   },
   "menuColor": "default",
   "menuAccent": "subtle",

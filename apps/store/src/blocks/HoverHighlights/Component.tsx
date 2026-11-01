@@ -1,6 +1,6 @@
 "use client";
 
-import type { Button } from "@ecommerce/design-system/components/button";
+import type { Button } from "@paydusa/design-system/components/button";
 import type { HoverHighlightsBlock as HoverHighlightsBlockProps } from "@payload-types";
 import Image from "next/image";
 import Link from "next/link";

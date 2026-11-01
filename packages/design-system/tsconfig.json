@@ -1,11 +1,11 @@
 {
-  "extends": "@ecommerce/config/tsconfig.base.json",
+  "extends": "@paydusa/config/tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": ".",
     "jsx": "react-jsx",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "paths": {
-      "@ecommerce/design-system/*": ["./src/*"]
+      "@paydusa/design-system/*": ["./src/*"]
     },
     "strictNullChecks": true
   },
