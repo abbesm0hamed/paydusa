@@ -1,5 +1,5 @@
 import { defineRouteConfig } from "@medusajs/admin-sdk";
-import { Container, Heading, Button, toast } from "@medusajs/ui";
+import { Container, Heading, Button, Text, toast } from "@medusajs/ui";
 import { useMutation, QueryClientProvider } from "@tanstack/react-query";
 
 import { queryClient } from "../../../lib/query-client";
@@ -12,12 +12,17 @@ const AlgoliaPageContent = () => {
         method: "POST",
       }),
     onError: (err) => {
-      console.error(err);
-      toast.error("Failed to sync data to Algolia");
+      toast.error("Could not start Algolia sync", {
+        description: err.message || "Please try again later.",
+      });
     },
     onSuccess: () => {
-      toast.success("Successfully triggered data sync to Algolia");
+      toast.success("Algolia sync queued", {
+        description:
+          "Products are being indexed in the background. Check the Medusa logs for the final result.",
+      });
     },
+    retry: false,
   });
 
   const handleSync = () => {
@@ -30,7 +35,16 @@ const AlgoliaPageContent = () => {
         <Heading level="h2">Algolia Sync</Heading>
       </div>
       <div className="px-6 py-8">
-        <Button variant="primary" onClick={handleSync} isLoading={isPending}>
+        <Text size="small" className="text-ui-fg-subtle mb-4">
+          Sync runs in the background. The notification confirms the request was
+          accepted, not that indexing has finished.
+        </Text>
+        <Button
+          variant="primary"
+          onClick={handleSync}
+          isLoading={isPending}
+          disabled={isPending}
+        >
           Sync Data to Algolia
         </Button>
       </div>

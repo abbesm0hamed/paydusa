@@ -37,6 +37,13 @@ const getRedisUrl = () => {
 module.exports = defineConfig({
   admin: {
     path: process.env.MEDUSA_ADMIN_PATH || "/app",
+    // Medusa merges these overrides into its base config; do not return plugins.
+    vite: () => ({
+      resolve: {
+        // Custom routes and the dashboard must share the same toast store.
+        dedupe: ["@medusajs/ui"],
+      },
+    }),
   },
   modules: [
     {
