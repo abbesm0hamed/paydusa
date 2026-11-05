@@ -1,11 +1,11 @@
-import { HttpTypes } from "@medusajs/types";
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products";
+import type { HttpTypes } from "@medusajs/types";
+import type { SortOptions } from "@modules/store/components/refinement-list/sort-products";
 
 interface MinPricedProduct extends HttpTypes.StoreProduct {
   _minPrice?: number;
 }
 
-function getMinPrice(product: HttpTypes.StoreProduct): number {
+const getMinPrice = (product: HttpTypes.StoreProduct): number => {
   if (product.variants && product.variants.length > 0) {
     return Math.min(
       ...product.variants.map(
@@ -14,13 +14,13 @@ function getMinPrice(product: HttpTypes.StoreProduct): number {
     );
   }
   return Infinity;
-}
+};
 
-export function filterProductsByPrice(
+export const filterProductsByPrice = (
   products: HttpTypes.StoreProduct[],
   priceFrom?: number,
   priceTo?: number
-): HttpTypes.StoreProduct[] {
+): HttpTypes.StoreProduct[] => {
   if (priceFrom === undefined && priceTo === undefined) {
     return products;
   }
@@ -38,32 +38,39 @@ export function filterProductsByPrice(
     }
     return true;
   });
-}
+};
 
-export function sortProducts(
+const getCreatedAtTimestamp = (product: HttpTypes.StoreProduct): number => {
+  const date = product.created_at === null ? 0 : product.created_at;
+  if (date === undefined) {
+    return Number.NaN;
+  }
+  return new Date(date).getTime();
+};
+
+export const sortProducts = (
   products: HttpTypes.StoreProduct[],
   sortBy: SortOptions
-): HttpTypes.StoreProduct[] {
-  let sortedProducts = products as MinPricedProduct[];
+): HttpTypes.StoreProduct[] => {
+  const sortedProducts = products as MinPricedProduct[];
 
   if (["price_asc", "price_desc"].includes(sortBy)) {
-    sortedProducts.forEach((product) => {
+    for (const product of sortedProducts) {
       product._minPrice = getMinPrice(product);
-    });
+    }
 
     sortedProducts.sort((a, b) => {
-      const diff = a._minPrice! - b._minPrice!;
+      const diff =
+        (a._minPrice ?? getMinPrice(a)) - (b._minPrice ?? getMinPrice(b));
       return sortBy === "price_asc" ? diff : -diff;
     });
   }
 
   if (sortBy === "created_at") {
-    sortedProducts.sort((a, b) => {
-      return (
-        new Date(b.created_at!).getTime() - new Date(a.created_at!).getTime()
-      );
-    });
+    sortedProducts.sort(
+      (a, b) => getCreatedAtTimestamp(b) - getCreatedAtTimestamp(a)
+    );
   }
 
   return sortedProducts;
-}
+};
