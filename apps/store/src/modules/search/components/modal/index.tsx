@@ -23,6 +23,44 @@ interface SearchModalProps {
   onClose: () => void;
 }
 
+const Hit = ({ hit, onClose }: { hit: SearchHit; onClose: () => void }) => {
+  const hasValidThumbnail = hit.thumbnail && hit.thumbnail.trim() !== "";
+
+  return (
+    <div className="border-ui-border-base hover:bg-ui-bg-subtle relative rounded border p-3">
+      <div className="flex gap-3">
+        {hasValidThumbnail ? (
+          <Image
+            src={hit.thumbnail}
+            alt={hit.title}
+            width={60}
+            height={60}
+            className="rounded object-cover"
+          />
+        ) : (
+          <div className="bg-ui-bg-subtle flex h-[60px] w-[60px] items-center justify-center rounded">
+            <span className="text-ui-fg-muted text-xs">No Image</span>
+          </div>
+        )}
+        <div className="min-w-0 flex-1">
+          <h3 className="text-ui-fg-base truncate text-sm font-medium">
+            {hit.title}
+          </h3>
+          <p className="text-ui-fg-muted mt-1 line-clamp-2 text-xs">
+            {hit.description}
+          </p>
+        </div>
+      </div>
+      <Link
+        href={`/products/${hit.handle}`}
+        className="absolute inset-0"
+        aria-label={`View Product: ${hit.title}`}
+        onClick={() => onClose()}
+      />
+    </div>
+  );
+};
+
 export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const pathname = usePathname();
   const [previousPathname, setPreviousPathname] = useState(pathname);
@@ -97,10 +135,8 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
         {/* Search Content */}
         <div className="p-4">
-          <InstantSearch
-            searchClient={searchClient}
-            indexName={process.env.NEXT_PUBLIC_ALGOLIA_PRODUCT_INDEX_NAME}
-          >
+          {/* Local UI identifier; Medusa selects the actual search index. */}
+          <InstantSearch searchClient={searchClient} indexName="products">
             <div className="mb-4">
               <SearchBox
                 className="w-full"
@@ -139,41 +175,3 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     </Modal>
   );
 }
-
-const Hit = ({ hit, onClose }: { hit: SearchHit; onClose: () => void }) => {
-  const hasValidThumbnail = hit.thumbnail && hit.thumbnail.trim() !== "";
-
-  return (
-    <div className="border-ui-border-base hover:bg-ui-bg-subtle relative rounded border p-3">
-      <div className="flex gap-3">
-        {hasValidThumbnail ? (
-          <Image
-            src={hit.thumbnail}
-            alt={hit.title}
-            width={60}
-            height={60}
-            className="rounded object-cover"
-          />
-        ) : (
-          <div className="bg-ui-bg-subtle flex h-[60px] w-[60px] items-center justify-center rounded">
-            <span className="text-ui-fg-muted text-xs">No Image</span>
-          </div>
-        )}
-        <div className="min-w-0 flex-1">
-          <h3 className="text-ui-fg-base truncate text-sm font-medium">
-            {hit.title}
-          </h3>
-          <p className="text-ui-fg-muted mt-1 line-clamp-2 text-xs">
-            {hit.description}
-          </p>
-        </div>
-      </div>
-      <Link
-        href={`/products/${hit.handle}`}
-        className="absolute inset-0"
-        aria-label={`View Product: ${hit.title}`}
-        onClick={() => onClose()}
-      />
-    </div>
-  );
-};

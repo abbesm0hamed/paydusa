@@ -9,8 +9,6 @@ declare global {
       NEXT_PUBLIC_DEFAULT_REGION: string;
       NEXT_PUBLIC_STRIPE_KEY: string;
       NEXT_PUBLIC_WWW_URL: string;
-      NEXT_PUBLIC_ALGOLIA_APP_ID: string;
-      NEXT_PUBLIC_ALGOLIA_PRODUCT_INDEX_NAME: string;
       NEXT_PUBLIC_SENTRY_DSN?: string;
       NEXT_PUBLIC_SENTRY_ENVIRONMENT?: string;
       NEXT_PUBLIC_VERCEL_URL: string;

@@ -7,11 +7,11 @@ const MEDUSA_BACKEND_URL =
 const PUBLISHABLE_API_KEY =
   process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || "";
 
-export async function POST(request: NextRequest) {
+export const POST = async (request: NextRequest) => {
   try {
     const { query } = await request.json();
 
-    if (!query || typeof query !== "string") {
+    if (typeof query !== "string" || !query.trim()) {
       return NextResponse.json(
         { error: "A search query is required" },
         { status: 400 }
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     const response = await fetch(
       `${MEDUSA_BACKEND_URL}/store/products/search`,
       {
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({ query: query.trim() }),
         headers: {
           "Content-Type": "application/json",
           "x-publishable-api-key": PUBLISHABLE_API_KEY,
@@ -31,9 +31,11 @@ export async function POST(request: NextRequest) {
     );
 
     if (!response.ok) {
-      const text = await response.text();
       return NextResponse.json(
-        { error: `Backend responded with ${response.status}: ${text}` },
+        {
+          error:
+            "Product search is temporarily unavailable. Please try again later.",
+        },
         { status: response.status }
       );
     }
@@ -47,4 +49,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-}
+};
