@@ -1,46 +1,63 @@
 "use client";
 
-import type { Button } from "@paydusa/design-system/components/button";
-import type { HoverHighlightsBlock as HoverHighlightsBlockProps } from "@payload-types";
+import { Button } from "@paydusa/design-system/components/button";
+import type {
+  HoverHighlightsBlock as HoverHighlightsBlockProps,
+  Media,
+} from "@payload-types";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
+
+const getMediaUrl = (
+  media: Media | number | null | undefined
+): string | null | undefined => {
+  if (!media) {
+    return null;
+  }
+  if (typeof media === "object" && "url" in media) {
+    return media.url;
+  }
+  return null;
+};
+
+const getLinkUrl = (
+  linkData:
+    | Pick<
+        NonNullable<HoverHighlightsBlockProps["link"]>,
+        "type" | "url" | "reference"
+      >
+    | null
+    | undefined
+): string | null => {
+  if (!linkData) {
+    return null;
+  }
+
+  if (linkData.type === "custom" && linkData.url) {
+    return linkData.url;
+  }
+
+  if (linkData.type === "reference" && linkData.reference) {
+    const { relationTo, value } = linkData.reference;
+
+    if (typeof value === "object" && value !== null && "slug" in value) {
+      return `/${relationTo}/${value.slug}`;
+    }
+
+    return `/${relationTo}/${value}`;
+  }
+
+  return null;
+};
 
 export const HoverHighlights: React.FC<HoverHighlightsBlockProps> = (props) => {
   const { beforeText, highlights, afterText, link } = props;
   const [activeHighlight, setActiveHighlight] = useState<string | null>(null);
 
-  const getMediaUrl = (media: any): string | null => {
-    if (!media) return null;
-    if (typeof media === "object" && "url" in media) {
-      return media.url;
-    }
-    return null;
-  };
-
-  const getLinkUrl = (linkData: any): string | null => {
-    if (!linkData) return null;
-
-    if (linkData.type === "custom" && linkData.url) {
-      return linkData.url;
-    }
-
-    if (linkData.type === "reference" && linkData.reference) {
-      const { relationTo, value } = linkData.reference;
-
-      if (typeof value === "object" && value !== null && "slug" in value) {
-        return `/${relationTo}/${value.slug}`;
-      }
-
-      return `/${relationTo}/${value}`;
-    }
-
-    return null;
-  };
-
   const mainLinkUrl = link ? getLinkUrl(link) : null;
   const mainLinkProps = link?.newTab
-    ? { target: "_blank", rel: "noopener noreferrer" }
+    ? { rel: "noopener noreferrer", target: "_blank" }
     : {};
 
   return (
@@ -49,9 +66,9 @@ export const HoverHighlights: React.FC<HoverHighlightsBlockProps> = (props) => {
         <div className="">
           {/* Before Text */}
           {beforeText && (
-            <div className="mb-10 md:mb-12 max-w-prose">
+            <div className="mb-10 max-w-prose md:mb-12">
               {beforeText.split("\n").map((line, i) => (
-                <p key={i} className="text-lg mb-4 last:mb-0">
+                <p key={i} className="mb-4 text-lg last:mb-0">
                   {line}
                 </p>
               ))}
@@ -61,7 +78,7 @@ export const HoverHighlights: React.FC<HoverHighlightsBlockProps> = (props) => {
           <div className="relative">
             {/* Media Display Area */}
             {highlights && highlights.length > 0 && (
-              <div className="mb-12 aspect-[16/9] md:aspect-[21/9] relative rounded-xl overflow-hidden bg-gray-100">
+              <div className="relative mb-12 aspect-[16/9] overflow-hidden rounded-xl bg-gray-100 md:aspect-[21/9]">
                 {highlights.map((highlight) => {
                   const topMediaUrl = highlight.media?.top
                     ? getMediaUrl(highlight.media.top)
@@ -75,7 +92,7 @@ export const HoverHighlights: React.FC<HoverHighlightsBlockProps> = (props) => {
                       key={highlight.id}
                       className={`absolute inset-0 transition-opacity duration-500 ${activeHighlight === highlight.id ? "opacity-100" : "opacity-0"}`}
                     >
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-0 h-full">
+                      <div className="grid h-full grid-cols-1 gap-0 md:grid-cols-2">
                         {topMediaUrl && (
                           <div className="relative h-full">
                             <Image
@@ -106,7 +123,7 @@ export const HoverHighlights: React.FC<HoverHighlightsBlockProps> = (props) => {
                 {/* Default state when no highlight is active */}
                 {activeHighlight === null && (
                   <div className="absolute inset-0 flex items-center justify-center bg-gray-50 text-gray-400">
-                    <p className="text-center px-4">
+                    <p className="px-4 text-center">
                       Hover over options below to explore
                     </p>
                   </div>
@@ -116,14 +133,14 @@ export const HoverHighlights: React.FC<HoverHighlightsBlockProps> = (props) => {
 
             {/* Highlight Text Items */}
             {highlights && highlights.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+              <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-3">
                 {highlights.map((highlight) => {
                   const highlightLinkUrl = highlight.link
                     ? getLinkUrl(highlight.link)
                     : null;
                   const itemContent = (
                     <div
-                      className="p-4 border border-transparent rounded-lg hover:border-primary hover:bg-gray-50 transition-all cursor-pointer"
+                      className="hover:border-primary cursor-pointer rounded-lg border border-transparent p-4 transition-all hover:bg-gray-50"
                       onMouseEnter={() =>
                         setActiveHighlight(highlight.id || null)
                       }
@@ -131,7 +148,7 @@ export const HoverHighlights: React.FC<HoverHighlightsBlockProps> = (props) => {
                       onFocus={() => setActiveHighlight(highlight.id || null)}
                       onBlur={() => setActiveHighlight(null)}
                     >
-                      <h3 className="text-xl font-medium mb-2">
+                      <h3 className="mb-2 text-xl font-medium">
                         {highlight.text}
                       </h3>
                     </div>
@@ -143,7 +160,7 @@ export const HoverHighlights: React.FC<HoverHighlightsBlockProps> = (props) => {
                         <Link
                           href={highlightLinkUrl}
                           {...(highlight.link?.newTab
-                            ? { target: "_blank", rel: "noopener noreferrer" }
+                            ? { rel: "noopener noreferrer", target: "_blank" }
                             : {})}
                         >
                           {itemContent}
@@ -159,9 +176,9 @@ export const HoverHighlights: React.FC<HoverHighlightsBlockProps> = (props) => {
 
             {/* After Text */}
             {afterText && (
-              <div className="mb-10 md:mb-12 max-w-prose mx-auto">
+              <div className="mx-auto mb-10 max-w-prose md:mb-12">
                 {afterText.split("\n").map((line, i) => (
-                  <p key={i} className="text-lg mb-4 last:mb-0">
+                  <p key={i} className="mb-4 text-lg last:mb-0">
                     {line}
                   </p>
                 ))}
