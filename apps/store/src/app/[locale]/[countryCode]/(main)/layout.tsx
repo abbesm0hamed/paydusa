@@ -1,11 +1,11 @@
 import { listCartOptions, retrieveCart } from "@lib/data/cart";
 import { retrieveCustomer } from "@lib/data/customer";
 import { getBaseURL } from "@lib/util/env";
-import { StoreCartShippingOption } from "@medusajs/types";
+import type { StoreCartShippingOption } from "@medusajs/types";
 import CartMismatchBanner from "@modules/layout/components/cart-mismatch-banner";
 import MedusaFooter from "@modules/layout/templates/footer";
 import FreeShippingPriceNudge from "@modules/shipping/components/free-shipping-price-nudge";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),

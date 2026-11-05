@@ -47,8 +47,9 @@ import {
   createDataTableColumnHelper,
   useDataTable,
 } from "@medusajs/ui";
-import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useState, useMemo } from "react";
+
 import { sdk } from "../lib/client";
 
 const columnHelper = createDataTableColumnHelper<HttpTypes.AdminProduct>();
@@ -157,8 +158,8 @@ const [pagination, setPagination] = useState({
 For displaying a small list of products or variants with thumbnails:
 
 ```tsx
-import { Thumbnail, Text } from "@medusajs/ui";
 import { TriangleRightMini } from "@medusajs/icons";
+import { Thumbnail, Text } from "@medusajs/ui";
 import { Link } from "react-router-dom";
 
 // Component for displaying a product variant
@@ -226,8 +227,8 @@ const RelatedProductsDisplay = ({ products }) => {
 For entities without images (categories, regions, etc.):
 
 ```tsx
-import { Text } from "@medusajs/ui";
 import { TriangleRightMini } from "@medusajs/icons";
+import { Text } from "@medusajs/ui";
 import { Link } from "react-router-dom";
 
 const SimpleListItem = ({ title, description, link }) => {

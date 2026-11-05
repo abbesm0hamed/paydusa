@@ -1,11 +1,11 @@
-import { Label } from "@ecommerce/ui/components/label";
+import { Label } from "@paydusa/design-system/components/label";
 import {
   Select as SelectComponent,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@ecommerce/ui/components/select";
+} from "@paydusa/design-system/components/select";
 import type { SelectField } from "@payloadcms/plugin-form-builder/types";
 import React from "react";
 import type { Control, FieldErrorsImpl } from "react-hook-form";
@@ -19,47 +19,43 @@ export const Select: React.FC<
     control: Control;
     errors: Partial<FieldErrorsImpl>;
   }
-> = ({ name, control, errors, label, options, required, width }) => {
-  return (
-    <Width width={width}>
-      <Label htmlFor={name}>
-        {label}
-        {required && (
-          <span className="required">
-            * <span className="sr-only">(required)</span>
-          </span>
-        )}
-      </Label>
-      <Controller
-        control={control}
-        defaultValue=""
-        name={name}
-        render={({ field: { onChange, value } }) => {
-          const controlledValue = options.find((t) => t.value === value);
+> = ({ name, control, errors, label, options, required, width }) => (
+  <Width width={width}>
+    <Label htmlFor={name}>
+      {label}
+      {required && (
+        <span className="required">
+          * <span className="sr-only">(required)</span>
+        </span>
+      )}
+    </Label>
+    <Controller
+      control={control}
+      defaultValue=""
+      name={name}
+      render={({ field: { onChange, value } }) => {
+        const controlledValue = options.find((t) => t.value === value);
 
-          return (
-            <SelectComponent
-              onValueChange={(val) => onChange(val)}
-              value={controlledValue?.value}
-            >
-              <SelectTrigger className="w-full" id={name}>
-                <SelectValue placeholder={label} />
-              </SelectTrigger>
-              <SelectContent>
-                {options.map(({ label, value }) => {
-                  return (
-                    <SelectItem key={value} value={value}>
-                      {label}
-                    </SelectItem>
-                  );
-                })}
-              </SelectContent>
-            </SelectComponent>
-          );
-        }}
-        rules={{ required }}
-      />
-      {errors[name] && <Error name={name} />}
-    </Width>
-  );
-};
+        return (
+          <SelectComponent
+            onValueChange={(val) => onChange(val)}
+            value={controlledValue?.value}
+          >
+            <SelectTrigger className="w-full" id={name}>
+              <SelectValue placeholder={label} />
+            </SelectTrigger>
+            <SelectContent>
+              {options.map(({ label, value }) => (
+                <SelectItem key={value} value={value}>
+                  {label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectComponent>
+        );
+      }}
+      rules={{ required }}
+    />
+    {errors[name] && <Error name={name} />}
+  </Width>
+);

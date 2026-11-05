@@ -8,22 +8,22 @@ import {
   Transition,
 } from "@headlessui/react";
 import { updateRegion } from "@lib/data/cart";
-import { StateType } from "@lib/hooks/use-toggle-state";
-import { HttpTypes } from "@medusajs/types";
+import type { StateType } from "@lib/hooks/use-toggle-state";
+import type { HttpTypes } from "@medusajs/types";
 import { useParams, usePathname } from "next/navigation";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import ReactCountryFlag from "react-country-flag";
 
-type CountryOption = {
+interface CountryOption {
   country: string;
   region: string;
   label: string;
-};
+}
 
-type CountrySelectProps = {
+interface CountrySelectProps {
   toggleState: StateType;
   regions: HttpTypes.StoreRegion[];
-};
+}
 
 const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
   const [current, setCurrent] = useState<
@@ -36,18 +36,19 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
 
   const { state, close } = toggleState;
 
-  const options = useMemo(() => {
-    return regions
-      ?.map((r) => {
-        return r.countries?.map((c) => ({
-          country: c.iso_2,
-          region: r.id,
-          label: c.display_name,
-        }));
-      })
-      .flat()
-      .sort((a, b) => (a?.label ?? "").localeCompare(b?.label ?? ""));
-  }, [regions]);
+  const options = useMemo(
+    () =>
+      regions
+        ?.flatMap((r) =>
+          r.countries?.map((c) => ({
+            country: c.iso_2,
+            label: c.display_name,
+            region: r.id,
+          }))
+        )
+        .sort((a, b) => (a?.label ?? "").localeCompare(b?.label ?? "")),
+    [regions]
+  );
 
   useEffect(() => {
     if (countryCode) {
@@ -72,17 +73,17 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
             : undefined
         }
       >
-        <ListboxButton className="py-1 w-full">
+        <ListboxButton className="w-full py-1">
           <div className="txt-compact-small flex items-start gap-x-2">
             <span>Shipping to:</span>
             {current && (
               <span className="txt-compact-small flex items-center gap-x-2">
-                {/* @ts-ignore */}
+                {/* @ts-expect-error */}
                 <ReactCountryFlag
                   svg
                   style={{
-                    width: "16px",
                     height: "16px",
+                    width: "16px",
                   }}
                   countryCode={current.country ?? ""}
                 />
@@ -91,7 +92,7 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
             )}
           </div>
         </ListboxButton>
-        <div className="flex relative w-full min-w-[320px]">
+        <div className="relative flex w-full min-w-[320px]">
           <Transition
             show={state}
             as={Fragment}
@@ -100,29 +101,27 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
             leaveTo="opacity-0"
           >
             <ListboxOptions
-              className="absolute -bottom-[calc(100%-36px)] left-0 xsmall:left-auto xsmall:right-0 max-h-[442px] overflow-y-scroll z-[900] bg-white drop-shadow-md text-small-regular uppercase text-black no-scrollbar rounded-rounded w-full"
+              className="xsmall:left-auto xsmall:right-0 text-small-regular no-scrollbar rounded-rounded absolute -bottom-[calc(100%-36px)] left-0 z-[900] max-h-[442px] w-full overflow-y-scroll bg-white text-black uppercase drop-shadow-md"
               static
             >
-              {options?.map((o, index) => {
-                return (
-                  <ListboxOption
-                    key={index}
-                    value={o}
-                    className="py-2 hover:bg-gray-200 px-3 cursor-pointer flex items-center gap-x-2"
-                  >
-                    {/* @ts-ignore */}
-                    <ReactCountryFlag
-                      svg
-                      style={{
-                        width: "16px",
-                        height: "16px",
-                      }}
-                      countryCode={o?.country ?? ""}
-                    />{" "}
-                    {o?.label}
-                  </ListboxOption>
-                );
-              })}
+              {options?.map((o, index) => (
+                <ListboxOption
+                  key={index}
+                  value={o}
+                  className="flex cursor-pointer items-center gap-x-2 px-3 py-2 hover:bg-gray-200"
+                >
+                  {/* @ts-expect-error */}
+                  <ReactCountryFlag
+                    svg
+                    style={{
+                      height: "16px",
+                      width: "16px",
+                    }}
+                    countryCode={o?.country ?? ""}
+                  />{" "}
+                  {o?.label}
+                </ListboxOption>
+              ))}
             </ListboxOptions>
           </Transition>
         </div>

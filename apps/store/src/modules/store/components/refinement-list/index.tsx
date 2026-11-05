@@ -9,17 +9,17 @@ import type { FilterOption } from "../../../../types/filters";
 import ActiveFilters from "./active-filters";
 import FilterCheckboxGroup from "./filter-checkbox-group";
 import FilterPriceRange from "./filter-price-range";
-import { SortOptions } from "./sort-products";
+import type { SortOptions } from "./sort-products";
 import SortProducts from "./sort-products";
 
-type RefinementListProps = {
+interface RefinementListProps {
   sortBy: SortOptions;
   categories?: FilterOption[];
   collections?: FilterOption[];
   types?: FilterOption[];
   tags?: FilterOption[];
   optionValues?: Record<string, OptionValueGroup>;
-};
+}
 
 const FILTER_KEYS = [
   "type_id",
@@ -46,7 +46,9 @@ const RefinementList = ({
   const drawerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!mobileDrawerOpen) return;
+    if (!mobileDrawerOpen) {
+      return;
+    }
 
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -146,10 +148,10 @@ const RefinementList = ({
   const resolveLabel = useCallback(
     (key: string, value: string): string => {
       const optionMap: Record<string, FilterOption[]> = {
-        type_id: types,
-        tag_id: tags,
-        collection_id: collections,
         category_id: categories,
+        collection_id: collections,
+        tag_id: tags,
+        type_id: types,
       };
 
       const options = optionMap[key];
@@ -185,21 +187,21 @@ const RefinementList = ({
       if (key === "price_from") {
         result.push({
           key: "price_from",
-          value: values[0],
           label: `From $${values[0]}`,
+          value: values[0],
         });
         continue;
       }
       if (key === "price_to") {
         result.push({
           key: "price_to",
-          value: values[0],
           label: `Up to $${values[0]}`,
+          value: values[0],
         });
         continue;
       }
       for (const v of values) {
-        result.push({ key, value: v, label: resolveLabel(key, v) });
+        result.push({ key, label: resolveLabel(key, v), value: v });
       }
     }
 
@@ -220,7 +222,7 @@ const RefinementList = ({
           <Filter className="size-4" />
           <span className="text-sm font-medium">Filters</span>
           {activeCount > 0 && (
-            <span className="inline-flex items-center justify-center size-5 rounded-full bg-primary text-[11px] font-medium text-primary-foreground">
+            <span className="bg-primary text-primary-foreground inline-flex size-5 items-center justify-center rounded-full text-[11px] font-medium">
               {activeCount}
             </span>
           )}
@@ -229,7 +231,7 @@ const RefinementList = ({
           <button
             type="button"
             onClick={clearFilters}
-            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            className="text-muted-foreground hover:text-foreground text-xs transition-colors"
           >
             Clear all
           </button>
@@ -244,7 +246,7 @@ const RefinementList = ({
         />
       )}
 
-      <div className="border-t border-border" />
+      <div className="border-border border-t" />
 
       <SortProducts
         sortBy={sortBy}
@@ -252,7 +254,7 @@ const RefinementList = ({
         data-testid="sort-by-container"
       />
 
-      <div className="border-t border-border" />
+      <div className="border-border border-t" />
 
       {categories.length > 0 && (
         <>
@@ -262,7 +264,7 @@ const RefinementList = ({
             selected={filters.category_id ?? []}
             onChange={(values) => setFilter("category_id", values)}
           />
-          <div className="border-t border-border" />
+          <div className="border-border border-t" />
         </>
       )}
 
@@ -274,7 +276,7 @@ const RefinementList = ({
             selected={filters.collection_id ?? []}
             onChange={(values) => setFilter("collection_id", values)}
           />
-          <div className="border-t border-border" />
+          <div className="border-border border-t" />
         </>
       )}
 
@@ -286,7 +288,7 @@ const RefinementList = ({
             selected={filters.type_id ?? []}
             onChange={(values) => setFilter("type_id", values)}
           />
-          <div className="border-t border-border" />
+          <div className="border-border border-t" />
         </>
       )}
 
@@ -298,7 +300,7 @@ const RefinementList = ({
             selected={filters.tag_id ?? []}
             onChange={(values) => setFilter("tag_id", values)}
           />
-          <div className="border-t border-border" />
+          <div className="border-border border-t" />
         </>
       )}
 
@@ -309,16 +311,16 @@ const RefinementList = ({
               <FilterCheckboxGroup
                 title={optionTitle}
                 options={group.values.map((v) => ({
-                  value: v.id,
-                  label: v.value,
                   count: v.count,
+                  label: v.value,
+                  value: v.id,
                 }))}
                 selected={filters.option_value_id ?? []}
                 onChange={(values) => setFilter("option_value_id", values)}
               />
             </div>
           ))}
-          <div className="border-t border-border" />
+          <div className="border-border border-t" />
         </>
       )}
 
@@ -333,24 +335,24 @@ const RefinementList = ({
   return (
     <>
       {/* Desktop sidebar */}
-      <div className="hidden small:block small:w-[260px] small:min-w-[260px] small:mr-6">
-        <div className="sticky top-6 space-y-5 bg-card border border-border rounded-xl p-5">
+      <div className="small:block small:w-[260px] small:min-w-[260px] small:mr-6 hidden">
+        <div className="bg-card border-border sticky top-6 space-y-5 rounded-xl border p-5">
           {filterContent}
         </div>
       </div>
 
       {/* Mobile bar */}
-      <div className="small:hidden w-full mb-4">
+      <div className="small:hidden mb-4 w-full">
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => setMobileDrawerOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-lg text-sm font-medium hover:bg-accent transition-colors"
+            className="bg-card border-border hover:bg-accent flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors"
           >
             <Filter className="size-4" />
             Filters
             {activeCount > 0 && (
-              <span className="inline-flex items-center justify-center size-5 rounded-full bg-primary text-[11px] font-medium text-primary-foreground">
+              <span className="bg-primary text-primary-foreground inline-flex size-5 items-center justify-center rounded-full text-[11px] font-medium">
                 {activeCount}
               </span>
             )}
@@ -377,7 +379,7 @@ const RefinementList = ({
       {/* Mobile drawer */}
       {mobileDrawerOpen && (
         <div
-          className="fixed inset-0 z-50 small:hidden"
+          className="small:hidden fixed inset-0 z-50"
           role="dialog"
           aria-modal="true"
           aria-label="Filters"
@@ -388,14 +390,14 @@ const RefinementList = ({
           />
           <div
             ref={drawerRef}
-            className="fixed inset-y-0 left-0 w-[85vw] max-w-[360px] bg-background shadow-xl z-50 overflow-y-auto"
+            className="bg-background fixed inset-y-0 left-0 z-50 w-[85vw] max-w-[360px] overflow-y-auto shadow-xl"
           >
-            <div className="flex items-center justify-between p-4 border-b border-border">
+            <div className="border-border flex items-center justify-between border-b p-4">
               <div className="flex items-center gap-2">
                 <Filter className="size-4" />
                 <span className="text-sm font-medium">Filters</span>
                 {activeCount > 0 && (
-                  <span className="inline-flex items-center justify-center size-5 rounded-full bg-primary text-[11px] font-medium text-primary-foreground">
+                  <span className="bg-primary text-primary-foreground inline-flex size-5 items-center justify-center rounded-full text-[11px] font-medium">
                     {activeCount}
                   </span>
                 )}
@@ -403,12 +405,12 @@ const RefinementList = ({
               <button
                 type="button"
                 onClick={() => setMobileDrawerOpen(false)}
-                className="p-1 hover:bg-accent rounded-md transition-colors"
+                className="hover:bg-accent rounded-md p-1 transition-colors"
               >
                 <X className="size-4" />
               </button>
             </div>
-            <div className="p-4 space-y-5">{filterContent}</div>
+            <div className="space-y-5 p-4">{filterContent}</div>
           </div>
         </div>
       )}

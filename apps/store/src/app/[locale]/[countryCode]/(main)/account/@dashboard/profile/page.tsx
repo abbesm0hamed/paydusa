@@ -5,12 +5,12 @@ import ProfileBillingAddress from "@modules/account/components/profile-billing-a
 import ProfileEmail from "@modules/account/components/profile-email";
 import ProfileName from "@modules/account/components/profile-name";
 import ProfilePassword from "@modules/account/components/profile-password";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Profile",
   description: "View and edit your Medusa Store profile.",
+  title: "Profile",
 };
 
 export default async function Profile() {
@@ -31,7 +31,7 @@ export default async function Profile() {
           your password.
         </p>
       </div>
-      <div className="flex flex-col gap-y-8 w-full">
+      <div className="flex w-full flex-col gap-y-8">
         <ProfileName customer={customer} />
         <Divider />
         <ProfileEmail customer={customer} />
@@ -46,7 +46,4 @@ export default async function Profile() {
   );
 }
 
-const Divider = () => {
-  return <div className="w-full h-px bg-gray-200" />;
-};
-``;
+const Divider = () => <div className="h-px w-full bg-gray-200" />;

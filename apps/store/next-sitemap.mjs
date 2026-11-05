@@ -1,19 +1,19 @@
 const excludedPaths = ["/checkout", "/account/*"];
 
 export default {
-  siteUrl: process.env.NEXT_PUBLIC_VERCEL_URL,
-  generateRobotsTxt: true,
   exclude: excludedPaths + ["/[sitemap]"],
+  generateRobotsTxt: true,
   robotsTxtOptions: {
     policies: [
       {
-        userAgent: "*",
         allow: "/",
+        userAgent: "*",
       },
       {
-        userAgent: "*",
         disallow: excludedPaths,
+        userAgent: "*",
       },
     ],
   },
+  siteUrl: process.env.NEXT_PUBLIC_VERCEL_URL,
 };

@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import createIntlMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -53,9 +53,9 @@ async function getRegionMap(cacheId: string) {
         console.warn("No regions found from Medusa API, using fallback region");
         // Set fallback region
         regionMapCache.regionMap.set(DEFAULT_REGION, {
+          countries: [{ iso_2: DEFAULT_REGION }],
           id: DEFAULT_REGION,
           name: "Default Region",
-          countries: [{ iso_2: DEFAULT_REGION }],
         } as any);
         return regionMapCache.regionMap;
       }
@@ -76,9 +76,9 @@ async function getRegionMap(cacheId: string) {
       // Set fallback region on error
       if (!regionMap.has(DEFAULT_REGION)) {
         regionMapCache.regionMap.set(DEFAULT_REGION, {
+          countries: [{ iso_2: DEFAULT_REGION }],
           id: DEFAULT_REGION,
           name: "Default Region",
-          countries: [{ iso_2: DEFAULT_REGION }],
         } as any);
       }
     }
@@ -105,7 +105,7 @@ async function getCountryCode(
 
     // Extract country code from URL, accounting for locale prefix
     const pathSegments = request.nextUrl.pathname.split("/").filter(Boolean);
-    const locales = routing.locales;
+    const { locales } = routing;
 
     // Check if first segment is a locale
     const firstSegment = pathSegments[0]?.toLowerCase();
@@ -134,7 +134,7 @@ async function getCountryCode(
     }
 
     return countryCode;
-  } catch (error) {
+  } catch {
     if (process.env.NODE_ENV === "development") {
       console.error(
         "Middleware.ts: Error getting the country code. Did you set up regions in your Medusa Admin and define a MEDUSA_BACKEND_URL environment variable? Note that the variable is no longer named NEXT_PUBLIC_MEDUSA_BACKEND_URL."
@@ -148,7 +148,7 @@ async function getCountryCode(
  */
 function checkUrlHasCountryCode(request: NextRequest, countryCode: string) {
   const pathSegments = request.nextUrl.pathname.split("/").filter(Boolean);
-  const locales = routing.locales;
+  const { locales } = routing;
 
   // Check if first segment is a locale
   const firstSegment = pathSegments[0]?.toLowerCase();
@@ -201,8 +201,8 @@ export default async function proxy(request: NextRequest) {
     }
   }
 
-  let cacheIdCookie = request.cookies.get("_medusa_cache_id");
-  let cacheId = cacheIdCookie?.value || crypto.randomUUID();
+  const cacheIdCookie = request.cookies.get("_medusa_cache_id");
+  const cacheId = cacheIdCookie?.value || crypto.randomUUID();
 
   try {
     const regionMap = await getRegionMap(cacheId);
@@ -232,7 +232,7 @@ export default async function proxy(request: NextRequest) {
     // If no country code in URL, we need to add it
     if (!urlHasCountryCode) {
       const pathSegments = request.nextUrl.pathname.split("/").filter(Boolean);
-      const locales = routing.locales;
+      const { locales } = routing;
 
       // Check if first segment is a locale
       const firstSegment = pathSegments[0];
@@ -243,11 +243,11 @@ export default async function proxy(request: NextRequest) {
       if (isLocaleInPath) {
         // Pattern: /[locale]/[country]/[...rest] or /[locale]/
         const restPath = pathSegments.slice(1).join("/");
-        newPathname = `/${firstSegment}/${countryCode}${restPath ? "/" + restPath : ""}`;
+        newPathname = `/${firstSegment}/${countryCode}${restPath ? `/${restPath}` : ""}`;
       } else {
         // Pattern: /[country]/[...rest] or /
         const restPath = pathSegments.join("/");
-        newPathname = `/${countryCode}${restPath ? "/" + restPath : ""}`;
+        newPathname = `/${countryCode}${restPath ? `/${restPath}` : ""}`;
       }
 
       const queryString = request.nextUrl.search;

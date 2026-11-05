@@ -4,31 +4,29 @@ import { linkGroup } from "@/fields/linkGroup";
 import richText from "@/fields/richText";
 
 export const ContentGrid: Block = {
-  slug: "contentGrid",
-  interfaceName: "ContentGridBlock",
   fields: [
     {
-      type: "row",
       fields: [
         {
-          name: "style",
-          type: "select",
           defaultValue: "gridBelow",
           label: "Style",
+          name: "style",
           options: [
             { label: "Grid Below", value: "gridBelow" },
             { label: "Side by Side", value: "sideBySide" },
           ],
+          type: "select",
         },
         {
           name: "showNumbers",
           type: "checkbox",
         },
       ],
+      type: "row",
     },
     richText({
-      name: "mainContent",
       label: "Content",
+      name: "mainContent",
       required: false,
     }),
     linkGroup({
@@ -36,24 +34,26 @@ export const ContentGrid: Block = {
       overrides: {},
     }),
     {
-      name: "cells",
-      type: "array",
       fields: [
         {
           name: "cellContent",
-          type: "richText",
           required: true,
+          type: "richText",
         },
       ],
       maxRows: 8,
       minRows: 1,
+      name: "cells",
+      type: "array",
     },
   ],
   graphQL: {
     singularName: "ContentGrid",
   },
+  interfaceName: "ContentGridBlock",
   labels: {
     plural: "Content Grid Blocks",
     singular: "Content Grid Block",
   },
+  slug: "contentGrid",
 };

@@ -2,9 +2,8 @@
 
 import { sdk } from "@lib/config";
 import medusaError from "@lib/util/medusa-error";
-import { HttpTypes } from "@medusajs/types";
-import { cacheTag } from "next/cache";
-import { revalidateTag } from "next/cache";
+import type { HttpTypes } from "@medusajs/types";
+import { cacheTag, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 import {
@@ -24,11 +23,11 @@ async function fetchCachedCustomer(
 
   return sdk.client
     .fetch<{ customer: HttpTypes.StoreCustomer }>(`/store/customers/me`, {
+      headers,
       method: "GET",
       query: {
         fields: "*orders",
       },
-      headers,
     })
     .then(({ customer }) => customer)
     .catch(() => null);
@@ -38,7 +37,9 @@ export const retrieveCustomer =
   async (): Promise<HttpTypes.StoreCustomer | null> => {
     const authHeaders = await getAuthHeaders();
 
-    if (!authHeaders) return null;
+    if (!authHeaders) {
+      return null;
+    }
 
     return fetchCachedCustomer(authHeaders);
   };
@@ -71,7 +72,7 @@ export async function signup(_currentState: unknown, formData: FormData) {
   try {
     const token = await sdk.auth.register("customer", "emailpass", {
       email: customerForm.email,
-      password: password,
+      password,
     });
 
     await setAuthToken(token as string);
@@ -167,18 +168,18 @@ export const addCustomerAddress = async (
     (currentState.isDefaultShipping as boolean) || false;
 
   const address = {
-    first_name: formData.get("first_name") as string,
-    last_name: formData.get("last_name") as string,
-    company: formData.get("company") as string,
     address_1: formData.get("address_1") as string,
     address_2: formData.get("address_2") as string,
     city: formData.get("city") as string,
-    postal_code: formData.get("postal_code") as string,
-    province: formData.get("province") as string,
+    company: formData.get("company") as string,
     country_code: formData.get("country_code") as string,
-    phone: formData.get("phone") as string,
+    first_name: formData.get("first_name") as string,
     is_default_billing: isDefaultBilling,
     is_default_shipping: isDefaultShipping,
+    last_name: formData.get("last_name") as string,
+    phone: formData.get("phone") as string,
+    postal_code: formData.get("postal_code") as string,
+    province: formData.get("province") as string,
   };
 
   const headers = {
@@ -190,11 +191,9 @@ export const addCustomerAddress = async (
     .then(async ({ customer }) => {
       const customerCacheTag = await getCacheTag("customers");
       revalidateTag(customerCacheTag);
-      return { success: true, error: null };
+      return { error: null, success: true };
     })
-    .catch((err) => {
-      return { success: false, error: err.toString() };
-    });
+    .catch((error) => ({ error: error.toString(), success: false }));
 };
 
 export const deleteCustomerAddress = async (
@@ -209,11 +208,9 @@ export const deleteCustomerAddress = async (
     .then(async () => {
       const customerCacheTag = await getCacheTag("customers");
       revalidateTag(customerCacheTag);
-      return { success: true, error: null };
+      return { error: null, success: true };
     })
-    .catch((err) => {
-      return { success: false, error: err.toString() };
-    });
+    .catch((error) => ({ error: error.toString(), success: false }));
 };
 
 export const updateCustomerAddress = async (
@@ -224,19 +221,19 @@ export const updateCustomerAddress = async (
     (currentState.addressId as string) || (formData.get("addressId") as string);
 
   if (!addressId) {
-    return { success: false, error: "Address ID is required" };
+    return { error: "Address ID is required", success: false };
   }
 
   const address = {
-    first_name: formData.get("first_name") as string,
-    last_name: formData.get("last_name") as string,
-    company: formData.get("company") as string,
     address_1: formData.get("address_1") as string,
     address_2: formData.get("address_2") as string,
     city: formData.get("city") as string,
+    company: formData.get("company") as string,
+    country_code: formData.get("country_code") as string,
+    first_name: formData.get("first_name") as string,
+    last_name: formData.get("last_name") as string,
     postal_code: formData.get("postal_code") as string,
     province: formData.get("province") as string,
-    country_code: formData.get("country_code") as string,
   } as HttpTypes.StoreUpdateCustomerAddress;
 
   const phone = formData.get("phone") as string;
@@ -254,9 +251,7 @@ export const updateCustomerAddress = async (
     .then(async () => {
       const customerCacheTag = await getCacheTag("customers");
       revalidateTag(customerCacheTag);
-      return { success: true, error: null };
+      return { error: null, success: true };
     })
-    .catch((err) => {
-      return { success: false, error: err.toString() };
-    });
+    .catch((error) => ({ error: error.toString(), success: false }));
 };

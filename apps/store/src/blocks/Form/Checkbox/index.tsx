@@ -1,5 +1,5 @@
-import { Checkbox as CheckboxUi } from "@ecommerce/ui/components/checkbox";
-import { Label } from "@ecommerce/ui/components/label";
+import { Checkbox as CheckboxUi } from "@paydusa/design-system/components/checkbox";
+import { Label } from "@paydusa/design-system/components/label";
 import type { CheckboxField } from "@payloadcms/plugin-form-builder/types";
 import React from "react";
 import type {
@@ -18,7 +18,7 @@ export const Checkbox: React.FC<
     register: UseFormRegister<FieldValues>;
   }
 > = ({ name, defaultValue, errors, label, register, required, width }) => {
-  const props = register(name, { required: required });
+  const props = register(name, { required });
   const { setValue } = useFormContext();
 
   return (

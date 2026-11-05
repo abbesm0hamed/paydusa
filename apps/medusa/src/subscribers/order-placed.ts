@@ -1,4 +1,4 @@
-import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework";
+import type { SubscriberArgs, SubscriberConfig } from "@medusajs/framework";
 
 import { generateInvoicePdfWorkflow } from "../workflows/generate-invoice-pdf";
 import { sendOrderConfirmationWorkflow } from "../workflows/send-order-confirmation";
@@ -75,9 +75,9 @@ export default async function orderPlacedHandler({
     attachments: [
       {
         content: binaryString,
-        filename: `invoice-${order.id}.pdf`,
         content_type: "application/pdf",
         disposition: "attachment",
+        filename: `invoice-${order.id}.pdf`,
       },
     ],
   });

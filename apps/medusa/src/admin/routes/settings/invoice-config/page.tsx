@@ -14,14 +14,13 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { useCallback, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { FormProvider, Controller } from "react-hook-form";
+import { useForm, FormProvider, Controller } from "react-hook-form";
 import * as zod from "zod";
 
 import { queryClient } from "../../../lib/query-client";
 import { sdk } from "../../../lib/sdk";
 
-type InvoiceConfig = {
+interface InvoiceConfig {
   id: string;
   company_name: string;
   company_address: string;
@@ -29,14 +28,14 @@ type InvoiceConfig = {
   company_email: string;
   company_logo?: string;
   notes?: string;
-};
+}
 
 const schema = zod.object({
-  company_name: zod.string().optional(),
   company_address: zod.string().optional(),
-  company_phone: zod.string().optional(),
   company_email: zod.string().email().optional(),
   company_logo: zod.string().url().optional(),
+  company_name: zod.string().optional(),
+  company_phone: zod.string().optional(),
   notes: zod.string().optional(),
 });
 
@@ -50,8 +49,8 @@ const InvoiceConfigPageContent = () => {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: (payload: zod.infer<typeof schema>) =>
       sdk.client.fetch("/admin/invoice-config", {
-        method: "POST",
         body: payload,
+        method: "POST",
       }),
     onSuccess: () => {
       refetch();
@@ -59,16 +58,17 @@ const InvoiceConfigPageContent = () => {
     },
   });
 
-  const getFormDefaultValues = useCallback(() => {
-    return {
-      company_name: data?.invoice_config.company_name || "",
+  const getFormDefaultValues = useCallback(
+    () => ({
       company_address: data?.invoice_config.company_address || "",
-      company_phone: data?.invoice_config.company_phone || "",
       company_email: data?.invoice_config.company_email || "",
       company_logo: data?.invoice_config.company_logo || "",
+      company_name: data?.invoice_config.company_name || "",
+      company_phone: data?.invoice_config.company_phone || "",
       notes: data?.invoice_config.notes || "",
-    };
-  }, [data]);
+    }),
+    [data]
+  );
 
   const form = useForm<zod.infer<typeof schema>>({
     defaultValues: getFormDefaultValues(),
@@ -101,114 +101,102 @@ const InvoiceConfigPageContent = () => {
       <FormProvider {...form}>
         <form
           onSubmit={handleSubmit}
-          className="flex h-full flex-col overflow-hidden p-2 gap-2"
+          className="flex h-full flex-col gap-2 overflow-hidden p-2"
         >
           <Controller
             control={form.control}
             name="company_name"
-            render={({ field }) => {
-              return (
-                <div className="flex flex-col space-y-2">
-                  <div className="flex items-center gap-x-1">
-                    <Label size="small" weight="plus">
-                      Company Name
-                    </Label>
-                  </div>
-                  <Input
-                    {...field}
-                    onChange={field.onChange}
-                    value={field.value}
-                  />
+            render={({ field }) => (
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center gap-x-1">
+                  <Label size="small" weight="plus">
+                    Company Name
+                  </Label>
                 </div>
-              );
-            }}
+                <Input
+                  {...field}
+                  onChange={field.onChange}
+                  value={field.value}
+                />
+              </div>
+            )}
           />
           <Controller
             control={form.control}
             name="company_address"
-            render={({ field }) => {
-              return (
-                <div className="flex flex-col space-y-2">
-                  <div className="flex items-center gap-x-1">
-                    <Label size="small" weight="plus">
-                      Company Address
-                    </Label>
-                  </div>
-                  <Textarea {...field} />
+            render={({ field }) => (
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center gap-x-1">
+                  <Label size="small" weight="plus">
+                    Company Address
+                  </Label>
                 </div>
-              );
-            }}
+                <Textarea {...field} />
+              </div>
+            )}
           />
           <Controller
             control={form.control}
             name="company_phone"
-            render={({ field }) => {
-              return (
-                <div className="flex flex-col space-y-2">
-                  <div className="flex items-center gap-x-1">
-                    <Label size="small" weight="plus">
-                      Company Phone
-                    </Label>
-                  </div>
-                  <Input {...field} />
+            render={({ field }) => (
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center gap-x-1">
+                  <Label size="small" weight="plus">
+                    Company Phone
+                  </Label>
                 </div>
-              );
-            }}
+                <Input {...field} />
+              </div>
+            )}
           />
           <Controller
             control={form.control}
             name="company_email"
-            render={({ field }) => {
-              return (
-                <div className="flex flex-col space-y-2">
-                  <div className="flex items-center gap-x-1">
-                    <Label size="small" weight="plus">
-                      Company Email
-                    </Label>
-                  </div>
-                  <Input {...field} />
+            render={({ field }) => (
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center gap-x-1">
+                  <Label size="small" weight="plus">
+                    Company Email
+                  </Label>
                 </div>
-              );
-            }}
+                <Input {...field} />
+              </div>
+            )}
           />
           <Controller
             control={form.control}
             name="notes"
-            render={({ field }) => {
-              return (
-                <div className="flex flex-col space-y-2">
-                  <div className="flex items-center gap-x-1">
-                    <Label size="small" weight="plus">
-                      Notes
-                    </Label>
-                  </div>
-                  <Textarea {...field} />
+            render={({ field }) => (
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center gap-x-1">
+                  <Label size="small" weight="plus">
+                    Notes
+                  </Label>
                 </div>
-              );
-            }}
+                <Textarea {...field} />
+              </div>
+            )}
           />
           <Controller
             control={form.control}
             name="company_logo"
-            render={({ field }) => {
-              return (
-                <div className="flex flex-col space-y-2">
-                  <div className="flex items-center gap-x-1">
-                    <Label size="small" weight="plus">
-                      Company Logo
-                    </Label>
-                  </div>
-                  <Input type="file" onChange={uploadLogo} className="py-1" />
-                  {field.value && (
-                    <img
-                      src={field.value}
-                      alt="Company Logo"
-                      className="mt-2 h-24 w-24"
-                    />
-                  )}
+            render={({ field }) => (
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center gap-x-1">
+                  <Label size="small" weight="plus">
+                    Company Logo
+                  </Label>
                 </div>
-              );
-            }}
+                <Input type="file" onChange={uploadLogo} className="py-1" />
+                {field.value && (
+                  <img
+                    src={field.value}
+                    alt="Company Logo"
+                    className="mt-2 h-24 w-24"
+                  />
+                )}
+              </div>
+            )}
           />
           <Button type="submit" disabled={isLoading || isPending}>
             Save
@@ -223,12 +211,10 @@ export const config = defineRouteConfig({
   label: "Default Invoice Config",
 });
 
-const InvoiceConfigPage = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <InvoiceConfigPageContent />
-    </QueryClientProvider>
-  );
-};
+const InvoiceConfigPage = () => (
+  <QueryClientProvider client={queryClient}>
+    <InvoiceConfigPageContent />
+  </QueryClientProvider>
+);
 
 export default InvoiceConfigPage;

@@ -1,15 +1,15 @@
 "use client";
 
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import Input from "@modules/common/components/input";
 import React, { useEffect, useActionState } from "react";
 
 import AccountInfo from "../account-info";
 // import { updateCustomer } from "@lib/data/customer"
 
-type MyInformationProps = {
+interface MyInformationProps {
   customer: HttpTypes.StoreCustomer;
-};
+}
 
 const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
   const [successState, setSuccessState] = React.useState(false);
@@ -25,9 +25,9 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
 
     try {
       // await updateCustomer(customer)
-      return { success: true, error: null };
+      return { error: null, success: true };
     } catch (error: any) {
-      return { success: false, error: error.toString() };
+      return { error: error.toString(), success: false };
     }
   };
 

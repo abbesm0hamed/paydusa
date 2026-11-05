@@ -16,9 +16,9 @@ export const getServerSideURL = () => {
 
 export const getClientSideURL = () => {
   if (canUseDOM) {
-    const protocol = window.location.protocol;
+    const { protocol } = window.location;
     const domain = window.location.hostname;
-    const port = window.location.port;
+    const { port } = window.location;
 
     return `${protocol}//${domain}${port ? `:${port}` : ""}`;
   }

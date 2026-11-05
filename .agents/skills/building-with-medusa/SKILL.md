@@ -102,6 +102,7 @@ Frontend (admin dashboard/storefront via SDK)
 - `import-top-level` - Import workflows/modules at file top, never use `await import()` in route body
 - `import-static-only` - Use static imports for all dependencies
 - `import-no-dynamic-routes` - Dynamic imports add overhead and break type checking
+- `import-zod-framework` - Import Zod from `@medusajs/framework/zod`, never from `zod` directly. Medusa is on **Zod v4** (since v2.14.0): use `z.email()`/`z.url()`/`z.uuid()` instead of `z.string().email()` etc., `.extend(other.shape)` instead of `.merge(other)`, `z.strictObject()`/`z.looseObject()` instead of `.strict()`/`.passthrough()`, `z.enum(MyEnum)` instead of `z.nativeEnum()`, and `z.record(z.string(), value)` instead of `z.record(value)`
 
 ### 5. Data Access Patterns (MEDIUM)
 
@@ -227,6 +228,14 @@ If the build fails:
 - Type mismatches (e.g., missing `MedusaRequest<T>` type argument)
 - Incorrect workflow composition (async functions, conditionals)
 
+### Linting
+
+Since Medusa v2.16.0, projects can install `@medusajs/eslint-plugin`, which catches violations of Medusa conventions (API routes, subscribers, scheduled jobs, admin customizations, module patterns) that a type check won't.
+
+- If the project has an `eslint.config.*` with `@medusajs/eslint-plugin`, **`medusa build` and `medusa develop` run linting by default and fail on lint errors**. Fix lint errors rather than passing `--no-lint`.
+- Run linting explicitly with `npx medusa lint` (supports `--fix` and `--quiet`). Run it after implementing a feature, alongside the build.
+- If the project has no ESLint config, suggest adding it (`@medusajs/eslint-plugin`, `eslint`, and `jiti` as dev dependencies, then an `eslint.config.ts` exporting `defineConfig([...medusa.configs.recommended])`) — but don't add it unprompted.
+
 ## Next Steps - Testing Your Implementation
 
 **After successfully implementing a feature, always provide these next steps to the user:**
@@ -243,7 +252,7 @@ npm run dev      # or pnpm dev / yarn dev
 
 Open your browser and navigate to:
 
-- **Admin Dashboard:** http://localhost:9100/app
+- **Admin Dashboard:** http://localhost:9000/app
 
 Log in with your admin credentials to test any admin-related features.
 
@@ -253,25 +262,25 @@ If you implemented custom API routes, list them for the user to test:
 
 **Admin Routes (require authentication):**
 
-- `POST http://localhost:9100/admin/[your-route]` - Description of what it does
-- `GET http://localhost:9100/admin/[your-route]` - Description of what it does
+- `POST http://localhost:9000/admin/[your-route]` - Description of what it does
+- `GET http://localhost:9000/admin/[your-route]` - Description of what it does
 
 **Store Routes (public or customer-authenticated):**
 
-- `POST http://localhost:9100/store/[your-route]` - Description of what it does
-- `GET http://localhost:9100/store/[your-route]` - Description of what it does
+- `POST http://localhost:9000/store/[your-route]` - Description of what it does
+- `GET http://localhost:9000/store/[your-route]` - Description of what it does
 
 **Testing with cURL example:**
 
 ```bash
 # Admin route (requires authentication)
-curl -X POST http://localhost:9100/admin/reviews/123/approve \
+curl -X POST http://localhost:9000/admin/reviews/123/approve \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   --cookie "connect.sid=YOUR_SESSION_COOKIE"
 
 # Store route
-curl -X POST http://localhost:9100/store/reviews \
+curl -X POST http://localhost:9000/store/reviews \
   -H "Content-Type: application/json" \
   -d '{"product_id": "prod_123", "rating": 5, "comment": "Great product!"}'
 ```
@@ -299,7 +308,7 @@ The [feature name] has been successfully implemented. Here's how to test it:
 
 ### Access the Admin Dashboard
 
-Open http://localhost:9100/app in your browser
+Open http://localhost:9000/app in your browser
 
 ### Test the API Routes
 

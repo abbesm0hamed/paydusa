@@ -3,26 +3,24 @@ import { nestedDocsPlugin } from "@payloadcms/plugin-nested-docs";
 import { redirectsPlugin } from "@payloadcms/plugin-redirects";
 import { searchPlugin } from "@payloadcms/plugin-search";
 import { seoPlugin } from "@payloadcms/plugin-seo";
-import { GenerateTitle, GenerateURL } from "@payloadcms/plugin-seo/types";
+import type { GenerateTitle, GenerateURL } from "@payloadcms/plugin-seo/types";
 import {
   FixedToolbarFeature,
   HeadingFeature,
   lexicalEditor,
 } from "@payloadcms/richtext-lexical";
-import { s3Storage } from "@payloadcms/storage-s3";
-import { Plugin } from "payload";
+import type { Plugin } from "payload";
 
 import { revalidateRedirects } from "@/hooks/revalidateRedirects";
-import { Page, Post } from "@/payload-types";
+import type { Page, Post } from "@/payload-types";
 import { beforeSyncWithSearch } from "@/search/beforeSync";
 import { searchFields } from "@/search/fieldOverrides";
 import { getServerSideURL } from "@/utilities/getURL";
 
-const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title
+const generateTitle: GenerateTitle<Post | Page> = ({ doc }) =>
+  doc?.title
     ? `${doc.title} | Ecommerce for poweful digital solutions`
     : "Ecommerce for poweful digital solutions";
-};
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
   const url = getServerSideURL();
@@ -30,15 +28,15 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
   return doc?.slug ? `${url}/${doc.slug}` : url;
 };
 
-const prefix = "cms/media";
-
 export const plugins: Plugin[] = [
   redirectsPlugin({
     collections: ["pages", "posts"],
     overrides: {
+      versions: false,
+      authorship: false,
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
-      fields: ({ defaultFields }) => {
-        return defaultFields.map((field) => {
+      fields: ({ defaultFields }) =>
+        defaultFields.map((field) => {
           if ("name" in field && field.name === "from") {
             return {
               ...field,
@@ -49,8 +47,7 @@ export const plugins: Plugin[] = [
             };
           }
           return field;
-        });
-      },
+        }),
       hooks: {
         afterChange: [revalidateRedirects],
       },
@@ -69,74 +66,39 @@ export const plugins: Plugin[] = [
       payment: false,
     },
     formOverrides: {
-      fields: ({ defaultFields }) => {
-        return defaultFields.map((field) => {
+      authorship: false,
+      fields: ({ defaultFields }) =>
+        defaultFields.map((field) => {
           if ("name" in field && field.name === "confirmationMessage") {
             return {
               ...field,
               editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
-                  return [
-                    ...rootFeatures,
-                    FixedToolbarFeature(),
-                    HeadingFeature({
-                      enabledHeadingSizes: ["h1", "h2", "h3", "h4"],
-                    }),
-                  ];
-                },
+                features: ({ rootFeatures }) => [
+                  ...rootFeatures,
+                  FixedToolbarFeature(),
+                  HeadingFeature({
+                    enabledHeadingSizes: ["h1", "h2", "h3", "h4"],
+                  }),
+                ],
               }),
             };
           }
           return field;
-        });
-      },
+        }),
+      versions: false,
+    },
+    formSubmissionOverrides: {
+      authorship: false,
+      versions: false,
     },
   }),
   searchPlugin({
-    collections: ["posts"],
     beforeSync: beforeSyncWithSearch,
+    collections: ["posts"],
     searchOverrides: {
-      fields: ({ defaultFields }) => {
-        return [...defaultFields, ...searchFields];
-      },
-    },
-  }),
-  s3Storage({
-    collections: {
-      media: {
-        disablePayloadAccessControl: true,
-        prefix,
-        generateFileURL: ({ filename }: { filename: string }) => {
-          return `${process.env.S3_FILE_URL}/${prefix}/${filename}`;
-        },
-      },
-    },
-    bucket: process.env.S3_BUCKET!,
-    config: {
-      endpoint: process.env.S3_ENDPOINT!,
-      region: process.env.S3_REGION || "auto",
-      credentials: {
-        accessKeyId: process.env.S3_ACCESS_KEY_ID!,
-        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
-      },
-      forcePathStyle: true,
-    },
-  }),
-  (config) => ({
-    ...config,
-    admin: {
-      ...config.admin,
-      components: {
-        ...config.admin?.components,
-        providers: (config.admin?.components?.providers || []).filter(
-          (provider) => {
-            if (typeof provider === "object" && "path" in provider) {
-              return !provider.path.includes("S3ClientUploadHandler");
-            }
-            return true;
-          }
-        ),
-      },
+      authorship: false,
+      fields: ({ defaultFields }) => [...defaultFields, ...searchFields],
+      versions: false,
     },
   }),
 ];

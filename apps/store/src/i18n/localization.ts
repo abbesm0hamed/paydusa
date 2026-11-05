@@ -1,6 +1,6 @@
 // this is for admin panel lang
 export const i18n = {
-  fallbackLanguage: "en",
+  fallbackLanguage: "en" as const,
   // supportedLanguages: { en, ar, fr },
 };
 

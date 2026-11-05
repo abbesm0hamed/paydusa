@@ -25,7 +25,9 @@ const TransferActions = ({ id, token }: { id: string; token: string }) => {
 
     const { success, error } = await acceptTransferRequest(id, token);
 
-    if (error) setErrorMessage(error);
+    if (error) {
+      setErrorMessage(error);
+    }
     setStatus({ accept: success ? "success" : "error", decline: null });
   };
 
@@ -35,7 +37,9 @@ const TransferActions = ({ id, token }: { id: string; token: string }) => {
 
     const { success, error } = await declineTransferRequest(id, token);
 
-    if (error) setErrorMessage(error);
+    if (error) {
+      setErrorMessage(error);
+    }
     setStatus({ accept: null, decline: success ? "success" : "error" });
   };
 

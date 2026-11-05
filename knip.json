@@ -1,0 +1,22 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignoreExportsUsedInFile": true,
+  "workspaces": {
+    ".": {
+      "entry": ["oxlint.config.mjs"]
+    },
+    "apps/medusa": {
+      "entry": [
+        "medusa-config.ts",
+        "instrumentation.ts",
+        "src/admin/**/*.{ts,tsx}",
+        "src/api/**/*.ts",
+        "src/links/**/*.ts",
+        "src/modules/**/*.ts",
+        "src/scripts/**/*.ts",
+        "src/subscribers/**/*.ts",
+        "src/workflows/**/*.ts"
+      ]
+    }
+  }
+}

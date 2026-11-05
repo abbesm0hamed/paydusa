@@ -5,24 +5,30 @@ import { link } from "@/fields/link";
 import { revalidateHeader } from "./hooks/revalidateHeader";
 
 export const Header: GlobalConfig = {
-  slug: "header",
   access: {
     read: () => true,
   },
+  authorship: false,
   fields: [
     {
       name: "logo",
-      type: "upload",
       relationTo: "media",
+      type: "upload",
     },
     {
-      name: "navItems",
-      type: "array",
-      localized: true,
+      admin: {
+        components: {
+          RowLabel: "@/globals/Header/RowLabel#RowLabel",
+        },
+        initCollapsed: true,
+      },
       fields: [
         {
+          admin: {
+            layout: "horizontal",
+          },
+          defaultValue: "link",
           name: "type",
-          type: "radio",
           options: [
             {
               label: "Single Link",
@@ -33,15 +39,10 @@ export const Header: GlobalConfig = {
               value: "group",
             },
           ],
-          defaultValue: "link",
-          admin: {
-            layout: "horizontal",
-          },
+          type: "radio",
         },
         // Fields for single link type
         {
-          name: "linkFields",
-          type: "group",
           admin: {
             condition: (_, siblingData) => siblingData?.type === "link",
           },
@@ -50,26 +51,24 @@ export const Header: GlobalConfig = {
               appearances: false,
             }),
           ],
+          name: "linkFields",
+          type: "group",
         },
         // Fields for group type
         {
-          name: "groupFields",
-          type: "group",
           admin: {
             condition: (_, siblingData) => siblingData?.type === "group",
           },
           fields: [
             {
-              name: "label",
-              type: "text",
-              required: true,
               admin: {
                 description: "The label for this dropdown group",
               },
+              name: "label",
+              required: true,
+              type: "text",
             },
             {
-              name: "groups",
-              type: "array",
               fields: [
                 {
                   name: "title",
@@ -112,20 +111,23 @@ export const Header: GlobalConfig = {
                   ],
                 },
               ],
+              name: "groups",
+              type: "array",
             },
           ],
+          name: "groupFields",
+          type: "group",
         },
       ],
+      localized: true,
       maxRows: 6,
-      admin: {
-        initCollapsed: true,
-        components: {
-          RowLabel: "@/globals/Header/RowLabel#RowLabel",
-        },
-      },
+      name: "navItems",
+      type: "array",
     },
   ],
   hooks: {
     afterChange: [revalidateHeader],
   },
+  slug: "header",
+  versions: false,
 };

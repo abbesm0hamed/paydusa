@@ -6,16 +6,14 @@ import type { Metadata } from "next";
 import { connection } from "next/server";
 import { Suspense } from "react";
 
-import { importMap } from "../../importMap";
+import { importMap } from "../importMap";
 
-type Args = {
+interface Args {
   params: Promise<{
     segments: string[];
   }>;
-  searchParams: Promise<{
-    [key: string]: string | string[];
-  }>;
-};
+  searchParams: Promise<Record<string, string | string[]>>;
+}
 
 export const generateMetadata = ({
   params,
@@ -25,7 +23,7 @@ export const generateMetadata = ({
 
 async function DynamicContent({ params, searchParams }: Args) {
   await connection();
-  return RootPage({ config, params, searchParams, importMap });
+  return RootPage({ config, importMap, params, searchParams });
 }
 
 const Page = ({ params, searchParams }: Args) => (

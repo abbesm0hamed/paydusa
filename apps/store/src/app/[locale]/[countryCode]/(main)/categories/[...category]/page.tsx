@@ -3,13 +3,13 @@ import { listProductFilterOptions } from "@lib/data/product-options";
 import { listProductTags } from "@lib/data/product-tags";
 import { listProductTypes } from "@lib/data/product-types";
 import { listRegions } from "@lib/data/regions";
-import { StoreRegion } from "@medusajs/types";
+import type { StoreRegion } from "@medusajs/types";
 import CategoryTemplate from "@modules/categories/templates";
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products";
-import { Metadata } from "next";
+import type { SortOptions } from "@modules/store/components/refinement-list/sort-products";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-type Props = {
+interface Props {
   params: Promise<{ category: string[]; countryCode: string }>;
   searchParams: Promise<{
     sortBy?: SortOptions;
@@ -20,10 +20,12 @@ type Props = {
     price_from?: string;
     price_to?: string;
   }>;
-};
+}
 
 function toArray(value: string | string[] | undefined): string[] {
-  if (!value) return [];
+  if (!value) {
+    return [];
+  }
   return Array.isArray(value) ? value : [value];
 }
 
@@ -37,21 +39,20 @@ export async function generateStaticParams() {
   }
 
   const countryCodes = await listRegions().then((regions: StoreRegion[]) =>
-    regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat()
+    regions?.flatMap((r) => r.countries?.map((c) => c.iso_2))
   );
 
   const categoryHandles = product_categories.map(
     (category: any) => category.handle
   );
 
-  const staticParams = countryCodes
-    ?.map((countryCode: string | undefined) =>
+  const staticParams = countryCodes?.flatMap(
+    (countryCode: string | undefined) =>
       categoryHandles.map((handle: any) => ({
-        countryCode,
         category: [handle],
+        countryCode,
       }))
-    )
-    .flat();
+  );
 
   return staticParams;
 }
@@ -61,18 +62,18 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   try {
     const productCategory = await getCategoryByHandle(params.category);
 
-    const title = productCategory.name + " | Medusa Store";
+    const title = `${productCategory.name} | Medusa Store`;
 
     const description = productCategory.description ?? `${title} category.`;
 
     return {
-      title: `${title} | Medusa Store`,
-      description,
       alternates: {
         canonical: `${params.category.join("/")}`,
       },
+      description,
+      title: `${title} | Medusa Store`,
     };
-  } catch (error) {
+  } catch {
     notFound();
   }
 }
@@ -98,8 +99,8 @@ export default async function CategoryPage(props: Props) {
   ]);
 
   const subcategories = productCategory.category_children?.map((c) => ({
-    value: c.id,
     label: c.name,
+    value: c.id,
   }));
 
   return (
@@ -109,8 +110,8 @@ export default async function CategoryPage(props: Props) {
       page={page}
       countryCode={params.countryCode}
       subcategories={subcategories}
-      types={types.map((t) => ({ value: t.id, label: t.value }))}
-      tags={tags.map((t) => ({ value: t.id, label: t.value }))}
+      types={types.map((t) => ({ label: t.value, value: t.id }))}
+      tags={tags.map((t) => ({ label: t.value, value: t.id }))}
       optionValues={optionValues.option_values}
       typeId={typeId}
       tagId={tagId}

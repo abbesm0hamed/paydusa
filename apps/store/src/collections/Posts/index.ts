@@ -26,34 +26,36 @@ import { generatePreviewPath } from "../../utilities/generatePreviewPath";
 import { populateAuthors } from "./hooks/populateAuthors";
 import { revalidateDelete, revalidatePost } from "./hooks/revalidatePost";
 
-export const Posts: CollectionConfig<"posts"> = {
+export const Posts = {
   slug: "posts",
+  authorship: false,
   access: {
     create: authenticated,
     delete: authenticated,
     read: authenticatedOrPublished,
+    readVersions: authenticated,
     update: authenticated,
   },
   // This config controls what's populated by default when a post is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
   // Type safe if the collection slug generic is passed to `CollectionConfig` - `CollectionConfig<'posts'>
   defaultPopulate: {
-    title: true,
-    slug: true,
     categories: true,
     meta: {
-      image: true,
       description: true,
+      image: true,
     },
+    slug: true,
+    title: true,
   },
   admin: {
     defaultColumns: ["title", "slug", "updatedAt"],
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({
-          slug: typeof data?.slug === "string" ? data.slug : "",
           collection: "posts",
           req,
+          slug: typeof data?.slug === "string" ? data.slug : "",
         });
 
         return path;
@@ -61,49 +63,46 @@ export const Posts: CollectionConfig<"posts"> = {
     },
     preview: (data, { req }) =>
       generatePreviewPath({
-        slug: typeof data?.slug === "string" ? data.slug : "",
         collection: "posts",
         req,
+        slug: typeof data?.slug === "string" ? data.slug : "",
       }),
     useAsTitle: "title",
   },
   fields: [
     {
-      name: "title",
-      type: "text",
-      required: true,
       localized: true,
+      name: "title",
+      required: true,
+      type: "text",
     },
     {
-      type: "tabs",
       tabs: [
         {
           fields: [
             {
               name: "heroImage",
-              type: "upload",
               relationTo: "media",
+              type: "upload",
             },
             {
-              name: "content",
-              type: "richText",
-              localized: true,
               editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
-                  return [
-                    ...rootFeatures,
-                    HeadingFeature({
-                      enabledHeadingSizes: ["h1", "h2", "h3", "h4"],
-                    }),
-                    BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
-                    FixedToolbarFeature(),
-                    InlineToolbarFeature(),
-                    HorizontalRuleFeature(),
-                  ];
-                },
+                features: ({ rootFeatures }) => [
+                  ...rootFeatures,
+                  HeadingFeature({
+                    enabledHeadingSizes: ["h1", "h2", "h3", "h4"],
+                  }),
+                  BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
+                  FixedToolbarFeature(),
+                  InlineToolbarFeature(),
+                  HorizontalRuleFeature(),
+                ],
               }),
               label: false,
+              localized: true,
+              name: "content",
               required: true,
+              type: "richText",
             },
           ],
           label: "Content",
@@ -111,44 +110,39 @@ export const Posts: CollectionConfig<"posts"> = {
         {
           fields: [
             {
-              name: "relatedPosts",
-              type: "relationship",
-              localized: true,
               admin: {
                 position: "sidebar",
               },
-              filterOptions: ({ id }) => {
-                return {
-                  id: {
-                    not_in: [id],
-                  },
-                };
-              },
+              filterOptions: ({ id }) => ({
+                id: {
+                  not_in: [id],
+                },
+              }),
               hasMany: true,
+              localized: true,
+              name: "relatedPosts",
               relationTo: "posts",
+              type: "relationship",
             },
             {
-              name: "categories",
-              type: "relationship",
-              localized: true,
               admin: {
                 position: "sidebar",
               },
               hasMany: true,
+              localized: true,
+              name: "categories",
               relationTo: "categories",
+              type: "relationship",
             },
           ],
           label: "Meta",
         },
         {
-          name: "meta",
-          label: "SEO",
-          localized: true,
           fields: [
             OverviewField({
-              titlePath: "meta.title",
               descriptionPath: "meta.description",
               imagePath: "meta.image",
+              titlePath: "meta.title",
             }),
             MetaTitleField({
               hasGenerateFn: true,
@@ -167,13 +161,14 @@ export const Posts: CollectionConfig<"posts"> = {
               descriptionPath: "meta.description",
             }),
           ],
+          label: "SEO",
+          localized: true,
+          name: "meta",
         },
       ],
+      type: "tabs",
     },
     {
-      name: "publishedAt",
-      type: "date",
-      localized: true,
       admin: {
         date: {
           pickerAppearance: "dayAndTime",
@@ -190,24 +185,24 @@ export const Posts: CollectionConfig<"posts"> = {
           },
         ],
       },
+      localized: true,
+      name: "publishedAt",
+      type: "date",
     },
     {
-      name: "authors",
-      type: "relationship",
-      localized: true,
       admin: {
         position: "sidebar",
       },
       hasMany: true,
+      localized: true,
+      name: "authors",
       relationTo: "users",
+      type: "relationship",
     },
     // This field is only used to populate the user data via the `populateAuthors` hook
     // This is because the `user` collection has access control locked to protect user privacy
     // GraphQL will also not return mutated user data that differs from the underlying schema
     {
-      name: "populatedAuthors",
-      type: "array",
-      localized: true,
       access: {
         update: () => false,
       },
@@ -225,13 +220,16 @@ export const Posts: CollectionConfig<"posts"> = {
           type: "text",
         },
       ],
+      localized: true,
+      name: "populatedAuthors",
+      type: "array",
     },
     ...slugField(),
   ],
   hooks: {
     afterChange: [revalidatePost],
-    afterRead: [populateAuthors],
     afterDelete: [revalidateDelete],
+    afterRead: [populateAuthors],
   },
   versions: {
     drafts: {
@@ -242,4 +240,4 @@ export const Posts: CollectionConfig<"posts"> = {
     },
     maxPerDoc: 50,
   },
-};
+} satisfies CollectionConfig<"posts">;

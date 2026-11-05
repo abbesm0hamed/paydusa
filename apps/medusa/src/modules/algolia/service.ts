@@ -1,10 +1,11 @@
-import { algoliasearch, SearchClient } from "algoliasearch";
+import type { SearchClient } from "algoliasearch";
+import { algoliasearch } from "algoliasearch";
 
-type AlgoliaOptions = {
+interface AlgoliaOptions {
   apiKey: string;
   appId: string;
   productIndexName: string;
-};
+}
 
 export type AlgoliaIndexType = "product";
 
@@ -19,10 +20,12 @@ export default class AlgoliaModuleService {
 
   async getIndexName(type: AlgoliaIndexType) {
     switch (type) {
-      case "product":
+      case "product": {
         return this.options.productIndexName;
-      default:
+      }
+      default: {
         throw new Error(`Invalid index type: ${type}`);
+      }
     }
   }
 

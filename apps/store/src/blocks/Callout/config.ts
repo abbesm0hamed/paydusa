@@ -3,20 +3,17 @@ import type { Block } from "payload";
 import richText from "@/fields/richText";
 
 export const Callout: Block = {
-  slug: "callout",
-  interfaceName: "CalloutBlock",
   fields: [
     richText({
       name: "content",
     }),
     {
       name: "logo",
-      type: "upload",
       relationTo: "media",
       required: true,
+      type: "upload",
     },
     {
-      type: "row",
       fields: [
         {
           name: "author",
@@ -27,25 +24,28 @@ export const Callout: Block = {
           type: "text",
         },
       ],
+      type: "row",
     },
     {
-      name: "imgs",
-      type: "array",
       fields: [
         {
           name: "img",
-          type: "upload",
           relationTo: "media",
           required: true,
+          type: "upload",
         },
       ],
+      name: "imgs",
+      type: "array",
     },
   ],
   graphQL: {
     singularName: "Callout",
   },
+  interfaceName: "CalloutBlock",
   labels: {
     plural: "Callout Blocks",
     singular: "Callout Block",
   },
+  slug: "callout",
 };

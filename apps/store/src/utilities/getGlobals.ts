@@ -1,7 +1,8 @@
 import config from "@payload-config";
 import type { Config } from "@payload-types";
 import { cacheTag } from "next/cache";
-import { getPayload, type TypedLocale } from "payload";
+import { getPayload } from "payload";
+import type { TypedLocale } from "payload";
 
 type Global = keyof Config["globals"];
 
@@ -16,8 +17,8 @@ export async function getCachedGlobal(
   const payload = await getPayload({ config });
 
   return payload.findGlobal({
-    slug,
     depth,
     locale,
+    slug,
   });
 }

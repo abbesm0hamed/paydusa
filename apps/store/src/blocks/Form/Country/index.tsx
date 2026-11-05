@@ -1,11 +1,11 @@
-import { Label } from "@ecommerce/ui/components/label";
+import { Label } from "@paydusa/design-system/components/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@ecommerce/ui/components/select";
+} from "@paydusa/design-system/components/select";
 import type { CountryField } from "@payloadcms/plugin-form-builder/types";
 import React from "react";
 import type { Control, FieldErrorsImpl } from "react-hook-form";
@@ -20,48 +20,44 @@ export const Country: React.FC<
     control: Control;
     errors: Partial<FieldErrorsImpl>;
   }
-> = ({ name, control, errors, label, required, width }) => {
-  return (
-    <Width width={width}>
-      <Label className="" htmlFor={name}>
-        {label}
+> = ({ name, control, errors, label, required, width }) => (
+  <Width width={width}>
+    <Label className="" htmlFor={name}>
+      {label}
 
-        {required && (
-          <span className="required">
-            * <span className="sr-only">(required)</span>
-          </span>
-        )}
-      </Label>
-      <Controller
-        control={control}
-        defaultValue=""
-        name={name}
-        render={({ field: { onChange, value } }) => {
-          const controlledValue = countryOptions.find((t) => t.value === value);
+      {required && (
+        <span className="required">
+          * <span className="sr-only">(required)</span>
+        </span>
+      )}
+    </Label>
+    <Controller
+      control={control}
+      defaultValue=""
+      name={name}
+      render={({ field: { onChange, value } }) => {
+        const controlledValue = countryOptions.find((t) => t.value === value);
 
-          return (
-            <Select
-              onValueChange={(val) => onChange(val)}
-              value={controlledValue?.value}
-            >
-              <SelectTrigger className="w-full" id={name}>
-                <SelectValue placeholder={label} />
-              </SelectTrigger>
-              <SelectContent>
-                {countryOptions.map(({ label, value }) => {
-                  return (
-                    <SelectItem key={value} value={value}>
-                      {label}
-                    </SelectItem>
-                  );
-                })}
-              </SelectContent>
-            </Select>
-          );
-        }}
-        rules={{ required }}
-      />
-      {errors[name] && <Error name={name} />}
-    </Width>
-  );
-};
+        return (
+          <Select
+            onValueChange={(val) => onChange(val)}
+            value={controlledValue?.value}
+          >
+            <SelectTrigger className="w-full" id={name}>
+              <SelectValue placeholder={label} />
+            </SelectTrigger>
+            <SelectContent>
+              {countryOptions.map(({ label, value }) => (
+                <SelectItem key={value} value={value}>
+                  {label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        );
+      }}
+      rules={{ required }}
+    />
+    {errors[name] && <Error name={name} />}
+  </Width>
+);

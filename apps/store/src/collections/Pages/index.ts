@@ -28,29 +28,31 @@ import { generatePreviewPath } from "@/utilities/generatePreviewPath";
 
 import { revalidateDelete, revalidatePage } from "./hooks/revalidatePage";
 
-export const Pages: CollectionConfig<"pages"> = {
+export const Pages = {
   slug: "pages",
+  authorship: false,
   access: {
     create: authenticated,
     delete: authenticated,
     read: authenticatedOrPublished,
+    readVersions: authenticated,
     update: authenticated,
   },
   // This config controls what's populated by default when a page is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
   // Type safe if the collection slug generic is passed to `CollectionConfig` - `CollectionConfig<'pages'>
   defaultPopulate: {
-    title: true,
     slug: true,
+    title: true,
   },
   admin: {
     defaultColumns: ["title", "slug", "createdAt", "updatedAt"],
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({
-          slug: typeof data?.slug === "string" ? data.slug : "",
           collection: "pages",
           req,
+          slug: typeof data?.slug === "string" ? data.slug : "",
         });
 
         return path;
@@ -58,20 +60,19 @@ export const Pages: CollectionConfig<"pages"> = {
     },
     preview: (data, { req }) =>
       generatePreviewPath({
-        slug: typeof data?.slug === "string" ? data.slug : "",
         collection: "pages",
         req,
+        slug: typeof data?.slug === "string" ? data.slug : "",
       }),
     useAsTitle: "title",
   },
   fields: [
     {
       name: "title",
-      type: "text",
       required: true,
+      type: "text",
     },
     {
-      type: "tabs",
       tabs: [
         {
           fields: [hero],
@@ -80,9 +81,9 @@ export const Pages: CollectionConfig<"pages"> = {
         {
           fields: [
             {
-              name: "layout",
-              type: "blocks",
-              localized: true,
+              admin: {
+                initCollapsed: true,
+              },
               blocks: [
                 CallToAction,
                 Content,
@@ -97,23 +98,20 @@ export const Pages: CollectionConfig<"pages"> = {
                 Archive,
                 FormBlock,
               ],
+              localized: true,
+              name: "layout",
               required: true,
-              admin: {
-                initCollapsed: true,
-              },
+              type: "blocks",
             },
           ],
           label: "Content",
         },
         {
-          name: "meta",
-          label: "SEO",
-          localized: true,
           fields: [
             OverviewField({
-              titlePath: "meta.title",
               descriptionPath: "meta.description",
               imagePath: "meta.image",
+              titlePath: "meta.title",
             }),
             MetaTitleField({
               hasGenerateFn: true,
@@ -132,23 +130,27 @@ export const Pages: CollectionConfig<"pages"> = {
               descriptionPath: "meta.description",
             }),
           ],
+          label: "SEO",
+          localized: true,
+          name: "meta",
         },
       ],
+      type: "tabs",
     },
     {
-      name: "publishedAt",
-      type: "date",
-      localized: true,
       admin: {
         position: "sidebar",
       },
+      localized: true,
+      name: "publishedAt",
+      type: "date",
     },
     ...slugField(),
   ],
   hooks: {
     afterChange: [revalidatePage],
-    beforeChange: [populatePublishedAt],
     afterDelete: [revalidateDelete],
+    beforeChange: [populatePublishedAt],
   },
   versions: {
     drafts: {
@@ -159,4 +161,4 @@ export const Pages: CollectionConfig<"pages"> = {
     },
     maxPerDoc: 50,
   },
-};
+} satisfies CollectionConfig<"pages">;

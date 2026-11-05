@@ -1,7 +1,7 @@
 "use server";
 
 import { sdk } from "@lib/config";
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 
 import { getCacheOptions } from "./cookies";
 
@@ -14,8 +14,8 @@ export const retrieveCollection = async (id: string) => {
     .fetch<{ collection: HttpTypes.StoreCollection }>(
       `/store/collections/${id}`,
       {
-        next,
         cache: "force-cache",
+        next,
       }
     )
     .then(({ collection }) => collection);
@@ -35,9 +35,9 @@ export const listCollections = async (
     .fetch<{ collections: HttpTypes.StoreCollection[]; count: number }>(
       "/store/collections",
       {
-        query: queryParams,
-        next,
         cache: "force-cache",
+        next,
+        query: queryParams,
       }
     )
     .then(({ collections }) => ({ collections, count: collections.length }));
@@ -52,9 +52,9 @@ export const getCollectionByHandle = async (
 
   return sdk.client
     .fetch<HttpTypes.StoreCollectionListResponse>(`/store/collections`, {
-      query: { handle, fields: "*products" },
-      next,
       cache: "force-cache",
+      next,
+      query: { fields: "*products", handle },
     })
     .then(({ collections }) => collections[0]);
 };

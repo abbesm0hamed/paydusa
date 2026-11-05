@@ -2,7 +2,7 @@
 
 import { sdk } from "@lib/config";
 
-export type OptionValueGroup = {
+export interface OptionValueGroup {
   option_id: string;
   option_title: string;
   values: {
@@ -10,11 +10,11 @@ export type OptionValueGroup = {
     value: string;
     count: number;
   }[];
-};
+}
 
-export type ProductFiltersResponse = {
+export interface ProductFiltersResponse {
   option_values: Record<string, OptionValueGroup>;
-};
+}
 
 export const listProductFilterOptions = async ({
   category_id,

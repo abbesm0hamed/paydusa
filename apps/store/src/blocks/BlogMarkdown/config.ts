@@ -1,25 +1,25 @@
 import type { Block } from "payload";
 
 export const BlogMarkdown: Block = {
-  slug: "blogMarkdown",
-  interfaceName: "BlogMarkdownBlock",
   fields: [
     {
-      name: "markdown",
-      type: "text",
       admin: {
         components: {
           Field: "@/blocks/BlogMarkdown/Field#BlogMarkdownField",
         },
       },
+      name: "markdown",
       required: true,
+      type: "text",
     },
   ],
   graphQL: {
     singularName: "BlogMarkdown",
   },
+  interfaceName: "BlogMarkdownBlock",
   labels: {
     plural: "Markdown Blocks",
     singular: "Markdown",
   },
+  slug: "blogMarkdown",
 };

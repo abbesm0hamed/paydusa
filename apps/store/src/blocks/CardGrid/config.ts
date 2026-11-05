@@ -5,15 +5,6 @@ import { linkGroup } from "@/fields/linkGroup";
 import richText from "@/fields/richText";
 
 export const CardGrid: Block = {
-  slug: "cardGrid",
-  interfaceName: "CardGridBlock",
-  graphQL: {
-    singularName: "CardGrid",
-  },
-  labels: {
-    plural: "Card Grids",
-    singular: "Card Grid",
-  },
   fields: [
     richText({
       name: "content",
@@ -28,18 +19,16 @@ export const CardGrid: Block = {
       },
     }),
     {
+      label: "Reveal descriptions on hover?",
       name: "revealOnHover",
       type: "checkbox",
-      label: "Reveal descriptions on hover?",
     },
     {
-      name: "cards",
-      type: "array",
       fields: [
         {
           name: "title",
-          type: "text",
           required: true,
+          type: "text",
         },
         {
           name: "desc",
@@ -59,6 +48,17 @@ export const CardGrid: Block = {
           },
         }),
       ],
+      name: "cards",
+      type: "array",
     },
   ],
+  graphQL: {
+    singularName: "CardGrid",
+  },
+  interfaceName: "CardGridBlock",
+  labels: {
+    plural: "Card Grids",
+    singular: "Card Grid",
+  },
+  slug: "cardGrid",
 };

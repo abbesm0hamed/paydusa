@@ -28,8 +28,10 @@ export const ArchiveBlock: React.FC<
     const payload = await getPayload({ config });
 
     const flattenedCategories = categories?.map((category) => {
-      if (typeof category === "object") return category.id;
-      else return category;
+      if (typeof category === "object") {
+        return category.id;
+      }
+      return category;
     });
 
     const fetchedPosts = await payload.find({
@@ -51,7 +53,9 @@ export const ArchiveBlock: React.FC<
   } else {
     if (selectedDocs?.length) {
       const filteredSelectedPosts = selectedDocs.map((post) => {
-        if (typeof post.value === "object") return post.value;
+        if (typeof post.value === "object") {
+          return post.value;
+        }
       }) as Post[];
 
       posts = filteredSelectedPosts;

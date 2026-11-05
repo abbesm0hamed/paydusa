@@ -1,14 +1,16 @@
-import Script from "next/script";
+"use client";
+
 import React from "react";
 
 import { defaultTheme, themeLocalStorageKey } from "../ThemeSelector/types";
 
-export const InitTheme: React.FC = () => {
-  return (
-    // eslint-disable-next-line @next/next/no-before-interactive-script-outside-document
-    <Script
-      dangerouslySetInnerHTML={{
-        __html: `
+export const InitTheme: React.FC = () => (
+  // Execute before hydration on hard loads; the ThemeProvider handles client updates.
+  <script
+    type={typeof window === "undefined" ? "text/javascript" : "text/plain"}
+    suppressHydrationWarning
+    dangerouslySetInnerHTML={{
+      __html: `
   (function () {
     function getImplicitPreference() {
       var mediaQuery = '(prefers-color-scheme: dark)'
@@ -44,9 +46,7 @@ export const InitTheme: React.FC = () => {
     document.documentElement.classList.add(themeToSet)
   })();
   `,
-      }}
-      id="theme-script"
-      strategy="beforeInteractive"
-    />
-  );
-};
+    }}
+    id="theme-script"
+  />
+);

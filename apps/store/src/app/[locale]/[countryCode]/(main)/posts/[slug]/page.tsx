@@ -26,26 +26,26 @@ export async function generateStaticParams() {
     },
   });
 
-  const params = posts.docs.map(({ slug }) => {
-    return { slug };
-  });
+  const params = posts.docs.map(({ slug }) => ({ slug }));
 
   return params;
 }
 
-type Args = {
+interface Args {
   params: Promise<{
     slug?: string;
   }>;
-};
+}
 
 export default async function Post({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode();
   const { slug = "" } = await paramsPromise;
-  const url = "/posts/" + slug;
+  const url = `/posts/${slug}`;
   const post = await queryPostBySlug({ slug });
 
-  if (!post) return <PayloadRedirects url={url} />;
+  if (!post) {
+    return <PayloadRedirects url={url} />;
+  }
 
   return (
     <article className="pt-16 pb-16">
@@ -59,13 +59,13 @@ export default async function Post({ params: paramsPromise }: Args) {
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="content-container">
           <RichText
-            className="max-w-[48rem] mx-auto"
+            className="mx-auto max-w-[48rem]"
             data={post.content}
             enableGutter={false}
           />
           {post.relatedPosts && post.relatedPosts.length > 0 && (
             <RelatedPosts
-              className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
+              className="col-span-3 col-start-1 mt-12 max-w-[52rem] grid-rows-[2fr] lg:grid lg:grid-cols-subgrid"
               docs={post.relatedPosts.filter(
                 (post) => typeof post === "object"
               )}

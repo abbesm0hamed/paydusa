@@ -147,15 +147,15 @@ plugin-<name>/
     "@swc/cli": "^0.1.62",
     "@swc/core": "^1.3.0",
     "copyfiles": "^2.4.1",
-    "cross-env": "^7.0.3",
+    "cross-env": "10.1.0",
     "eslint": "^9.0.0",
     "next": "^15.4.10",
     "payload": "^3.0.0",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "rimraf": "^5.0.0",
-    "typescript": "^5.0.0",
-    "vitest": "^3.0.0"
+    "typescript": "^6.0.0",
+    "vitest": "4.1.6"
   },
   "peerDependencies": {
     "payload": "^3.0.0"
@@ -532,8 +532,8 @@ export const myPlugin =
 // src/components/BeforeDashboardClient.tsx
 "use client";
 import { useConfig } from "@payloadcms/ui";
-import { useEffect, useState } from "react";
 import { formatAdminURL } from "payload/shared";
+import { useEffect, useState } from "react";
 
 export const BeforeDashboardClient = () => {
   const { config } = useConfig();
@@ -582,6 +582,7 @@ export const translations = {
 
 // src/plugin.ts
 import { deepMergeSimple } from "payload/shared";
+
 import { translations } from "./translations/index.js";
 
 export const myPlugin =
@@ -1354,8 +1355,9 @@ PAYLOAD_SECRET=your-secret-here
 2. Configure `dev/payload.config.ts`:
 
 ```ts
-import { buildConfig } from "payload";
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
+import { buildConfig } from "payload";
+
 import { myPlugin } from "../src/index.js";
 
 export default buildConfig({
@@ -1386,10 +1388,11 @@ npm run dev  # Starts Next.js on http://localhost:3000
 Create `dev/int.spec.ts`:
 
 ```ts
-import type { Payload } from "payload";
 import config from "@payload-config";
+import type { Payload } from "payload";
 import { createPayloadRequest, getPayload } from "payload";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
+
 import { customEndpointHandler } from "../src/endpoints/handler.js";
 
 let payload: Payload;

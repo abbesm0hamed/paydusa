@@ -2,7 +2,7 @@
 
 import { sdk } from "@lib/config";
 import medusaError from "@lib/util/medusa-error";
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 
 import { getAuthHeaders, getCacheOptions } from "./cookies";
 
@@ -17,17 +17,17 @@ export const retrieveOrder = async (id: string) => {
 
   return sdk.client
     .fetch<HttpTypes.StoreOrderResponse>(`/store/orders/${id}`, {
+      cache: "force-cache",
+      headers,
       method: "GET",
+      next,
       query: {
         fields:
           "*payment_collections.payments,*items,*items.metadata,*items.variant,*items.product",
       },
-      headers,
-      next,
-      cache: "force-cache",
     })
     .then(({ order }) => order)
-    .catch((err) => medusaError(err));
+    .catch((error) => medusaError(error));
 };
 
 export const listOrders = async (
@@ -45,20 +45,20 @@ export const listOrders = async (
 
   return sdk.client
     .fetch<HttpTypes.StoreOrderListResponse>(`/store/orders`, {
+      cache: "force-cache",
+      headers,
       method: "GET",
+      next,
       query: {
+        fields: "*items,+items.metadata,*items.variant,*items.product",
         limit,
         offset,
         order: "-created_at",
-        fields: "*items,+items.metadata,*items.variant,*items.product",
         ...filters,
       },
-      headers,
-      next,
-      cache: "force-cache",
     })
     .then(({ orders }) => orders)
-    .catch((err) => medusaError(err));
+    .catch((error) => medusaError(error));
 };
 
 export const createTransferRequest = async (
@@ -76,7 +76,7 @@ export const createTransferRequest = async (
   const id = formData.get("order_id") as string;
 
   if (!id) {
-    return { success: false, error: "Order ID is required", order: null };
+    return { error: "Order ID is required", order: null, success: false };
   }
 
   const headers = await getAuthHeaders();
@@ -90,8 +90,8 @@ export const createTransferRequest = async (
       },
       headers
     )
-    .then(({ order }) => ({ success: true, error: null, order }))
-    .catch((err) => ({ success: false, error: err.message, order: null }));
+    .then(({ order }) => ({ error: null, order, success: true }))
+    .catch((error) => ({ error: error.message, order: null, success: false }));
 };
 
 export const acceptTransferRequest = async (id: string, token: string) => {
@@ -99,8 +99,8 @@ export const acceptTransferRequest = async (id: string, token: string) => {
 
   return await sdk.store.order
     .acceptTransfer(id, { token }, {}, headers)
-    .then(({ order }) => ({ success: true, error: null, order }))
-    .catch((err) => ({ success: false, error: err.message, order: null }));
+    .then(({ order }) => ({ error: null, order, success: true }))
+    .catch((error) => ({ error: error.message, order: null, success: false }));
 };
 
 export const declineTransferRequest = async (id: string, token: string) => {
@@ -108,6 +108,6 @@ export const declineTransferRequest = async (id: string, token: string) => {
 
   return await sdk.store.order
     .declineTransfer(id, { token }, {}, headers)
-    .then(({ order }) => ({ success: true, error: null, order }))
-    .catch((err) => ({ success: false, error: err.message, order: null }));
+    .then(({ order }) => ({ error: null, order, success: true }))
+    .catch((error) => ({ error: error.message, order: null, success: false }));
 };

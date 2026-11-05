@@ -4,25 +4,21 @@ import { link } from "@/fields/link";
 import richText from "@/fields/richText";
 
 export const HoverCards: Block = {
-  slug: "hoverCards",
-  interfaceName: "HoverCardsBlock",
   fields: [
     {
+      label: "Hide Background",
       name: "hideBackground",
       type: "checkbox",
-      label: "Hide Background",
     },
     richText({
       name: "content",
     }),
     {
-      name: "cards",
-      type: "array",
       fields: [
         {
           name: "title",
-          type: "text",
           required: true,
+          type: "text",
         },
         {
           name: "desc", // shortened from description
@@ -30,8 +26,8 @@ export const HoverCards: Block = {
         },
         {
           name: "image",
-          type: "upload",
           relationTo: "media",
+          type: "upload",
         },
         link({
           appearances: false,
@@ -40,13 +36,17 @@ export const HoverCards: Block = {
       ],
       maxRows: 8,
       minRows: 1,
+      name: "cards",
+      type: "array",
     },
   ],
   graphQL: {
     singularName: "HoverCards",
   },
+  interfaceName: "HoverCardsBlock",
   labels: {
     plural: "Hover Cards Blocks",
     singular: "Hover Cards Block",
   },
+  slug: "hoverCards",
 };

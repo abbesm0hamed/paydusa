@@ -2,9 +2,9 @@ import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
 
 import { ALGOLIA_MODULE } from "../../modules/algolia";
 
-export type DeleteProductsFromAlgoliaWorkflow = {
+export interface DeleteProductsFromAlgoliaWorkflow {
   ids: string[];
-};
+}
 
 export const deleteProductsFromAlgoliaStep = createStep(
   "delete-products-from-algolia-step",

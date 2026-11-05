@@ -1,15 +1,15 @@
 "use client";
 
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import { toast } from "@medusajs/ui";
 import Input from "@modules/common/components/input";
-import React, { useEffect, useActionState } from "react";
+import React from "react";
 
 import AccountInfo from "../account-info";
 
-type MyInformationProps = {
+interface MyInformationProps {
   customer: HttpTypes.StoreCustomer;
-};
+}
 
 const ProfilePassword: React.FC<MyInformationProps> = ({ customer }) => {
   const [successState, setSuccessState] = React.useState(false);
