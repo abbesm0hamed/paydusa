@@ -1,19 +1,19 @@
 import { Listbox, Transition } from "@headlessui/react";
 import compareAddresses from "@lib/util/compare-addresses";
 import { ChevronUpDown } from "@medusajs/icons";
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import { clx } from "@medusajs/ui";
 import Radio from "@modules/common/components/radio";
 import { Fragment, useMemo } from "react";
 
-type AddressSelectProps = {
+interface AddressSelectProps {
   addresses: HttpTypes.StoreCustomerAddress[];
-  addressInput: HttpTypes.StoreCartAddress | null;
+  addressInput: Partial<HttpTypes.StoreCartAddress> | null;
   onSelect: (
     address: HttpTypes.StoreCartAddress | undefined,
     email?: string
   ) => void;
-};
+}
 
 const AddressSelect = ({
   addresses,
@@ -27,15 +27,16 @@ const AddressSelect = ({
     }
   };
 
-  const selectedAddress = useMemo(() => {
-    return addresses.find((a) => compareAddresses(a, addressInput));
-  }, [addresses, addressInput]);
+  const selectedAddress = useMemo(
+    () => addresses.find((a) => compareAddresses(a, addressInput)),
+    [addresses, addressInput]
+  );
 
   return (
     <Listbox onChange={handleSelect} value={selectedAddress?.id}>
       <div className="relative">
         <Listbox.Button
-          className="relative w-full flex justify-between items-center px-4 py-[10px] text-left bg-white cursor-default focus:outline-none border rounded-rounded focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-gray-300 focus-visible:ring-offset-2 focus-visible:border-gray-300 text-base-regular"
+          className="rounded-rounded focus-visible:ring-opacity-75 text-base-regular relative flex w-full cursor-default items-center justify-between border bg-white px-4 py-[10px] text-left focus:outline-none focus-visible:border-gray-300 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300"
           data-testid="shipping-address-select"
         >
           {({ open }) => (
@@ -60,51 +61,49 @@ const AddressSelect = ({
           leaveTo="opacity-0"
         >
           <Listbox.Options
-            className="absolute z-20 w-full overflow-auto text-small-regular bg-white border border-top-0 max-h-60 focus:outline-none sm:text-sm"
+            className="text-small-regular border-top-0 absolute z-20 max-h-60 w-full overflow-auto border bg-white focus:outline-none sm:text-sm"
             data-testid="shipping-address-options"
           >
-            {addresses.map((address) => {
-              return (
-                <Listbox.Option
-                  key={address.id}
-                  value={address.id}
-                  className="cursor-default select-none relative pl-6 pr-10 hover:bg-gray-50 py-4"
-                  data-testid="shipping-address-option"
-                >
-                  <div className="flex gap-x-4 items-start">
-                    <Radio
-                      checked={selectedAddress?.id === address.id}
-                      data-testid="shipping-address-radio"
-                    />
-                    <div className="flex flex-col">
-                      <span className="text-left text-base-semi">
-                        {address.first_name} {address.last_name}
+            {addresses.map((address) => (
+              <Listbox.Option
+                key={address.id}
+                value={address.id}
+                className="relative cursor-default py-4 pr-10 pl-6 select-none hover:bg-gray-50"
+                data-testid="shipping-address-option"
+              >
+                <div className="flex items-start gap-x-4">
+                  <Radio
+                    checked={selectedAddress?.id === address.id}
+                    data-testid="shipping-address-radio"
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-base-semi text-left">
+                      {address.first_name} {address.last_name}
+                    </span>
+                    {address.company && (
+                      <span className="text-small-regular text-ui-fg-base">
+                        {address.company}
                       </span>
-                      {address.company && (
-                        <span className="text-small-regular text-ui-fg-base">
-                          {address.company}
-                        </span>
-                      )}
-                      <div className="flex flex-col text-left text-base-regular mt-2">
-                        <span>
-                          {address.address_1}
-                          {address.address_2 && (
-                            <span>, {address.address_2}</span>
-                          )}
-                        </span>
-                        <span>
-                          {address.postal_code}, {address.city}
-                        </span>
-                        <span>
-                          {address.province && `${address.province}, `}
-                          {address.country_code?.toUpperCase()}
-                        </span>
-                      </div>
+                    )}
+                    <div className="text-base-regular mt-2 flex flex-col text-left">
+                      <span>
+                        {address.address_1}
+                        {address.address_2 && (
+                          <span>, {address.address_2}</span>
+                        )}
+                      </span>
+                      <span>
+                        {address.postal_code}, {address.city}
+                      </span>
+                      <span>
+                        {address.province && `${address.province}, `}
+                        {address.country_code?.toUpperCase()}
+                      </span>
                     </div>
                   </div>
-                </Listbox.Option>
-              );
-            })}
+                </div>
+              </Listbox.Option>
+            ))}
           </Listbox.Options>
         </Transition>
       </div>
