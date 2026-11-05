@@ -33,5 +33,5 @@
     "typescript": "catalog:",
     "ultracite": "8.0.2"
   },
-  "packageManager": "pnpm@12.15.0"
+  "packageManager": "pnpm@12.16.1"
 }

@@ -12,53 +12,53 @@
  * via the `definition` "supportedTimezones".
  */
 export type SupportedTimezones =
-  | "Pacific/Midway"
-  | "Pacific/Niue"
-  | "Pacific/Honolulu"
-  | "Pacific/Rarotonga"
-  | "America/Anchorage"
-  | "Pacific/Gambier"
-  | "America/Los_Angeles"
-  | "America/Tijuana"
-  | "America/Denver"
-  | "America/Phoenix"
-  | "America/Chicago"
-  | "America/Guatemala"
-  | "America/New_York"
-  | "America/Bogota"
-  | "America/Caracas"
-  | "America/Santiago"
-  | "America/Buenos_Aires"
-  | "America/Sao_Paulo"
-  | "Atlantic/South_Georgia"
-  | "Atlantic/Azores"
-  | "Atlantic/Cape_Verde"
-  | "Europe/London"
-  | "Europe/Berlin"
-  | "Africa/Lagos"
-  | "Europe/Athens"
-  | "Africa/Cairo"
-  | "Europe/Moscow"
-  | "Asia/Riyadh"
-  | "Asia/Dubai"
-  | "Asia/Baku"
-  | "Asia/Karachi"
-  | "Asia/Tashkent"
-  | "Asia/Calcutta"
-  | "Asia/Dhaka"
-  | "Asia/Almaty"
-  | "Asia/Jakarta"
-  | "Asia/Bangkok"
-  | "Asia/Shanghai"
-  | "Asia/Singapore"
-  | "Asia/Tokyo"
-  | "Asia/Seoul"
-  | "Australia/Brisbane"
-  | "Australia/Sydney"
-  | "Pacific/Guam"
-  | "Pacific/Noumea"
-  | "Pacific/Auckland"
-  | "Pacific/Fiji";
+  | 'Pacific/Midway'
+  | 'Pacific/Niue'
+  | 'Pacific/Honolulu'
+  | 'Pacific/Rarotonga'
+  | 'America/Anchorage'
+  | 'Pacific/Gambier'
+  | 'America/Los_Angeles'
+  | 'America/Tijuana'
+  | 'America/Denver'
+  | 'America/Phoenix'
+  | 'America/Chicago'
+  | 'America/Guatemala'
+  | 'America/New_York'
+  | 'America/Bogota'
+  | 'America/Caracas'
+  | 'America/Santiago'
+  | 'America/Buenos_Aires'
+  | 'America/Sao_Paulo'
+  | 'Atlantic/South_Georgia'
+  | 'Atlantic/Azores'
+  | 'Atlantic/Cape_Verde'
+  | 'Europe/London'
+  | 'Europe/Berlin'
+  | 'Africa/Lagos'
+  | 'Europe/Athens'
+  | 'Africa/Cairo'
+  | 'Europe/Moscow'
+  | 'Asia/Riyadh'
+  | 'Asia/Dubai'
+  | 'Asia/Baku'
+  | 'Asia/Karachi'
+  | 'Asia/Tashkent'
+  | 'Asia/Calcutta'
+  | 'Asia/Dhaka'
+  | 'Asia/Almaty'
+  | 'Asia/Jakarta'
+  | 'Asia/Bangkok'
+  | 'Asia/Shanghai'
+  | 'Asia/Singapore'
+  | 'Asia/Tokyo'
+  | 'Asia/Seoul'
+  | 'Australia/Brisbane'
+  | 'Australia/Sydney'
+  | 'Pacific/Guam'
+  | 'Pacific/Noumea'
+  | 'Pacific/Auckland'
+  | 'Pacific/Fiji';
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "LexicalNodes_9335DDB7".
@@ -68,28 +68,28 @@ export type LexicalNodes_9335DDB7 =
   | SerializedTabNode
   | SerializedLineBreakNode
   | SerializedParagraphNode<LexicalNodes_9335DDB7>
-  | SerializedHeadingNode<LexicalNodes_9335DDB7, "h1" | "h2" | "h3" | "h4">
+  | SerializedHeadingNode<LexicalNodes_9335DDB7, 'h1' | 'h2' | 'h3' | 'h4'>
   | SerializedHorizontalRuleNode
-  | SerializedUploadNode<"media">
+  | SerializedUploadNode<'media'>
   | SerializedQuoteNode<LexicalNodes_9335DDB7>
   | SerializedRelationshipNode<
-      | "pages"
-      | "reusable-content"
-      | "posts"
-      | "categories"
-      | "users"
-      | "video"
-      | "br"
-      | "commandLine"
-      | "command"
-      | "link"
-      | "templateCards"
-      | "redirects"
-      | "payload-kv"
-      | "payload-jobs"
-      | "payload-locked-documents"
-      | "payload-preferences"
-      | "payload-migrations"
+      | 'pages'
+      | 'reusable-content'
+      | 'posts'
+      | 'categories'
+      | 'users'
+      | 'video'
+      | 'br'
+      | 'commandLine'
+      | 'command'
+      | 'link'
+      | 'templateCards'
+      | 'redirects'
+      | 'payload-kv'
+      | 'payload-jobs'
+      | 'payload-locked-documents'
+      | 'payload-preferences'
+      | 'payload-migrations'
     >
   | SerializedAutoLinkNode<LexicalNodes_9335DDB7, LexicalLinkFields>
   | SerializedLinkNode<LexicalNodes_9335DDB7, LexicalLinkFields>
@@ -104,28 +104,28 @@ export type LexicalNodes_67AA858C =
   | SerializedTabNode
   | SerializedLineBreakNode
   | SerializedParagraphNode<LexicalNodes_67AA858C>
-  | SerializedHeadingNode<LexicalNodes_67AA858C, "h2" | "h3" | "h4">
+  | SerializedHeadingNode<LexicalNodes_67AA858C, 'h2' | 'h3' | 'h4'>
   | SerializedHorizontalRuleNode
-  | SerializedUploadNode<"media">
+  | SerializedUploadNode<'media'>
   | SerializedQuoteNode<LexicalNodes_67AA858C>
   | SerializedRelationshipNode<
-      | "pages"
-      | "reusable-content"
-      | "posts"
-      | "categories"
-      | "users"
-      | "video"
-      | "br"
-      | "commandLine"
-      | "command"
-      | "link"
-      | "templateCards"
-      | "redirects"
-      | "payload-kv"
-      | "payload-jobs"
-      | "payload-locked-documents"
-      | "payload-preferences"
-      | "payload-migrations"
+      | 'pages'
+      | 'reusable-content'
+      | 'posts'
+      | 'categories'
+      | 'users'
+      | 'video'
+      | 'br'
+      | 'commandLine'
+      | 'command'
+      | 'link'
+      | 'templateCards'
+      | 'redirects'
+      | 'payload-kv'
+      | 'payload-jobs'
+      | 'payload-locked-documents'
+      | 'payload-preferences'
+      | 'payload-migrations'
     >
   | SerializedAutoLinkNode<LexicalNodes_67AA858C, LexicalLinkFields>
   | SerializedLinkNode<LexicalNodes_67AA858C, LexicalLinkFields>
@@ -141,26 +141,26 @@ export type LexicalNodes_BAE37333 =
   | SerializedLineBreakNode
   | SerializedParagraphNode<LexicalNodes_BAE37333>
   | SerializedHorizontalRuleNode
-  | SerializedUploadNode<"media">
+  | SerializedUploadNode<'media'>
   | SerializedQuoteNode<LexicalNodes_BAE37333>
   | SerializedRelationshipNode<
-      | "pages"
-      | "reusable-content"
-      | "posts"
-      | "categories"
-      | "users"
-      | "video"
-      | "br"
-      | "commandLine"
-      | "command"
-      | "link"
-      | "templateCards"
-      | "redirects"
-      | "payload-kv"
-      | "payload-jobs"
-      | "payload-locked-documents"
-      | "payload-preferences"
-      | "payload-migrations"
+      | 'pages'
+      | 'reusable-content'
+      | 'posts'
+      | 'categories'
+      | 'users'
+      | 'video'
+      | 'br'
+      | 'commandLine'
+      | 'command'
+      | 'link'
+      | 'templateCards'
+      | 'redirects'
+      | 'payload-kv'
+      | 'payload-jobs'
+      | 'payload-locked-documents'
+      | 'payload-preferences'
+      | 'payload-migrations'
     >
   | SerializedAutoLinkNode<LexicalNodes_BAE37333, LexicalLinkFields>
   | SerializedLinkNode<LexicalNodes_BAE37333, LexicalLinkFields>
@@ -178,27 +178,27 @@ export type LexicalNodes_9593355E =
   | SerializedParagraphNode<LexicalNodes_9593355E>
   | SerializedHorizontalRuleNode
   | SerializedBlockNode<BannerBlock | CodeBlock | MediaBlock_D6C44817>
-  | SerializedHeadingNode<LexicalNodes_9593355E, "h1" | "h2" | "h3" | "h4">
-  | SerializedUploadNode<"media">
+  | SerializedHeadingNode<LexicalNodes_9593355E, 'h1' | 'h2' | 'h3' | 'h4'>
+  | SerializedUploadNode<'media'>
   | SerializedQuoteNode<LexicalNodes_9593355E>
   | SerializedRelationshipNode<
-      | "pages"
-      | "reusable-content"
-      | "posts"
-      | "categories"
-      | "users"
-      | "video"
-      | "br"
-      | "commandLine"
-      | "command"
-      | "link"
-      | "templateCards"
-      | "redirects"
-      | "payload-kv"
-      | "payload-jobs"
-      | "payload-locked-documents"
-      | "payload-preferences"
-      | "payload-migrations"
+      | 'pages'
+      | 'reusable-content'
+      | 'posts'
+      | 'categories'
+      | 'users'
+      | 'video'
+      | 'br'
+      | 'commandLine'
+      | 'command'
+      | 'link'
+      | 'templateCards'
+      | 'redirects'
+      | 'payload-kv'
+      | 'payload-jobs'
+      | 'payload-locked-documents'
+      | 'payload-preferences'
+      | 'payload-migrations'
     >
   | SerializedAutoLinkNode<LexicalNodes_9593355E, LexicalLinkFields>
   | SerializedLinkNode<LexicalNodes_9593355E, LexicalLinkFields>
@@ -215,7 +215,7 @@ export type LexicalNodes_3DE324E4 =
   | SerializedParagraphNode<LexicalNodes_3DE324E4>
   | SerializedListNode<LexicalNodes_3DE324E4>
   | SerializedListItemNode<LexicalNodes_3DE324E4>
-  | SerializedHeadingNode<LexicalNodes_3DE324E4, "h2" | "h3" | "h4">;
+  | SerializedHeadingNode<LexicalNodes_3DE324E4, 'h2' | 'h3' | 'h4'>;
 
 export interface Config {
   auth: {
@@ -246,7 +246,7 @@ export interface Config {
   };
   collections: {
     pages: Page;
-    "reusable-content": ReusableContent;
+    'reusable-content': ReusableContent;
     posts: Post;
     media: Media;
     categories: Category;
@@ -259,21 +259,19 @@ export interface Config {
     templateCards: TemplateCard;
     redirects: Redirect;
     forms: Form;
-    "form-submissions": FormSubmission;
+    'form-submissions': FormSubmission;
     search: Search;
-    "payload-kv": PayloadKv;
-    "payload-jobs": PayloadJob;
-    "payload-locked-documents": PayloadLockedDocument;
-    "payload-preferences": PayloadPreference;
-    "payload-migrations": PayloadMigration;
-    "payload-llm-instructions": PayloadLlmInstruction;
+    'payload-kv': PayloadKv;
+    'payload-jobs': PayloadJob;
+    'payload-locked-documents': PayloadLockedDocument;
+    'payload-preferences': PayloadPreference;
+    'payload-migrations': PayloadMigration;
+    'payload-llm-instructions': PayloadLlmInstruction;
   };
   collectionsJoins: {};
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
-    "reusable-content":
-      | ReusableContentSelect<false>
-      | ReusableContentSelect<true>;
+    'reusable-content': ReusableContentSelect<false> | ReusableContentSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
@@ -286,53 +284,36 @@ export interface Config {
     templateCards: TemplateCardsSelect<false> | TemplateCardsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
-    "form-submissions":
-      | FormSubmissionsSelect<false>
-      | FormSubmissionsSelect<true>;
+    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     search: SearchSelect<false> | SearchSelect<true>;
-    "payload-kv": PayloadKvSelect<false> | PayloadKvSelect<true>;
-    "payload-jobs": PayloadJobsSelect<false> | PayloadJobsSelect<true>;
-    "payload-locked-documents":
-      | PayloadLockedDocumentsSelect<false>
-      | PayloadLockedDocumentsSelect<true>;
-    "payload-preferences":
-      | PayloadPreferencesSelect<false>
-      | PayloadPreferencesSelect<true>;
-    "payload-migrations":
-      | PayloadMigrationsSelect<false>
-      | PayloadMigrationsSelect<true>;
-    "payload-llm-instructions":
-      | PayloadLlmInstructionsSelect<false>
-      | PayloadLlmInstructionsSelect<true>;
+    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
+    'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
+    'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
+    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
+    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
+    'payload-llm-instructions': PayloadLlmInstructionsSelect<false> | PayloadLlmInstructionsSelect<true>;
   };
   db: {
     defaultIDType: number;
   };
-  fallbackLocale:
-    | ("false" | "none" | "null")
-    | false
-    | null
-    | ("ar" | "en" | "fr")
-    | ("ar" | "en" | "fr")[];
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('ar' | 'en' | 'fr') | ('ar' | 'en' | 'fr')[];
   globals: {
     header: Header;
     footer: Footer;
-    "payload-jobs-stats": PayloadJobsStat;
+    'payload-jobs-stats': PayloadJobsStat;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
-    "payload-jobs-stats":
-      | PayloadJobsStatsSelect<false>
-      | PayloadJobsStatsSelect<true>;
+    'payload-jobs-stats': PayloadJobsStatsSelect<false> | PayloadJobsStatsSelect<true>;
   };
-  locale: "ar" | "en" | "fr";
+  locale: 'ar' | 'en' | 'fr';
   widgets: {
     welcome: WelcomeWidget;
     collections: CollectionsWidget;
-    "collection-query": CollectionQueryWidget;
+    'collection-query': CollectionQueryWidget;
     activity: ActivityWidget;
-    "upload-dropzone": UploadDropzoneWidget;
+    'upload-dropzone': UploadDropzoneWidget;
   };
   user: User;
   jobs: {
@@ -372,7 +353,7 @@ export interface BlogContentBlock {
   content: LexicalRichText<LexicalNodes_BAE37333>;
   id?: string | null;
   blockName?: string | null;
-  blockType: "blogContent";
+  blockType: 'blogContent';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -382,7 +363,7 @@ export interface BlogMarkdownBlock {
   markdown: string;
   id?: string | null;
   blockName?: string | null;
-  blockType: "blogMarkdown";
+  blockType: 'blogMarkdown';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -401,7 +382,7 @@ export interface CalloutBlock {
     | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "callout";
+  blockType: 'callout';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -475,15 +456,15 @@ export interface CallToActionBlock {
   links?:
     | {
         link: {
-          type?: ("reference" | "custom") | null;
+          type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
           reference?:
             | ({
-                relationTo: "pages";
+                relationTo: 'pages';
                 value: number | Page;
               } | null)
             | ({
-                relationTo: "posts";
+                relationTo: 'posts';
                 value: number | Post;
               } | null);
           url?: string | null;
@@ -491,14 +472,14 @@ export interface CallToActionBlock {
           /**
            * Choose how the link should be rendered.
            */
-          appearance?: ("default" | "outline") | null;
+          appearance?: ('default' | 'outline') | null;
         };
         id?: string | null;
       }[]
     | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "cta";
+  blockType: 'cta';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -508,25 +489,20 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type:
-      | "none"
-      | "flickeringImpact"
-      | "highImpact"
-      | "mediumImpact"
-      | "lowImpact";
+    type: 'none' | 'flickeringImpact' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: LexicalRichText<LexicalNodes_9335DDB7> | null;
     links?:
       | {
           link: {
-            type?: ("reference" | "custom") | null;
+            type?: ('reference' | 'custom') | null;
             newTab?: boolean | null;
             reference?:
               | ({
-                  relationTo: "pages";
+                  relationTo: 'pages';
                   value: number | Page;
                 } | null)
               | ({
-                  relationTo: "posts";
+                  relationTo: 'posts';
                   value: number | Post;
                 } | null);
             url?: string | null;
@@ -534,7 +510,7 @@ export interface Page {
             /**
              * Choose how the link should be rendered.
              */
-            appearance?: ("default" | "outline") | null;
+            appearance?: ('default' | 'outline') | null;
           };
           id?: string | null;
         }[]
@@ -568,7 +544,7 @@ export interface Page {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
-  _status?: ("draft" | "published") | null;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -601,7 +577,7 @@ export interface Post {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
-  _status?: ("draft" | "published") | null;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -631,7 +607,7 @@ export interface Category {
 export interface User {
   id: number;
   name?: string | null;
-  roles: ("admin" | "public")[];
+  roles: ('admin' | 'public')[];
   updatedAt: string;
   createdAt: string;
   apiKey?: string | null;
@@ -653,7 +629,7 @@ export interface User {
       }[]
     | null;
   password?: string | null;
-  collection: "users";
+  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -662,19 +638,19 @@ export interface User {
 export interface ContentBlock {
   columns?:
     | {
-        size?: ("oneThird" | "half" | "twoThirds" | "full") | null;
+        size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
         richText?: LexicalRichText<LexicalNodes_67AA858C> | null;
         enableLink?: boolean | null;
         link?: {
-          type?: ("reference" | "custom") | null;
+          type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
           reference?:
             | ({
-                relationTo: "pages";
+                relationTo: 'pages';
                 value: number | Page;
               } | null)
             | ({
-                relationTo: "posts";
+                relationTo: 'posts';
                 value: number | Post;
               } | null);
           url?: string | null;
@@ -682,14 +658,14 @@ export interface ContentBlock {
           /**
            * Choose how the link should be rendered.
            */
-          appearance?: ("default" | "outline") | null;
+          appearance?: ('default' | 'outline') | null;
         };
         id?: string | null;
       }[]
     | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "content";
+  blockType: 'content';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -699,7 +675,7 @@ export interface MediaBlock {
   media: number | Media;
   id?: string | null;
   blockName?: string | null;
-  blockType: "mediaBlock";
+  blockType: 'mediaBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -709,7 +685,7 @@ export interface MediaContentAccordionBlock {
   /**
    * Choose how to align the content for this block.
    */
-  alignment?: ("contentMedia" | "mediaContent") | null;
+  alignment?: ('contentMedia' | 'mediaContent') | null;
   leader?: string | null;
   heading?: string | null;
   items?:
@@ -717,24 +693,24 @@ export interface MediaContentAccordionBlock {
         /**
          * Choose how to position the media itself.
          */
-        position?: ("normal" | "inset" | "wide") | null;
+        position?: ('normal' | 'inset' | 'wide') | null;
         /**
          * Select the background you want to sit behind the media.
          */
-        bg?: ("none" | "gradient" | "scanlines") | null;
+        bg?: ('none' | 'gradient' | 'scanlines') | null;
         label: string;
         desc: LexicalRichText<LexicalNodes_BAE37333>;
         hasLink?: boolean | null;
         link?: {
-          type?: ("reference" | "custom") | null;
+          type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
           reference?:
             | ({
-                relationTo: "pages";
+                relationTo: 'pages';
                 value: number | Page;
               } | null)
             | ({
-                relationTo: "posts";
+                relationTo: 'posts';
                 value: number | Post;
               } | null);
           url?: string | null;
@@ -746,7 +722,7 @@ export interface MediaContentAccordionBlock {
     | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "mediaContentAccordion";
+  blockType: 'mediaContentAccordion';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -756,15 +732,15 @@ export interface LogoGridBlock {
   content: LexicalRichText<LexicalNodes_BAE37333>;
   hasLink?: boolean | null;
   link?: {
-    type?: ("reference" | "custom") | null;
+    type?: ('reference' | 'custom') | null;
     newTab?: boolean | null;
     reference?:
       | ({
-          relationTo: "pages";
+          relationTo: 'pages';
           value: number | Page;
         } | null)
       | ({
-          relationTo: "posts";
+          relationTo: 'posts';
           value: number | Post;
         } | null);
     url?: string | null;
@@ -778,7 +754,7 @@ export interface LogoGridBlock {
     | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "logoGrid";
+  blockType: 'logoGrid';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -793,15 +769,15 @@ export interface HoverCardsBlock {
         desc?: string | null;
         image?: (number | null) | Media;
         link?: {
-          type?: ("reference" | "custom") | null;
+          type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
           reference?:
             | ({
-                relationTo: "pages";
+                relationTo: 'pages';
                 value: number | Page;
               } | null)
             | ({
-                relationTo: "posts";
+                relationTo: 'posts';
                 value: number | Post;
               } | null);
           url?: string | null;
@@ -811,7 +787,7 @@ export interface HoverCardsBlock {
     | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "hoverCards";
+  blockType: 'hoverCards';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -827,15 +803,15 @@ export interface HoverHighlightsBlock {
           bottom?: (number | null) | Media;
         };
         link?: {
-          type?: ("reference" | "custom") | null;
+          type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
           reference?:
             | ({
-                relationTo: "pages";
+                relationTo: 'pages';
                 value: number | Page;
               } | null)
             | ({
-                relationTo: "posts";
+                relationTo: 'posts';
                 value: number | Post;
               } | null);
           url?: string | null;
@@ -845,15 +821,15 @@ export interface HoverHighlightsBlock {
     | null;
   afterText?: string | null;
   link: {
-    type?: ("reference" | "custom") | null;
+    type?: ('reference' | 'custom') | null;
     newTab?: boolean | null;
     reference?:
       | ({
-          relationTo: "pages";
+          relationTo: 'pages';
           value: number | Page;
         } | null)
       | ({
-          relationTo: "posts";
+          relationTo: 'posts';
           value: number | Post;
         } | null);
     url?: string | null;
@@ -861,28 +837,28 @@ export interface HoverHighlightsBlock {
   };
   id?: string | null;
   blockName?: string | null;
-  blockType: "hoverHighlights";
+  blockType: 'hoverHighlights';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ContentGridBlock".
  */
 export interface ContentGridBlock {
-  style?: ("gridBelow" | "sideBySide") | null;
+  style?: ('gridBelow' | 'sideBySide') | null;
   showNumbers?: boolean | null;
   mainContent?: LexicalRichText<LexicalNodes_BAE37333> | null;
   links?:
     | {
         link: {
-          type?: ("reference" | "custom") | null;
+          type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
           reference?:
             | ({
-                relationTo: "pages";
+                relationTo: 'pages';
                 value: number | Page;
               } | null)
             | ({
-                relationTo: "posts";
+                relationTo: 'posts';
                 value: number | Post;
               } | null);
           url?: string | null;
@@ -899,7 +875,7 @@ export interface ContentGridBlock {
     | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "contentGrid";
+  blockType: 'contentGrid';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -913,15 +889,15 @@ export interface CardGridBlock {
   links?:
     | {
         link: {
-          type?: ("reference" | "custom") | null;
+          type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
           reference?:
             | ({
-                relationTo: "pages";
+                relationTo: 'pages';
                 value: number | Page;
               } | null)
             | ({
-                relationTo: "posts";
+                relationTo: 'posts';
                 value: number | Post;
               } | null);
           url?: string | null;
@@ -937,15 +913,15 @@ export interface CardGridBlock {
         desc?: string | null;
         hasLink?: boolean | null;
         link?: {
-          type?: ("reference" | "custom") | null;
+          type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
           reference?:
             | ({
-                relationTo: "pages";
+                relationTo: 'pages';
                 value: number | Page;
               } | null)
             | ({
-                relationTo: "posts";
+                relationTo: 'posts';
                 value: number | Post;
               } | null);
           url?: string | null;
@@ -955,7 +931,7 @@ export interface CardGridBlock {
     | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "cardGrid";
+  blockType: 'cardGrid';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -963,19 +939,19 @@ export interface CardGridBlock {
  */
 export interface ArchiveBlock {
   introContent?: LexicalRichText<LexicalNodes_9335DDB7> | null;
-  populateBy?: ("collection" | "selection") | null;
-  relationTo?: "posts" | null;
+  populateBy?: ('collection' | 'selection') | null;
+  relationTo?: 'posts' | null;
   categories?: (number | Category)[] | null;
   limit?: number | null;
   selectedDocs?:
     | {
-        relationTo: "posts";
+        relationTo: 'posts';
         value: number | Post;
       }[]
     | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "archive";
+  blockType: 'archive';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -986,7 +962,7 @@ export interface FormBlock {
   introContent?: LexicalRichText<LexicalNodes_9335DDB7> | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "formBlock";
+  blockType: 'formBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -996,15 +972,15 @@ export interface LinkGridBlock {
   links?:
     | {
         link: {
-          type?: ("reference" | "custom") | null;
+          type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
           reference?:
             | ({
-                relationTo: "pages";
+                relationTo: 'pages';
                 value: number | Page;
               } | null)
             | ({
-                relationTo: "posts";
+                relationTo: 'posts';
                 value: number | Post;
               } | null);
           url?: string | null;
@@ -1015,7 +991,7 @@ export interface LinkGridBlock {
     | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "linkGrid";
+  blockType: 'linkGrid';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1025,23 +1001,23 @@ export interface MediaContentBlock {
   /**
    * Choose how to align the content for this block.
    */
-  alignment?: ("contentMedia" | "mediaContent") | null;
+  alignment?: ('contentMedia' | 'mediaContent') | null;
   /**
    * Choose how wide the media should be.
    */
-  mediaWidth?: ("stretch" | "fit") | null;
+  mediaWidth?: ('stretch' | 'fit') | null;
   content: LexicalRichText<LexicalNodes_BAE37333>;
   hasLink?: boolean | null;
   link?: {
-    type?: ("reference" | "custom") | null;
+    type?: ('reference' | 'custom') | null;
     newTab?: boolean | null;
     reference?:
       | ({
-          relationTo: "pages";
+          relationTo: 'pages';
           value: number | Page;
         } | null)
       | ({
-          relationTo: "posts";
+          relationTo: 'posts';
           value: number | Post;
         } | null);
     url?: string | null;
@@ -1055,7 +1031,7 @@ export interface MediaContentBlock {
     | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "mediaContent";
+  blockType: 'mediaContent';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1072,15 +1048,15 @@ export interface PricingBlock {
         desc?: string | null;
         hasLink?: boolean | null;
         link?: {
-          type?: ("reference" | "custom") | null;
+          type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
           reference?:
             | ({
-                relationTo: "pages";
+                relationTo: 'pages';
                 value: number | Page;
               } | null)
             | ({
-                relationTo: "posts";
+                relationTo: 'posts';
                 value: number | Post;
               } | null);
           url?: string | null;
@@ -1088,7 +1064,7 @@ export interface PricingBlock {
         };
         features?:
           | {
-              icon?: ("check" | "x") | null;
+              icon?: ('check' | 'x') | null;
               text?: string | null;
               id?: string | null;
             }[]
@@ -1099,7 +1075,7 @@ export interface PricingBlock {
   disclaimer?: string | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "pricing";
+  blockType: 'pricing';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1109,7 +1085,7 @@ export interface VideoBlock {
   url?: string | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "video";
+  blockType: 'video';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1119,7 +1095,7 @@ export interface BrBlock {
   ignore?: string | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "br";
+  blockType: 'br';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1129,7 +1105,7 @@ export interface CommandLineBlock {
   command?: string | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "commandLine";
+  blockType: 'commandLine';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1139,7 +1115,7 @@ export interface Command {
   command: string;
   id?: string | null;
   blockName?: string | null;
-  blockType: "command";
+  blockType: 'command';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1147,15 +1123,15 @@ export interface Command {
  */
 export interface Link {
   link: {
-    type?: ("reference" | "custom") | null;
+    type?: ('reference' | 'custom') | null;
     newTab?: boolean | null;
     reference?:
       | ({
-          relationTo: "pages";
+          relationTo: 'pages';
           value: number | Page;
         } | null)
       | ({
-          relationTo: "posts";
+          relationTo: 'posts';
           value: number | Post;
         } | null);
     url?: string | null;
@@ -1163,11 +1139,11 @@ export interface Link {
     /**
      * Choose how the link should be rendered.
      */
-    appearance?: ("default" | "outline") | null;
+    appearance?: ('default' | 'outline') | null;
   };
   id?: string | null;
   blockName?: string | null;
-  blockType: "link";
+  blockType: 'link';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1186,7 +1162,7 @@ export interface TemplateCardsBlock {
     | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "templateCards";
+  blockType: 'templateCards';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1246,15 +1222,15 @@ export interface Command1 {
 export interface Link1 {
   id: number;
   link: {
-    type?: ("reference" | "custom") | null;
+    type?: ('reference' | 'custom') | null;
     newTab?: boolean | null;
     reference?:
       | ({
-          relationTo: "pages";
+          relationTo: 'pages';
           value: number | Page;
         } | null)
       | ({
-          relationTo: "posts";
+          relationTo: 'posts';
           value: number | Post;
         } | null);
     url?: string | null;
@@ -1262,7 +1238,7 @@ export interface Link1 {
     /**
      * Choose how the link should be rendered.
      */
-    appearance?: ("default" | "outline") | null;
+    appearance?: ('default' | 'outline') | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -1297,14 +1273,14 @@ export interface Redirect {
    */
   from: string;
   to?: {
-    type?: ("reference" | "custom") | null;
+    type?: ('reference' | 'custom') | null;
     reference?:
       | ({
-          relationTo: "pages";
+          relationTo: 'pages';
           value: number | Page;
         } | null)
       | ({
-          relationTo: "posts";
+          relationTo: 'posts';
           value: number | Post;
         } | null);
     url?: string | null;
@@ -1319,21 +1295,9 @@ export interface Redirect {
 export interface Form {
   id: number;
   title: string;
-  fields?:
-    | (
-        | Checkbox
-        | Country
-        | Email
-        | Message
-        | Number
-        | Select
-        | State
-        | Text
-        | Textarea
-      )[]
-    | null;
+  fields?: (Checkbox | Country | Email | Message | Number | Select | State | Text | Textarea)[] | null;
   submitButtonLabel?: string | null;
-  confirmationType?: ("message" | "redirect") | null;
+  confirmationType?: ('message' | 'redirect') | null;
   confirmationMessage?: LexicalRichText<LexicalNodes_9335DDB7>;
   redirect?: {
     url: string;
@@ -1365,7 +1329,7 @@ export interface Checkbox {
   defaultValue?: boolean | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "checkbox";
+  blockType: 'checkbox';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1378,7 +1342,7 @@ export interface Country {
   required?: boolean | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "country";
+  blockType: 'country';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1391,7 +1355,7 @@ export interface Email {
   required?: boolean | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "email";
+  blockType: 'email';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1401,7 +1365,7 @@ export interface Message {
   message?: LexicalRichText<LexicalNodes_BAE37333> | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "message";
+  blockType: 'message';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1415,7 +1379,7 @@ export interface Number {
   required?: boolean | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "number";
+  blockType: 'number';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1437,7 +1401,7 @@ export interface Select {
   required?: boolean | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "select";
+  blockType: 'select';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1450,7 +1414,7 @@ export interface State {
   required?: boolean | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "state";
+  blockType: 'state';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1464,7 +1428,7 @@ export interface Text {
   required?: boolean | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "text";
+  blockType: 'text';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1478,7 +1442,7 @@ export interface Textarea {
   required?: boolean | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "textarea";
+  blockType: 'textarea';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1508,7 +1472,7 @@ export interface Search {
   title?: string | null;
   priority?: number | null;
   doc: {
-    relationTo: "posts";
+    relationTo: 'posts';
     value: number | Post;
   };
   slug?: string | null;
@@ -1605,7 +1569,7 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: "inline" | "schedulePublish";
+        taskSlug: 'inline' | 'schedulePublish';
         taskID: string;
         input:
           | {
@@ -1625,7 +1589,7 @@ export interface PayloadJob {
           | number
           | boolean
           | null;
-        state: "failed" | "succeeded";
+        state: 'failed' | 'succeeded';
         error?:
           | {
               [k: string]: unknown;
@@ -1636,13 +1600,13 @@ export interface PayloadJob {
           | boolean
           | null;
         parent?: {
-          taskSlug?: ("inline" | "schedulePublish") | null;
+          taskSlug?: ('inline' | 'schedulePublish') | null;
           taskID?: string | null;
         };
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ("inline" | "schedulePublish") | null;
+  taskSlug?: ('inline' | 'schedulePublish') | null;
   queue?: string | null;
   waitUntil?: string | null;
   processingUntil?: string | null;
@@ -1662,72 +1626,72 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: "pages";
+        relationTo: 'pages';
         value: number | Page;
       } | null)
     | ({
-        relationTo: "reusable-content";
+        relationTo: 'reusable-content';
         value: number | ReusableContent;
       } | null)
     | ({
-        relationTo: "posts";
+        relationTo: 'posts';
         value: number | Post;
       } | null)
     | ({
-        relationTo: "media";
+        relationTo: 'media';
         value: number | Media;
       } | null)
     | ({
-        relationTo: "categories";
+        relationTo: 'categories';
         value: number | Category;
       } | null)
     | ({
-        relationTo: "users";
+        relationTo: 'users';
         value: number | User;
       } | null)
     | ({
-        relationTo: "video";
+        relationTo: 'video';
         value: number | Video;
       } | null)
     | ({
-        relationTo: "br";
+        relationTo: 'br';
         value: number | Br;
       } | null)
     | ({
-        relationTo: "commandLine";
+        relationTo: 'commandLine';
         value: number | CommandLine;
       } | null)
     | ({
-        relationTo: "command";
+        relationTo: 'command';
         value: number | Command1;
       } | null)
     | ({
-        relationTo: "link";
+        relationTo: 'link';
         value: number | Link1;
       } | null)
     | ({
-        relationTo: "templateCards";
+        relationTo: 'templateCards';
         value: number | TemplateCard;
       } | null)
     | ({
-        relationTo: "redirects";
+        relationTo: 'redirects';
         value: number | Redirect;
       } | null)
     | ({
-        relationTo: "forms";
+        relationTo: 'forms';
         value: number | Form;
       } | null)
     | ({
-        relationTo: "form-submissions";
+        relationTo: 'form-submissions';
         value: number | FormSubmission;
       } | null)
     | ({
-        relationTo: "search";
+        relationTo: 'search';
         value: number | Search;
       } | null);
   globalSlug?: string | null;
   user: {
-    relationTo: "users";
+    relationTo: 'users';
     value: number | User;
   };
   updatedAt: string;
@@ -1740,7 +1704,7 @@ export interface PayloadLockedDocument {
 export interface PayloadPreference {
   id: number;
   user: {
-    relationTo: "users";
+    relationTo: 'users';
     value: number | User;
   };
   key?: string | null;
@@ -1775,15 +1739,15 @@ export interface PayloadLlmInstruction {
   id: string;
   entitySlug: string;
   title?: string | null;
-  entityType: "collection" | "global";
+  entityType: 'collection' | 'global';
   additionalInstructions?: LexicalRichText<LexicalNodes_3DE324E4> | null;
   systemInstructions?: LexicalRichText<LexicalNodes_3DE324E4> | null;
   createdBy?: {
-    relationTo: "users";
+    relationTo: 'users';
     value: number | User;
   } | null;
   updatedBy?: {
-    relationTo: "users";
+    relationTo: 'users';
     value: number | User;
   } | null;
   updatedAt: string;
@@ -2669,18 +2633,18 @@ export interface Header {
   logo?: (number | null) | Media;
   navItems?:
     | {
-        type?: ("link" | "group") | null;
+        type?: ('link' | 'group') | null;
         linkFields?: {
           link: {
-            type?: ("reference" | "custom") | null;
+            type?: ('reference' | 'custom') | null;
             newTab?: boolean | null;
             reference?:
               | ({
-                  relationTo: "pages";
+                  relationTo: 'pages';
                   value: number | Page;
                 } | null)
               | ({
-                  relationTo: "posts";
+                  relationTo: 'posts';
                   value: number | Post;
                 } | null);
             url?: string | null;
@@ -2708,15 +2672,15 @@ export interface Header {
                 description?: string | null;
                 links: {
                   link: {
-                    type?: ("reference" | "custom") | null;
+                    type?: ('reference' | 'custom') | null;
                     newTab?: boolean | null;
                     reference?:
                       | ({
-                          relationTo: "pages";
+                          relationTo: 'pages';
                           value: number | Page;
                         } | null)
                       | ({
-                          relationTo: "posts";
+                          relationTo: 'posts';
                           value: number | Post;
                         } | null);
                     url?: string | null;
@@ -2751,15 +2715,15 @@ export interface Footer {
         navItems?:
           | {
               link: {
-                type?: ("reference" | "custom") | null;
+                type?: ('reference' | 'custom') | null;
                 newTab?: boolean | null;
                 reference?:
                   | ({
-                      relationTo: "pages";
+                      relationTo: 'pages';
                       value: number | Page;
                     } | null)
                   | ({
-                      relationTo: "posts";
+                      relationTo: 'posts';
                       value: number | Post;
                     } | null);
                 url?: string | null;
@@ -2897,7 +2861,7 @@ export interface WelcomeWidget {
   data?: {
     [k: string]: unknown;
   };
-  width: "full";
+  width: 'full';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2907,7 +2871,7 @@ export interface CollectionsWidget {
   data?: {
     [k: string]: unknown;
   };
-  width: "full";
+  width: 'full';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2917,22 +2881,22 @@ export interface CollectionQueryWidget {
   data?: {
     title?: string | null;
     relatedCollection:
-      | "pages"
-      | "reusable-content"
-      | "posts"
-      | "media"
-      | "categories"
-      | "users"
-      | "video"
-      | "br"
-      | "commandLine"
-      | "command"
-      | "link"
-      | "templateCards"
-      | "redirects"
-      | "forms"
-      | "form-submissions"
-      | "search";
+      | 'pages'
+      | 'reusable-content'
+      | 'posts'
+      | 'media'
+      | 'categories'
+      | 'users'
+      | 'video'
+      | 'br'
+      | 'commandLine'
+      | 'command'
+      | 'link'
+      | 'templateCards'
+      | 'redirects'
+      | 'forms'
+      | 'form-submissions'
+      | 'search';
     where?:
       | {
           [k: string]: unknown;
@@ -2943,10 +2907,10 @@ export interface CollectionQueryWidget {
       | boolean
       | null;
     sortField?: string | null;
-    sortDirection?: ("asc" | "desc") | null;
+    sortDirection?: ('asc' | 'desc') | null;
     limit?: number | null;
   };
-  width: "x-small" | "small" | "medium" | "large" | "x-large" | "full";
+  width: 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'full';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2956,26 +2920,26 @@ export interface ActivityWidget {
   data?: {
     excludedCollections?:
       | (
-          | "pages"
-          | "reusable-content"
-          | "posts"
-          | "media"
-          | "categories"
-          | "users"
-          | "video"
-          | "br"
-          | "commandLine"
-          | "command"
-          | "link"
-          | "templateCards"
-          | "redirects"
-          | "forms"
-          | "form-submissions"
-          | "search"
+          | 'pages'
+          | 'reusable-content'
+          | 'posts'
+          | 'media'
+          | 'categories'
+          | 'users'
+          | 'video'
+          | 'br'
+          | 'commandLine'
+          | 'command'
+          | 'link'
+          | 'templateCards'
+          | 'redirects'
+          | 'forms'
+          | 'form-submissions'
+          | 'search'
         )[]
       | null;
   };
-  width: "small" | "medium" | "large" | "x-large" | "full";
+  width: 'small' | 'medium' | 'large' | 'x-large' | 'full';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2983,9 +2947,9 @@ export interface ActivityWidget {
  */
 export interface UploadDropzoneWidget {
   data?: {
-    excludedCollections?: "media"[] | null;
+    excludedCollections?: 'media'[] | null;
   };
-  width: "x-small" | "small" | "medium" | "large" | "x-large" | "full";
+  width: 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'full';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2993,20 +2957,20 @@ export interface UploadDropzoneWidget {
  */
 export interface TaskSchedulePublish {
   input: {
-    type?: ("publish" | "unpublish") | null;
+    type?: ('publish' | 'unpublish') | null;
     locale?: string | null;
     doc?:
       | ({
-          relationTo: "pages";
+          relationTo: 'pages';
           value: number | Page;
         } | null)
       | ({
-          relationTo: "posts";
+          relationTo: 'posts';
           value: number | Post;
         } | null);
     global?: string | null;
     user?: {
-      relationTo: "users";
+      relationTo: 'users';
       value: number | User;
     } | null;
   };
@@ -3018,8 +2982,8 @@ export interface TaskSchedulePublish {
  */
 export interface BannerBlock {
   id: string;
-  blockType: "banner";
-  style: "info" | "warning" | "error" | "success";
+  blockType: 'banner';
+  style: 'info' | 'warning' | 'error' | 'success';
   content: LexicalRichText<LexicalNodes_BAE37333>;
   blockName?: string | null;
 }
@@ -3029,8 +2993,8 @@ export interface BannerBlock {
  */
 export interface CodeBlock {
   id: string;
-  blockType: "code";
-  language?: ("typescript" | "javascript" | "css") | null;
+  blockType: 'code';
+  language?: ('typescript' | 'javascript' | 'css') | null;
   code: string;
   blockName?: string | null;
 }
@@ -3042,7 +3006,7 @@ export interface CodeBlock {
  */
 export interface MediaBlock_D6C44817 {
   id: string;
-  blockType: "mediaBlock";
+  blockType: 'mediaBlock';
   media: number | Media;
   blockName?: string | null;
 }
@@ -3055,15 +3019,8 @@ export interface Auth {
 }
 
 /** @internal Core Lexical types — see @payloadcms/richtext-lexical. */
-export type LexicalElementFormat =
-  | "left"
-  | "start"
-  | "center"
-  | "right"
-  | "end"
-  | "justify"
-  | "";
-export type LexicalElementDirection = ("ltr" | "rtl") | null;
+export type LexicalElementFormat = 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+export type LexicalElementDirection = ('ltr' | 'rtl') | null;
 
 export interface SerializedLexicalElementBase<TChildren> {
   children: TChildren[];
@@ -3076,10 +3033,10 @@ export interface SerializedLexicalElementBase<TChildren> {
   version: number;
 }
 
-export type LexicalTextMode = "normal" | "token" | "segmented";
+export type LexicalTextMode = 'normal' | 'token' | 'segmented';
 
 export interface SerializedTextNode {
-  type: "text";
+  type: 'text';
   detail: number;
   format: number;
   mode: LexicalTextMode;
@@ -3090,7 +3047,7 @@ export interface SerializedTextNode {
 }
 
 export interface SerializedTabNode {
-  type: "tab";
+  type: 'tab';
   detail: number;
   format: number;
   mode: LexicalTextMode;
@@ -3101,44 +3058,33 @@ export interface SerializedTabNode {
 }
 
 export interface SerializedLineBreakNode {
-  type: "linebreak";
+  type: 'linebreak';
   /** @deprecated Ignored when loading. Typed as required only to match Lexical's types: rich text sent through the API, CLI or MCP may not contain it. */
   version: number;
 }
 
-export interface SerializedParagraphNode<
-  TChildren,
-> extends SerializedLexicalElementBase<TChildren> {
-  type: "paragraph";
+export interface SerializedParagraphNode<TChildren> extends SerializedLexicalElementBase<TChildren> {
+  type: 'paragraph';
   textFormat: number;
   textStyle: string;
 }
 
 export interface SerializedHeadingNode<
   TChildren,
-  TTag extends "h1" | "h2" | "h3" | "h4" | "h5" | "h6" =
-    | "h1"
-    | "h2"
-    | "h3"
-    | "h4"
-    | "h5"
-    | "h6",
+  TTag extends 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6',
 > extends SerializedLexicalElementBase<TChildren> {
-  type: "heading";
+  type: 'heading';
   tag: TTag;
 }
 
 export interface SerializedHorizontalRuleNode {
-  type: "horizontalrule";
+  type: 'horizontalrule';
   /** @deprecated Ignored when loading. Typed as required only to match Lexical's types: rich text sent through the API, CLI or MCP may not contain it. */
   version: number;
 }
 
-export type SerializedUploadNode<
-  TSlugs extends keyof Config["collections"],
-  TFields = { [k: string]: unknown },
-> = {
-  type: "upload";
+export type SerializedUploadNode<TSlugs extends keyof Config['collections'], TFields = { [k: string]: unknown }> = {
+  type: 'upload';
   format: LexicalElementFormat;
   id: string;
   /** @deprecated Ignored when loading. Typed as required only to match Lexical's types: rich text sent through the API, CLI or MCP may not contain it. */
@@ -3147,27 +3093,23 @@ export type SerializedUploadNode<
 } & {
   [TSlug in TSlugs]: {
     relationTo: TSlug;
-    value: Config["collections"][TSlug]["id"] | Config["collections"][TSlug];
+    value: Config['collections'][TSlug]['id'] | Config['collections'][TSlug];
   };
 }[TSlugs];
 
-export interface SerializedQuoteNode<
-  TChildren,
-> extends SerializedLexicalElementBase<TChildren> {
-  type: "quote";
+export interface SerializedQuoteNode<TChildren> extends SerializedLexicalElementBase<TChildren> {
+  type: 'quote';
 }
 
-export type SerializedRelationshipNode<
-  TSlugs extends keyof Config["collections"],
-> = {
-  type: "relationship";
+export type SerializedRelationshipNode<TSlugs extends keyof Config['collections']> = {
+  type: 'relationship';
   format: LexicalElementFormat;
   /** @deprecated Ignored when loading. Typed as required only to match Lexical's types: rich text sent through the API, CLI or MCP may not contain it. */
   version: number;
 } & {
   [TSlug in TSlugs]: {
     relationTo: TSlug;
-    value: Config["collections"][TSlug]["id"] | Config["collections"][TSlug];
+    value: Config['collections'][TSlug]['id'] | Config['collections'][TSlug];
   };
 }[TSlugs];
 
@@ -3175,44 +3117,32 @@ export interface LexicalLinkFields {
   [k: string]: unknown;
   doc?: {
     relationTo: string;
-    value:
-      | Config["db"]["defaultIDType"]
-      | { [k: string]: unknown; id: Config["db"]["defaultIDType"] };
+    value: Config['db']['defaultIDType'] | { [k: string]: unknown; id: Config['db']['defaultIDType'] };
   } | null;
-  linkType: "custom" | "internal";
+  linkType: 'custom' | 'internal';
   newTab: boolean;
   url?: string;
 }
-export interface SerializedLinkNode<
-  TChildren,
-  TFields = LexicalLinkFields,
-> extends SerializedLexicalElementBase<TChildren> {
-  type: "link";
+export interface SerializedLinkNode<TChildren, TFields = LexicalLinkFields> extends SerializedLexicalElementBase<TChildren> {
+  type: 'link';
   fields: TFields;
   id?: string;
 }
-export interface SerializedAutoLinkNode<
-  TChildren,
-  TFields = LexicalLinkFields,
-> extends SerializedLexicalElementBase<TChildren> {
-  type: "autolink";
+export interface SerializedAutoLinkNode<TChildren, TFields = LexicalLinkFields> extends SerializedLexicalElementBase<TChildren> {
+  type: 'autolink';
   fields: TFields;
 }
 
-export interface SerializedListNode<
-  TChildren,
-> extends SerializedLexicalElementBase<TChildren> {
-  type: "list";
+export interface SerializedListNode<TChildren> extends SerializedLexicalElementBase<TChildren> {
+  type: 'list';
   checked?: boolean;
-  listType: "number" | "bullet" | "check";
+  listType: 'number' | 'bullet' | 'check';
   start: number;
-  tag: "ul" | "ol";
+  tag: 'ul' | 'ol';
 }
 
-export interface SerializedListItemNode<
-  TChildren,
-> extends SerializedLexicalElementBase<TChildren> {
-  type: "listitem";
+export interface SerializedListItemNode<TChildren> extends SerializedLexicalElementBase<TChildren> {
+  type: 'listitem';
   checked?: boolean;
   value: number;
 }
@@ -3224,35 +3154,27 @@ export interface LexicalRichText<TNode> {
     direction: LexicalElementDirection;
     format: LexicalElementFormat;
     indent: number;
-    type: "root";
+    type: 'root';
     /** @deprecated Ignored when loading. Typed as required only to match Lexical's types: rich text sent through the API, CLI or MCP may not contain it. */
     version: number;
   };
 }
 
-export type SerializedBlockNode<TFields extends { blockType: string }> =
-  TFields extends unknown
-    ? {
-        type: "block";
-        format: LexicalElementFormat;
-        /** @deprecated Ignored when loading. Typed as required only to match Lexical's types: rich text sent through the API, CLI or MCP may not contain it. */
-        version: number;
-        fields: { id: string; blockName?: string | null } & Omit<
-          TFields,
-          "id" | "blockName"
-        >;
-      }
-    : never;
-export type SerializedInlineBlockNode<TFields extends { blockType: string }> =
-  TFields extends unknown
-    ? {
-        type: "inlineBlock";
-        /** @deprecated Ignored when loading. Typed as required only to match Lexical's types: rich text sent through the API, CLI or MCP may not contain it. */
-        version: number;
-        fields: { id: string } & Omit<TFields, "id">;
-      }
-    : never;
+export type SerializedBlockNode<TFields extends { blockType: string }> = TFields extends unknown ? {
+  type: 'block';
+  format: LexicalElementFormat;
+  /** @deprecated Ignored when loading. Typed as required only to match Lexical's types: rich text sent through the API, CLI or MCP may not contain it. */
+  version: number;
+  fields: { id: string; blockName?: string | null } & Omit<TFields, 'id' | 'blockName'>;
+} : never;
+export type SerializedInlineBlockNode<TFields extends { blockType: string }> = TFields extends unknown ? {
+  type: 'inlineBlock';
+  /** @deprecated Ignored when loading. Typed as required only to match Lexical's types: rich text sent through the API, CLI or MCP may not contain it. */
+  version: number;
+  fields: { id: string } & Omit<TFields, 'id'>;
+} : never;
 
-declare module "payload" {
+
+declare module 'payload' {
   export interface GeneratedTypes extends Config {}
 }

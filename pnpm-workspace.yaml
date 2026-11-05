@@ -39,7 +39,7 @@ catalog:
   react: 19.3.1
   react-dom: 19.3.1
   react-hook-form: ^7.91.0
-  react-email: ^6.11.3
+  react-email: ^6.11.6
   resend: ^6.34.1
   pdfmake: ^0.3.12
   sharp: ^0.35.5
