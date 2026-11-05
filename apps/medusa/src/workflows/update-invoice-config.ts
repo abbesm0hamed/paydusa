@@ -5,7 +5,7 @@ import {
 
 import { updateInvoiceConfigStep } from "./steps/update-invoice-config";
 
-type WorkflowInput = {
+interface WorkflowInput {
   id?: string;
   company_name?: string;
   company_address?: string;
@@ -13,7 +13,7 @@ type WorkflowInput = {
   company_email?: string;
   company_logo?: string;
   notes?: string;
-};
+}
 
 export const updateInvoiceConfigWorkflow = createWorkflow(
   "update-invoice-config",

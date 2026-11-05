@@ -10,11 +10,13 @@ import { importMap } from "./admin/importMap.js";
 
 import "./custom.css";
 
-type Args = {
+interface Args {
   children: React.ReactNode;
-};
+}
 
-const serverFunction: ServerFunctionClient = async function (args) {
+const serverFunction: ServerFunctionClient = async function serverFunction(
+  args
+) {
   "use server";
   return handleServerFunctions({
     ...args,

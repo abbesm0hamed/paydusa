@@ -1,13 +1,13 @@
 import { listProducts } from "@lib/data/products";
 import { getRegion } from "@lib/data/regions";
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 
 import Product from "../product-preview";
 
-type RelatedProductsProps = {
+interface RelatedProductsProps {
   product: HttpTypes.StoreProduct;
   countryCode: string;
-};
+}
 
 export default async function RelatedProducts({
   product,
@@ -35,13 +35,13 @@ export default async function RelatedProducts({
   queryParams.is_giftcard = false;
 
   const products = await listProducts({
-    queryParams,
     countryCode,
-  }).then(({ response }) => {
-    return response.products.filter(
+    queryParams,
+  }).then(({ response }) =>
+    response.products.filter(
       (responseProduct) => responseProduct.id !== product.id
-    );
-  });
+    )
+  );
 
   if (!products.length) {
     return null;
@@ -49,8 +49,8 @@ export default async function RelatedProducts({
 
   return (
     <div className="product-page-constraint">
-      <div className="flex flex-col items-center text-center mb-16">
-        <span className="text-base-regular text-gray-600 mb-6">
+      <div className="mb-16 flex flex-col items-center text-center">
+        <span className="text-base-regular mb-6 text-gray-600">
           Related products
         </span>
         <p className="text-2xl-regular text-ui-fg-base max-w-lg">
@@ -58,7 +58,7 @@ export default async function RelatedProducts({
         </p>
       </div>
 
-      <ul className="grid grid-cols-2 small:grid-cols-3 medium:grid-cols-4 gap-x-6 gap-y-8">
+      <ul className="small:grid-cols-3 medium:grid-cols-4 grid grid-cols-2 gap-x-6 gap-y-8">
         {products.map((product) => (
           <li key={product.id}>
             <Product region={region} product={product} />

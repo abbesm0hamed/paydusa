@@ -1,11 +1,10 @@
-export const isObject = (input: any) => input instanceof Object;
-export const isArray = (input: any) => Array.isArray(input);
-export const isEmpty = (input: any) => {
-  return (
-    input === null ||
-    input === undefined ||
-    (isObject(input) && Object.keys(input).length === 0) ||
-    (isArray(input) && (input as any[]).length === 0) ||
-    (typeof input === "string" && input.trim().length === 0)
-  );
-};
+export const isObject = (input: unknown): input is object =>
+  input instanceof Object;
+export const isArray = (input: unknown): input is unknown[] =>
+  Array.isArray(input);
+export const isEmpty = (input: unknown) =>
+  input === null ||
+  input === undefined ||
+  (isObject(input) && Object.keys(input).length === 0) ||
+  (isArray(input) && input.length === 0) ||
+  (typeof input === "string" && input.trim().length === 0);

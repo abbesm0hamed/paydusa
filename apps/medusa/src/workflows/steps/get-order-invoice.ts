@@ -3,9 +3,9 @@ import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
 import { INVOICE_MODULE } from "../../modules/invoice-generator";
 import { InvoiceStatus } from "../../modules/invoice-generator/models/invoice";
 
-type StepInput = {
+interface StepInput {
   order_id: string;
-};
+}
 
 export const getOrderInvoiceStep = createStep(
   "get-order-invoice",
@@ -21,8 +21,8 @@ export const getOrderInvoiceStep = createStep(
       // Store new invoice in database
       invoice = await invoiceGeneratorService.createInvoices({
         order_id,
-        status: InvoiceStatus.LATEST,
         pdfContent: {},
+        status: InvoiceStatus.LATEST,
       });
       createdInvoice = true;
     }

@@ -4,7 +4,7 @@ import { getPayload } from "payload";
 
 export async function getCachedPosts(page = 1) {
   "use cache";
-  cacheLife({ stale: 600, revalidate: 600, expire: 3600 });
+  cacheLife({ expire: 3600, revalidate: 600, stale: 600 });
   cacheTag("posts");
 
   const payload = await getPayload({ config });
@@ -12,13 +12,13 @@ export async function getCachedPosts(page = 1) {
     collection: "posts",
     depth: 1,
     limit: 12,
-    page,
     overrideAccess: false,
+    page,
     select: {
-      title: true,
-      slug: true,
       categories: true,
       meta: true,
+      slug: true,
+      title: true,
     },
   });
 }

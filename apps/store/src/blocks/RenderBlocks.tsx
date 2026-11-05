@@ -21,21 +21,21 @@ import { RelatedPosts } from "@/blocks/RelatedPosts/Component";
 
 const blockComponents = {
   archive: ArchiveBlock,
+  banner: Banner,
+  blogContent: BlogContent,
+  callout: Callout,
+  cardGrid: CardGrid,
   content: ContentBlock,
+  contentGrid: ContentGrid,
   cta: CallToActionBlock,
   formBlock: FormBlock,
+  hoverCards: HoverCards,
+  hoverHighlights: HoverHighlights,
+  linkGrid: LinkGrid,
+  logoGrid: LogoGrid,
   mediaBlock: MediaBlock,
   mediaContent: MediaContent,
   relatedPosts: RelatedPosts,
-  blogContent: BlogContent,
-  callout: Callout,
-  banner: Banner,
-  contentGrid: ContentGrid,
-  cardGrid: CardGrid,
-  linkGrid: LinkGrid,
-  hoverCards: HoverCards,
-  hoverHighlights: HoverHighlights,
-  logoGrid: LogoGrid,
 };
 
 export const RenderBlocks: React.FC<{

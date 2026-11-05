@@ -28,7 +28,7 @@ export const getCacheTag = async (tag: string): Promise<string> => {
     }
 
     return `${tag}-${cacheId}`;
-  } catch (error) {
+  } catch {
     return "";
   }
 };
@@ -52,8 +52,8 @@ export const getCacheOptions = async (
 export const setAuthToken = async (token: string) => {
   const cookies = await nextCookies();
   cookies.set("_medusa_jwt", token, {
-    maxAge: 60 * 60 * 24 * 7,
     httpOnly: true,
+    maxAge: 60 * 60 * 24 * 7,
     sameSite: "strict",
     secure: process.env.NODE_ENV === "production",
   });
@@ -74,8 +74,8 @@ export const getCartId = async () => {
 export const setCartId = async (cartId: string) => {
   const cookies = await nextCookies();
   cookies.set("_medusa_cart_id", cartId, {
-    maxAge: 60 * 60 * 24 * 7,
     httpOnly: true,
+    maxAge: 60 * 60 * 24 * 7,
     sameSite: "strict",
     secure: process.env.NODE_ENV === "production",
   });

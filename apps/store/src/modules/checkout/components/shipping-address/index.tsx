@@ -1,5 +1,6 @@
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import { Container } from "@medusajs/ui";
+import { getShippingAddressFormData } from "@modules/checkout/lib/shipping-address";
 import Checkbox from "@modules/common/components/checkbox";
 import Input from "@modules/common/components/input";
 import { mapKeys } from "lodash";
@@ -19,17 +20,9 @@ const ShippingAddress = ({
   checked: boolean;
   onChange: () => void;
 }) => {
-  const [formData, setFormData] = useState<Record<string, any>>({
-    "shipping_address.first_name": cart?.shipping_address?.first_name || "",
-    "shipping_address.last_name": cart?.shipping_address?.last_name || "",
-    "shipping_address.address_1": cart?.shipping_address?.address_1 || "",
-    "shipping_address.company": cart?.shipping_address?.company || "",
-    "shipping_address.postal_code": cart?.shipping_address?.postal_code || "",
-    "shipping_address.city": cart?.shipping_address?.city || "",
-    "shipping_address.country_code": cart?.shipping_address?.country_code || "",
-    "shipping_address.province": cart?.shipping_address?.province || "",
-    "shipping_address.phone": cart?.shipping_address?.phone || "",
+  const [formData, setFormData] = useState<Record<string, string>>({
     email: cart?.email || "",
+    ...getShippingAddressFormData(cart?.shipping_address),
   });
 
   const countriesInRegion = useMemo(
@@ -50,25 +43,19 @@ const ShippingAddress = ({
     address?: HttpTypes.StoreCartAddress,
     email?: string
   ) => {
-    address &&
-      setFormData((prevState: Record<string, any>) => ({
+    if (address) {
+      setFormData((prevState) => ({
         ...prevState,
-        "shipping_address.first_name": address?.first_name || "",
-        "shipping_address.last_name": address?.last_name || "",
-        "shipping_address.address_1": address?.address_1 || "",
-        "shipping_address.company": address?.company || "",
-        "shipping_address.postal_code": address?.postal_code || "",
-        "shipping_address.city": address?.city || "",
-        "shipping_address.country_code": address?.country_code || "",
-        "shipping_address.province": address?.province || "",
-        "shipping_address.phone": address?.phone || "",
+        ...getShippingAddressFormData(address),
       }));
+    }
 
-    email &&
-      setFormData((prevState: Record<string, any>) => ({
+    if (email) {
+      setFormData((prevState) => ({
         ...prevState,
-        email: email,
+        email,
       }));
+    }
   };
 
   useEffect(() => {
@@ -80,7 +67,7 @@ const ShippingAddress = ({
     if (cart && !cart.email && customer?.email) {
       setFormAddress(undefined, customer.email);
     }
-  }, [cart]); // Add cart as a dependency
+  }, [cart]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -102,11 +89,9 @@ const ShippingAddress = ({
           </p>
           <AddressSelect
             addresses={customer.addresses}
-            addressInput={
-              mapKeys(formData, (_, key) =>
-                key.replace("shipping_address.", "")
-              ) as HttpTypes.StoreCartAddress
-            }
+            addressInput={mapKeys(formData, (_, key) =>
+              key.replace("shipping_address.", "")
+            )}
             onSelect={setFormAddress}
           />
         </Container>
@@ -192,7 +177,7 @@ const ShippingAddress = ({
           data-testid="billing-address-checkbox"
         />
       </div>
-      <div className="grid grid-cols-2 gap-4 mb-4">
+      <div className="mb-4 grid grid-cols-2 gap-4">
         <Input
           label="Email"
           name="email"

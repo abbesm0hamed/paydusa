@@ -1,4 +1,4 @@
-import { cn } from "@ecommerce/design-system/lib/utils";
+import { cn } from "@paydusa/design-system/lib/utils";
 import * as React from "react";
 
 function Label({ className, ...props }: React.ComponentProps<"label">) {

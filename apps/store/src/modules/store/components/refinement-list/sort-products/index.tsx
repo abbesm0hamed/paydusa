@@ -4,24 +4,24 @@ import FilterRadioGroup from "@modules/common/components/filter-radio-group";
 
 export type SortOptions = "price_asc" | "price_desc" | "created_at";
 
-type SortProductsProps = {
+interface SortProductsProps {
   sortBy: SortOptions;
   setQueryParams: (name: string, value: SortOptions) => void;
   "data-testid"?: string;
-};
+}
 
 const sortOptions = [
   {
-    value: "created_at",
     label: "Latest Arrivals",
+    value: "created_at",
   },
   {
-    value: "price_asc",
     label: "Price: Low -> High",
+    value: "price_asc",
   },
   {
-    value: "price_desc",
     label: "Price: High -> Low",
+    value: "price_desc",
   },
 ];
 

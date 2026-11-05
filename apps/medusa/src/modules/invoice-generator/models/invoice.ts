@@ -6,9 +6,9 @@ export enum InvoiceStatus {
 }
 
 export const Invoice = model.define("invoice", {
-  id: model.id().primaryKey(),
   display_id: model.autoincrement(),
+  id: model.id().primaryKey(),
   order_id: model.text(),
-  status: model.enum(InvoiceStatus).default(InvoiceStatus.LATEST),
   pdfContent: model.json(),
+  status: model.enum(InvoiceStatus).default(InvoiceStatus.LATEST),
 });

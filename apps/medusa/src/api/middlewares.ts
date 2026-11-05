@@ -1,13 +1,15 @@
+import type {
+  MedusaNextFunction,
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http";
 import {
   defineMiddlewares,
   validateAndTransformBody,
   authenticate,
   errorHandler,
-  MedusaNextFunction,
-  MedusaRequest,
-  MedusaResponse,
 } from "@medusajs/framework/http";
-import { MedusaError } from "@medusajs/framework/utils";
+import type { MedusaError } from "@medusajs/framework/utils";
 import * as Sentry from "@sentry/node";
 
 import { PostInvoiceConfigSchema } from "./admin/invoice-config/route";

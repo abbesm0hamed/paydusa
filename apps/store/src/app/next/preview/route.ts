@@ -1,8 +1,8 @@
 import config from "@payload-config";
 import { draftMode } from "next/headers";
 import { redirect } from "next/navigation";
-import type { AuthenticatedUser, CollectionSlug } from "payload";
-import { getPayload, TypedLocale } from "payload";
+import type { AuthenticatedUser, CollectionSlug, TypedLocale } from "payload";
+import { getPayload } from "payload";
 
 export async function GET(
   req: {
@@ -67,11 +67,11 @@ export async function GET(
   // You can add additional checks here to see if the user is allowed to preview this page
   try {
     const docs = await payload.find({
-      collection: collection,
+      collection,
       draft: true,
       locale: path.split("/")[1] as TypedLocale,
-      user,
       overrideAccess: false,
+      user,
       where: {
         slug: {
           equals: slug,

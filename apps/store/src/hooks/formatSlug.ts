@@ -2,8 +2,8 @@ import type { FieldHook } from "payload";
 
 const format = (val: string): string =>
   val
-    .replace(/ /g, "-")
-    .replace(/[^\w-]+/g, "")
+    .replaceAll(" ", "-")
+    .replaceAll(/[^\w-]+/g, "")
     .toLowerCase();
 
 const formatSlug =

@@ -1,6 +1,6 @@
 "use client";
 
-import type { Button } from "@ecommerce/design-system/components/button";
+import { Button } from "@paydusa/design-system/components/button";
 import type { Media } from "@payload-types";
 import type { DefaultTypedEditorState } from "@payloadcms/richtext-lexical";
 import Image from "next/image";
@@ -9,7 +9,7 @@ import React from "react";
 
 import RichText from "@/components/RichText";
 
-export type LogoGridBlockType = {
+export interface LogoGridBlockType {
   blockName?: string | null;
   blockType: "logoGrid";
   content?: DefaultTypedEditorState | null;
@@ -31,52 +31,56 @@ export type LogoGridBlockType = {
       }[]
     | null;
   id?: string | null;
+}
+
+const getLinkUrl = (linkData: LogoGridBlockType["link"]): string | null => {
+  if (!linkData) {
+    return null;
+  }
+
+  if (linkData.type === "custom" && linkData.url) {
+    return linkData.url;
+  }
+
+  if (linkData.type === "reference" && linkData.reference) {
+    const { relationTo, value } = linkData.reference;
+
+    if (typeof value === "object" && value !== null && "slug" in value) {
+      return `/${relationTo}/${value.slug}`;
+    }
+
+    return `/${relationTo}/${value}`;
+  }
+
+  return null;
 };
 
 export const LogoGrid: React.FC<LogoGridBlockType> = (props) => {
   const { content, hasLink, link, logos } = props;
 
-  const getLinkUrl = (linkData: any): string | null => {
-    if (!linkData) return null;
-
-    if (linkData.type === "custom" && linkData.url) {
-      return linkData.url;
-    }
-
-    if (linkData.type === "reference" && linkData.reference) {
-      const { relationTo, value } = linkData.reference;
-
-      if (typeof value === "object" && value !== null && "slug" in value) {
-        return `/${relationTo}/${value.slug}`;
-      }
-
-      return `/${relationTo}/${value}`;
-    }
-
-    return null;
-  };
-
   const linkUrl = hasLink && link ? getLinkUrl(link) : null;
   const linkProps = link?.newTab
-    ? { target: "_blank", rel: "noopener noreferrer" }
+    ? { rel: "noopener noreferrer", target: "_blank" }
     : {};
 
   return (
     <div className="container py-12 md:py-16 lg:py-20">
-      <div className="max-w-5xl mx-auto">
+      <div className="mx-auto max-w-5xl">
         {content && (
-          <div className="mb-8 md:mb-12 text-center">
+          <div className="mb-8 text-center md:mb-12">
             <RichText data={content} />
           </div>
         )}
 
         {logos && logos.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10">
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-3 md:gap-8 lg:grid-cols-4 lg:gap-10">
             {logos.map((item) => {
               const logoMedia =
                 typeof item.logo === "object" ? item.logo : null;
 
-              if (!logoMedia || !logoMedia.url) return null;
+              if (!logoMedia || !logoMedia.url) {
+                return null;
+              }
 
               return (
                 <div
@@ -98,7 +102,7 @@ export const LogoGrid: React.FC<LogoGridBlockType> = (props) => {
         )}
 
         {hasLink && link && link.label && linkUrl && (
-          <div className="mt-8 md:mt-12 text-center">
+          <div className="mt-8 text-center md:mt-12">
             <Link href={linkUrl} {...linkProps}>
               <Button variant="default">{link.label}</Button>
             </Link>

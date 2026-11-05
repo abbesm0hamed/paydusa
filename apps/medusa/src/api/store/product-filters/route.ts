@@ -1,6 +1,6 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http";
+import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http";
 
-export async function GET(req: MedusaRequest, res: MedusaResponse) {
+export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const query = req.scope.resolve("query");
 
   const categoryId = req.query.category_id as string | undefined;
@@ -83,12 +83,12 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
         const group = optionGroups[option.title];
         const existing = group.valueMap.get(val.value);
         if (existing) {
-          existing.count++;
+          existing.count += 1;
         } else {
           group.valueMap.set(val.value, {
+            count: 1,
             id: val.id,
             value: val.value,
-            count: 1,
           });
         }
       }
@@ -108,9 +108,9 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     option_values[title] = {
       option_id: group.option_id,
       option_title: group.option_title,
-      values: Array.from(group.valueMap.values()),
+      values: [...group.valueMap.values()],
     };
   }
 
   res.json({ option_values });
-}
+};

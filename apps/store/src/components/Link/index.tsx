@@ -1,7 +1,5 @@
-import {
-  Button,
-  type ButtonProps,
-} from "@ecommerce/design-system/components/button";
+import { Button } from "@paydusa/design-system/components/button";
+import type { ButtonProps } from "@paydusa/design-system/components/button";
 import type { Page, Post } from "@payload-types";
 import NextLink from "next/link";
 import React from "react";
@@ -9,7 +7,7 @@ import React from "react";
 import { Link as i18nLink } from "@/i18n/routing";
 import { cn } from "@/utilities/ui";
 
-type CMSLinkType = {
+interface CMSLinkType {
   appearance?: "inline" | ButtonProps["variant"];
   children?: React.ReactNode;
   className?: string;
@@ -22,7 +20,7 @@ type CMSLinkType = {
   size?: ButtonProps["size"] | null;
   type?: "custom" | "reference" | null;
   url?: string | null;
-};
+}
 
 export const CMSLink: React.FC<CMSLinkType> = (props) => {
   const {
@@ -41,12 +39,14 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     type === "reference" &&
     typeof reference?.value === "object" &&
     reference.value.slug
-      ? `${reference?.relationTo !== "pages" ? `/${reference?.relationTo}` : ""}/${
+      ? `${reference?.relationTo === "pages" ? "" : `/${reference?.relationTo}`}/${
           reference.value.slug
         }`
       : url;
 
-  if (!href) return null;
+  if (!href) {
+    return null;
+  }
 
   const finalHref = href || url || "";
   const Link = finalHref.startsWith("/admin") ? NextLink : i18nLink;

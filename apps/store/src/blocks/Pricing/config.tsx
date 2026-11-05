@@ -3,17 +3,13 @@ import type { Block } from "payload";
 import { link } from "@/fields/link";
 
 export const Pricing: Block = {
-  slug: "pricing",
-  interfaceName: "PricingBlock",
   fields: [
     {
-      name: "plans",
-      type: "array",
       fields: [
         {
           name: "name",
-          type: "text",
           required: true,
+          type: "text",
         },
         {
           name: "hasPrice",
@@ -24,22 +20,22 @@ export const Pricing: Block = {
           type: "checkbox", // shortened from enableCreatePayload
         },
         {
-          name: "price",
-          type: "text",
           admin: {
             condition: (_, { hasPrice }) => Boolean(hasPrice),
           },
           label: "Price per month",
+          name: "price",
           required: true,
+          type: "text",
         },
         {
-          name: "title",
-          type: "text",
           admin: {
             condition: (_, { hasPrice }) => !hasPrice,
           },
           label: "Title",
+          name: "title",
           required: true,
+          type: "text",
         },
         {
           name: "desc", // shortened from description
@@ -58,12 +54,9 @@ export const Pricing: Block = {
           },
         }),
         {
-          name: "features",
-          type: "array",
           fields: [
             {
               name: "icon",
-              type: "radio",
               options: [
                 {
                   label: "Check",
@@ -74,17 +67,22 @@ export const Pricing: Block = {
                   value: "x",
                 },
               ],
+              type: "radio",
             },
             {
+              label: false,
               name: "text", // shortened from feature
               type: "text",
-              label: false,
             },
           ],
+          name: "features",
+          type: "array",
         },
       ],
       maxRows: 4,
       minRows: 1,
+      name: "plans",
+      type: "array",
     },
     {
       name: "disclaimer",
@@ -94,8 +92,10 @@ export const Pricing: Block = {
   graphQL: {
     singularName: "Pricing",
   },
+  interfaceName: "PricingBlock",
   labels: {
     plural: "Pricing Blocks",
     singular: "Pricing Block",
   },
+  slug: "pricing",
 };

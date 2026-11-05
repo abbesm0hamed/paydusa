@@ -1,16 +1,15 @@
 "use client";
 
-import { HttpTypes } from "@medusajs/types";
-import { Text } from "@medusajs/ui";
-import { Button, toast } from "@medusajs/ui";
+import type { HttpTypes } from "@medusajs/types";
+import { Text, Button, toast } from "@medusajs/ui";
 import { useState } from "react";
 
 import { sdk } from "../../../../lib/config";
 
-type OrderDetailsProps = {
+interface OrderDetailsProps {
   order: HttpTypes.StoreOrder;
   showStatus?: boolean;
-};
+}
 
 const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
   const formatStatus = (str: string) => {
@@ -27,10 +26,10 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
       const response: Response = await sdk.client.fetch(
         `/store/orders/${order.id}/invoices`,
         {
-          method: "GET",
           headers: {
             accept: "application/pdf",
           },
+          method: "GET",
         }
       );
 
@@ -39,7 +38,7 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
       const a = document.createElement("a");
       a.href = url;
       a.download = `invoice-${order.id}.pdf`;
-      document.body.appendChild(a);
+      document.body.append(a);
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
@@ -69,7 +68,7 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
           {new Date(order.created_at).toDateString()}
         </span>
       </Text>
-      <Text className="mt-2 text-ui-fg-interactive">
+      <Text className="text-ui-fg-interactive mt-2">
         Order number: <span data-testid="order-id">{order.display_id}</span>
       </Text>
       <Button
@@ -81,19 +80,19 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
         Download Invoice
       </Button>
 
-      <div className="flex items-center text-compact-small gap-x-4 mt-4">
+      <div className="text-compact-small mt-4 flex items-center gap-x-4">
         {showStatus && (
           <>
             <Text>
               Order status:{" "}
-              <span className="text-ui-fg-subtle " data-testid="order-status">
+              <span className="text-ui-fg-subtle" data-testid="order-status">
                 {formatStatus(order.fulfillment_status)}
               </span>
             </Text>
             <Text>
               Payment status:{" "}
               <span
-                className="text-ui-fg-subtle "
+                className="text-ui-fg-subtle"
                 sata-testid="order-payment-status"
               >
                 {formatStatus(order.payment_status)}

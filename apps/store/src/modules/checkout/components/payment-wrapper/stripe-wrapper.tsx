@@ -1,16 +1,16 @@
 "use client";
 
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import { Elements } from "@stripe/react-stripe-js";
-import { Stripe, StripeElementsOptions } from "@stripe/stripe-js";
+import type { Stripe, StripeElementsOptions } from "@stripe/stripe-js";
 import { createContext } from "react";
 
-type StripeWrapperProps = {
+interface StripeWrapperProps {
   paymentSession: HttpTypes.StorePaymentSession;
   stripeKey?: string;
   stripePromise: Promise<Stripe | null> | null;
   children: React.ReactNode;
-};
+}
 
 export const StripeContext = createContext(false);
 

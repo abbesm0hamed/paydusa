@@ -4,21 +4,23 @@ import React from "react";
 
 import { CopyButton } from "./CopyButton";
 
-type Props = {
+interface Props {
   code: string;
   language?: string;
-};
+}
 
 export const Code: React.FC<Props> = ({ code, language = "" }) => {
-  if (!code) return null;
+  if (!code) {
+    return null;
+  }
 
   return (
     <Highlight code={code} language={language} theme={themes.vsDark}>
       {({ getLineProps, getTokenProps, tokens }) => (
-        <pre className="bg-black p-4 border text-xs border-border rounded overflow-x-auto">
+        <pre className="border-border overflow-x-auto rounded border bg-black p-4 text-xs">
           {tokens.map((line, i) => (
             <div key={i} {...getLineProps({ className: "table-row", line })}>
-              <span className="table-cell select-none text-right text-white/25">
+              <span className="table-cell text-right text-white/25 select-none">
                 {i + 1}
               </span>
               <span className="table-cell pl-4">

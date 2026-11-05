@@ -1,6 +1,6 @@
 "use client";
-import { Input } from "@ecommerce/design-system/components/input";
-import { Label } from "@ecommerce/design-system/components/label";
+import { Input } from "@paydusa/design-system/components/input";
+import { Label } from "@paydusa/design-system/components/label";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";

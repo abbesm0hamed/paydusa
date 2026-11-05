@@ -1,5 +1,5 @@
 {
-  "name": "medusa",
+  "name": "@paydusa/medusa",
   "version": "0.0.1",
   "description": "medusa ecommerce engine",
   "keywords": [
@@ -20,7 +20,6 @@
     "bump-deps": "pnpm update --interactive"
   },
   "dependencies": {
-    "@ecommerce/email": "workspace:*",
     "@medusajs/admin-sdk": "catalog:medusa",
     "@medusajs/admin-shared": "catalog:medusa",
     "@medusajs/analytics-posthog": "catalog:medusa",
@@ -38,6 +37,7 @@
     "@mikro-orm/postgresql": "catalog:mikro-orm",
     "@opentelemetry/api": "^1.10.0",
     "@opentelemetry/exporter-trace-otlp-grpc": "^0.300.0",
+    "@paydusa/email": "workspace:*",
     "@sentry/node": "^11.9.0",
     "@sentry/opentelemetry-node": "^7.114.0",
     "@tanstack/react-query": "^5.104.5",

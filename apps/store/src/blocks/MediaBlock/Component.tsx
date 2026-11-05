@@ -29,7 +29,9 @@ export const MediaBlock: React.FC<Props> = (props) => {
   } = props;
 
   let caption;
-  if (media && typeof media === "object") caption = media.caption;
+  if (media && typeof media === "object") {
+    caption = media.caption;
+  }
 
   return (
     <div
@@ -44,7 +46,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
       {(media || staticImage) && (
         <Media
           imgClassName={cn(
-            "border border-border rounded-[0.8rem]",
+            "border-border rounded-[0.8rem] border",
             imgClassName
           )}
           resource={media}

@@ -1,13 +1,10 @@
 import type { Block } from "payload";
 
 export const Code: Block = {
-  slug: "code",
-  interfaceName: "CodeBlock",
   fields: [
     {
-      name: "language",
-      type: "select",
       defaultValue: "typescript",
+      name: "language",
       options: [
         {
           label: "Typescript",
@@ -22,12 +19,15 @@ export const Code: Block = {
           value: "css",
         },
       ],
+      type: "select",
     },
     {
-      name: "code",
-      type: "code",
       label: false,
+      name: "code",
       required: true,
+      type: "code",
     },
   ],
+  interfaceName: "CodeBlock",
+  slug: "code",
 };

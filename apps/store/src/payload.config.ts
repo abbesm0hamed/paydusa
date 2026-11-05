@@ -1,12 +1,13 @@
-import path from "path";
-import { fileURLToPath } from "url";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { resendAdapter } from "@payloadcms/email-resend";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { s3Storage } from "@payloadcms/storage-s3";
 import { sharpTransformer } from "@payloadcms/transformer-sharp";
-import { buildConfig, PayloadRequest } from "payload";
+import type { PayloadRequest } from "payload";
+import { buildConfig } from "payload";
 import sharp from "sharp";
 
 import { BlogContent } from "@/blocks/BlogContent/config";
@@ -39,12 +40,11 @@ import { i18n, localization } from "@/i18n/localization";
 import { resolvePath } from "@/lib/paths";
 import { plugins } from "@/plugins";
 
-import { Products } from "./collections/Products";
 import { getServerSideURL } from "./utilities/getURL";
 import { getMediaFileURL } from "./utilities/mediaURLs";
 
-const filename = fileURLToPath(import.meta.url);
-const dirname = path.dirname(filename);
+// oxlint-disable-next-line unicorn/prefer-import-meta-properties -- Next.js does not provide import.meta.dirname at runtime.
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const serverURL = getServerSideURL();
 const mediaPrefix = "cms/media";
@@ -56,22 +56,6 @@ if (!process.env.PAYLOAD_SECRET) {
 }
 
 export default buildConfig({
-  i18n,
-  localization,
-  serverURL,
-  defaultDepth: 2,
-  cors: [
-    serverURL,
-    process.env.NEXT_PUBLIC_BASE_URL,
-    process.env.MEDUSA_BACKEND_URL,
-  ].filter((url): url is string => typeof url === "string" && url.length > 0),
-  csrf: [serverURL, process.env.NEXT_PUBLIC_BASE_URL].filter(
-    (url): url is string => typeof url === "string" && url.length > 0
-  ),
-  cookiePrefix: "paydusa",
-  graphQL: {
-    maxComplexity: 1000,
-  },
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
@@ -79,36 +63,36 @@ export default buildConfig({
       // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
       // beforeDashboard: ['@/components/BeforeDashboard'], // you can use this seed function to reset the db with initial data
       graphics: {
-        Logo: "@/components/Logo/AdminLogo",
         Icon: "@/icons/AdminIcon",
+        Logo: "@/components/Logo/AdminLogo",
       },
     },
-    user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
     },
     livePreview: {
       breakpoints: [
         {
+          height: 667,
           label: "Mobile",
           name: "mobile",
           width: 375,
-          height: 667,
         },
         {
+          height: 1024,
           label: "Tablet",
           name: "tablet",
           width: 768,
-          height: 1024,
         },
         {
+          height: 900,
           label: "Desktop",
           name: "desktop",
           width: 1440,
-          height: 900,
         },
       ],
     },
+    user: Users.slug,
   },
   blocks: [
     BlogContent,
@@ -145,7 +129,6 @@ export default buildConfig({
     // StickyHighlights,
     // ExampleTabs,
     {
-      slug: "video",
       fields: [
         {
           name: "url",
@@ -153,21 +136,20 @@ export default buildConfig({
         },
       ],
       interfaceName: "VideoBlock",
+      slug: "video",
     },
     {
-      slug: "br",
       fields: [
         {
           name: "ignore",
           type: "text",
         },
       ],
-
       interfaceName: "BrBlock",
+      slug: "br",
     },
     // VideoDrawerBlock,
     {
-      slug: "commandLine",
       fields: [
         {
           name: "command",
@@ -175,74 +157,74 @@ export default buildConfig({
         },
       ],
       interfaceName: "CommandLineBlock",
+      slug: "commandLine",
     },
     {
-      slug: "command",
       fields: [
         {
           name: "command",
-          type: "text",
           required: true,
+          type: "text",
         },
       ],
       labels: {
         plural: "Command Lines",
         singular: "Command Line",
       },
+      slug: "command",
     },
     {
-      slug: "link",
       fields: [link()],
       labels: {
         plural: "Links",
         singular: "Link",
       },
+      slug: "link",
     },
     {
-      slug: "templateCards",
       fields: [
         {
-          name: "templates",
-          type: "array",
           fields: [
             {
               name: "name",
-              type: "text",
               required: true,
+              type: "text",
             },
             {
               name: "description",
-              type: "textarea",
               required: true,
+              type: "textarea",
             },
             {
               name: "image",
-              type: "text",
               required: true,
+              type: "text",
             },
             {
               name: "slug",
-              type: "text",
               required: true,
+              type: "text",
             },
             {
               name: "order",
-              type: "number",
               required: true,
+              type: "number",
             },
           ],
           labels: {
             plural: "Templates",
             singular: "Template",
           },
+          name: "templates",
+          type: "array",
         },
       ],
       interfaceName: "TemplateCardsBlock",
+      slug: "templateCards",
     },
     // BannerBlock,
     // CodeBlock,
   ],
-  globals: [Header, Footer],
   collections: [
     Pages,
     ReusableContent,
@@ -250,10 +232,7 @@ export default buildConfig({
     Media,
     Categories,
     Users,
-    Products,
     {
-      slug: "video",
-      versions: false,
       authorship: false,
       fields: [
         {
@@ -261,10 +240,10 @@ export default buildConfig({
           type: "text",
         },
       ],
+      slug: "video",
+      versions: false,
     },
     {
-      slug: "br",
-      versions: false,
       authorship: false,
       fields: [
         {
@@ -272,11 +251,11 @@ export default buildConfig({
           type: "text",
         },
       ],
+      slug: "br",
+      versions: false,
     },
     // VideoDrawerBlock,
     {
-      slug: "commandLine",
-      versions: false,
       authorship: false,
       fields: [
         {
@@ -284,168 +263,191 @@ export default buildConfig({
           type: "text",
         },
       ],
+      slug: "commandLine",
+      versions: false,
     },
     {
-      slug: "command",
-      versions: false,
       authorship: false,
       fields: [
         {
           name: "command",
-          type: "text",
           required: true,
+          type: "text",
         },
       ],
       labels: {
         plural: "Command Lines",
         singular: "Command Line",
       },
+      slug: "command",
+      versions: false,
     },
     {
-      slug: "link",
-      versions: false,
       authorship: false,
       fields: [link()],
       labels: {
         plural: "Links",
         singular: "Link",
       },
+      slug: "link",
+      versions: false,
     },
     {
-      slug: "templateCards",
-      versions: false,
       authorship: false,
       fields: [
         {
-          name: "templates",
-          type: "array",
           fields: [
             {
               name: "name",
-              type: "text",
               required: true,
+              type: "text",
             },
             {
               name: "description",
-              type: "textarea",
               required: true,
+              type: "textarea",
             },
             {
               name: "image",
-              type: "text",
               required: true,
+              type: "text",
             },
             {
               name: "slug",
-              type: "text",
               required: true,
+              type: "text",
             },
             {
               name: "order",
-              type: "number",
               required: true,
+              type: "number",
             },
           ],
           labels: {
             plural: "Templates",
             singular: "Template",
           },
+          name: "templates",
+          type: "array",
         },
       ],
+      slug: "templateCards",
+      versions: false,
     },
   ],
-  editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET,
-  typescript: {
-    outputFile: path.resolve(dirname, "payload-types.ts"),
-  },
+  cookiePrefix: "paydusa",
+  cors: [
+    serverURL,
+    process.env.NEXT_PUBLIC_BASE_URL,
+    process.env.MEDUSA_BACKEND_URL,
+  ].filter((url): url is string => typeof url === "string" && url.length > 0),
+  csrf: [serverURL, process.env.NEXT_PUBLIC_BASE_URL].filter(
+    (url): url is string => typeof url === "string" && url.length > 0
+  ),
   db: postgresAdapter({
     // Apply reviewed migrations instead of dropping legacy media columns in dev.
     push: false,
     pool: {
       connectionString: process.env.DATABASE_URL,
+      idleTimeoutMillis: 30_000,
       max: 10,
-      idleTimeoutMillis: 30000,
     },
     migrationDir: resolvePath.migrations,
   }),
-  plugins: [...plugins],
-  storage: [
-    // R2 uses the S3-compatible adapter in Node.js (storage-r2 requires Workers bindings).
-    s3Storage({
-      collections: {
-        media: {
-          disablePayloadAccessControl: true,
-          prefix: mediaPrefix,
-          generateFileURL: getMediaFileURL,
-        },
-      },
-      bucket: process.env.R2_BUCKET!,
-      config: {
-        endpoint: process.env.R2_ENDPOINT!,
-        region: "auto",
-        credentials: {
-          accessKeyId: process.env.R2_ACCESS_KEY_ID!,
-          secretAccessKey: process.env.R2_SECRET_ACCESS_KEY!,
-        },
-        forcePathStyle: true,
-      },
-    }),
-  ],
-  upload: {
-    transformers: [
-      sharpTransformer({
-        sharp,
-        collections: {
-          media: {
-            variants: [
-              {
-                name: "thumbnail",
-                width: 400,
-                height: 300,
-                position: "centre",
-              },
-              {
-                name: "card",
-                width: 768,
-                height: 1024,
-                position: "centre",
-              },
-              {
-                name: "tablet",
-                width: 1024,
-                position: "centre",
-              },
-            ],
-          },
-        },
-      }),
-    ],
-    limits: {
-      fileSize: 5000000, // 5MB, written in bytes
-    },
-  },
+  defaultDepth: 2,
+  editor: lexicalEditor(),
   email: resendAdapter({
+    apiKey: process.env.RESEND_API_KEY || "",
     defaultFromAddress: process.env.RESEND_FROM_EMAIL || "",
     defaultFromName: "Ecom",
-    apiKey: process.env.RESEND_API_KEY || "",
   }),
+  globals: [Header, Footer],
+  graphQL: {
+    maxComplexity: 1000,
+  },
+  i18n,
   jobs: {
     access: {
       run: ({ req }: { req: PayloadRequest }): boolean => {
         // Allow logged in users to execute this endpoint (default)
-        if (req.user) return true;
+        if (req.user) {
+          return true;
+        }
 
         // If there is no logged in user, then check
         // for the Vercel Cron secret to be present as an
         // Authorization header:
         const secret = process.env.CRON_SECRET;
-        if (!secret) return false;
+        if (!secret) {
+          return false;
+        }
 
         const authHeader = req.headers.get("authorization");
         return authHeader === `Bearer ${secret}`;
       },
     },
     tasks: [],
+  },
+  localization,
+  plugins: [...plugins],
+  secret: process.env.PAYLOAD_SECRET,
+  serverURL,
+  storage: [
+    // R2 uses the S3-compatible adapter in Node.js (storage-r2 requires Workers bindings).
+    s3Storage({
+      bucket: process.env.R2_BUCKET!,
+      collections: {
+        media: {
+          disablePayloadAccessControl: true,
+          generateFileURL: getMediaFileURL,
+          prefix: mediaPrefix,
+        },
+      },
+      config: {
+        credentials: {
+          accessKeyId: process.env.R2_ACCESS_KEY_ID!,
+          secretAccessKey: process.env.R2_SECRET_ACCESS_KEY!,
+        },
+        endpoint: process.env.R2_ENDPOINT!,
+        forcePathStyle: true,
+        region: "auto",
+      },
+    }),
+  ],
+  typescript: {
+    outputFile: path.resolve(dirname, "payload-types.ts"),
+  },
+  upload: {
+    limits: {
+      fileSize: 5_000_000, // 5MB, written in bytes
+    },
+    transformers: [
+      sharpTransformer({
+        collections: {
+          media: {
+            variants: [
+              {
+                height: 300,
+                name: "thumbnail",
+                position: "centre",
+                width: 400,
+              },
+              {
+                height: 1024,
+                name: "card",
+                position: "centre",
+                width: 768,
+              },
+              {
+                name: "tablet",
+                position: "centre",
+                width: 1024,
+              },
+            ],
+          },
+        },
+        sharp,
+      }),
+    ],
   },
 });

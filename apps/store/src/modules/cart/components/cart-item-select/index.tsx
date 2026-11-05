@@ -2,8 +2,8 @@
 
 import { IconBadge, clx } from "@medusajs/ui";
 import ChevronDown from "@modules/common/icons/chevron-down";
+import type { SelectHTMLAttributes } from "react";
 import {
-  SelectHTMLAttributes,
   forwardRef,
   useEffect,
   useImperativeHandle,
@@ -51,14 +51,14 @@ const CartItemSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
           <select
             ref={innerRef}
             {...props}
-            className="appearance-none bg-transparent border-none px-4 transition-colors duration-150 focus:border-gray-700 outline-none w-16 h-16 items-center justify-center"
+            className="h-16 w-16 appearance-none items-center justify-center border-none bg-transparent px-4 transition-colors duration-150 outline-none focus:border-gray-700"
           >
             <option disabled value="">
               {placeholder}
             </option>
             {children}
           </select>
-          <span className="absolute flex pointer-events-none justify-end w-8 group-hover:animate-pulse">
+          <span className="pointer-events-none absolute flex w-8 justify-end group-hover:animate-pulse">
             <ChevronDown />
           </span>
         </IconBadge>

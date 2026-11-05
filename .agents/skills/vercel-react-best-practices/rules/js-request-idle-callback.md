@@ -53,9 +53,7 @@ function handleSearch(query: string) {
 // Ensure analytics fires within 2 seconds even if browser stays busy
 requestIdleCallback(
   () => analytics.track("page_view", { path: location.pathname }),
-  {
-    timeout: 2000,
-  }
+  { timeout: 2000 }
 );
 ```
 

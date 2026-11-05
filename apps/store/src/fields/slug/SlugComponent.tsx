@@ -7,7 +7,7 @@ import {
   useFormFields,
   useForm,
 } from "@payloadcms/ui";
-import { TextFieldClientProps } from "payload";
+import type { TextFieldClientProps } from "payload";
 import React, { useCallback, useEffect } from "react";
 
 import { formatSlug } from "./formatSlug";
@@ -38,23 +38,27 @@ export const SlugComponent: React.FC<SlugComponentProps> = ({
 
   // The value of the checkbox
   // We're using separate useFormFields to minimise re-renders
-  const checkboxValue = useFormFields(([fields]) => {
-    return fields[checkboxFieldPath]?.value as string;
-  });
+  const checkboxValue = useFormFields(
+    ([fields]) => fields[checkboxFieldPath]?.value as string
+  );
 
   // The value of the field we're listening to for the slug
-  const targetFieldValue = useFormFields(([fields]) => {
-    return fields[fieldToUse]?.value as string;
-  });
+  const targetFieldValue = useFormFields(
+    ([fields]) => fields[fieldToUse]?.value as string
+  );
 
   useEffect(() => {
     if (checkboxValue) {
       if (targetFieldValue) {
         const formattedSlug = formatSlug(targetFieldValue);
 
-        if (value !== formattedSlug) setValue(formattedSlug);
+        if (value !== formattedSlug) {
+          setValue(formattedSlug);
+        }
       } else {
-        if (value !== "") setValue("");
+        if (value !== "") {
+          setValue("");
+        }
       }
     }
   }, [targetFieldValue, checkboxValue, setValue, value]);
@@ -64,8 +68,8 @@ export const SlugComponent: React.FC<SlugComponentProps> = ({
       e.preventDefault();
 
       dispatchFields({
-        type: "UPDATE",
         path: checkboxFieldPath,
+        type: "UPDATE",
         value: !checkboxValue,
       });
     },

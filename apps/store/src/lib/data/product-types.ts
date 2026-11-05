@@ -1,7 +1,7 @@
 "use server";
 
 import { sdk } from "@lib/config";
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 
 import { getCacheOptions } from "./cookies";
 
@@ -14,9 +14,9 @@ export const listProductTypes = async () => {
     .fetch<{ product_types: HttpTypes.StoreProductType[] }>(
       "/store/product-types",
       {
-        query: { limit: 100 },
-        next,
         cache: "force-cache",
+        next,
+        query: { limit: 100 },
       }
     )
     .then(({ product_types }) => product_types);

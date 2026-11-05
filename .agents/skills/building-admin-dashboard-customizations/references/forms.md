@@ -35,8 +35,8 @@ Data displayed in a container should not be editable directly. Instead, use an "
 ### Simple Edit Button (top right corner)
 
 ```tsx
-import { Button } from "@medusajs/ui";
 import { PencilSquare } from "@medusajs/icons";
+import { Button } from "@medusajs/ui";
 
 <div className="flex items-center justify-between px-6 py-4">
   <Heading level="h2">Section Title</Heading>
@@ -225,8 +225,9 @@ const MyWidget = ({ data }) => {
 
 ```tsx
 import { FocusModal, Button, Input, Label, Text, toast } from "@medusajs/ui";
-import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+
 import { sdk } from "../lib/client";
 
 const CreateProductWidget = () => {

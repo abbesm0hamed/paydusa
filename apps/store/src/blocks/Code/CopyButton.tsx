@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@ecommerce/design-system/components/button";
+import { Button } from "@paydusa/design-system/components/button";
 import { CopyIcon } from "@payloadcms/ui/icons/Copy";
 import { useState } from "react";
 

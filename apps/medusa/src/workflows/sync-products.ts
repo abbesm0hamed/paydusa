@@ -4,13 +4,14 @@ import {
 } from "@medusajs/framework/workflows-sdk";
 import { useQueryGraphStep } from "@medusajs/medusa/core-flows";
 
-import { syncProductsStep, SyncProductsStepInput } from "./steps/sync-products";
+import type { SyncProductsStepInput } from "./steps/sync-products";
+import { syncProductsStep } from "./steps/sync-products";
 
-type SyncProductsWorkflowInput = {
+interface SyncProductsWorkflowInput {
   filters?: Record<string, unknown>;
   limit?: number;
   offset?: number;
-};
+}
 
 export const syncProductsWorkflow = createWorkflow(
   "sync-products",
@@ -27,13 +28,13 @@ export const syncProductsWorkflow = createWorkflow(
         "categories.*",
         "tags.*",
       ],
-      pagination: {
-        take: limit,
-        skip: offset,
-      },
       filters: {
         status: "published",
         ...filters,
+      },
+      pagination: {
+        skip: offset,
+        take: limit,
       },
     });
 
@@ -42,8 +43,8 @@ export const syncProductsWorkflow = createWorkflow(
     } as SyncProductsStepInput);
 
     return new WorkflowResponse({
-      products: data,
       metadata,
+      products: data,
     });
   }
 );

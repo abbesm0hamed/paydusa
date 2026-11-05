@@ -1,6 +1,6 @@
 "use client";
 
-import type { Button } from "@ecommerce/design-system/components/button";
+import { Button } from "@paydusa/design-system/components/button";
 import type { Media } from "@payload-types";
 import type { DefaultTypedEditorState } from "@payloadcms/richtext-lexical";
 import Image from "next/image";
@@ -9,7 +9,7 @@ import React from "react";
 
 import RichText from "@/components/RichText";
 
-export type MediaContentBlockType = {
+export interface MediaContentBlockType {
   blockName?: string | null;
   blockType: "mediaContent";
   alignment?: "contentMedia" | "mediaContent";
@@ -33,6 +33,28 @@ export type MediaContentBlockType = {
       }[]
     | null;
   id?: string | null;
+}
+
+const getLinkUrl = (linkData: MediaContentBlockType["link"]): string | null => {
+  if (!linkData) {
+    return null;
+  }
+
+  if (linkData.type === "custom" && linkData.url) {
+    return linkData.url;
+  }
+
+  if (linkData.type === "reference" && linkData.reference) {
+    const { relationTo, value } = linkData.reference;
+
+    if (typeof value === "object" && value !== null && "slug" in value) {
+      return `/${relationTo}/${value.slug}`;
+    }
+
+    return `/${relationTo}/${value}`;
+  }
+
+  return null;
 };
 
 export const MediaContent: React.FC<MediaContentBlockType> = (props) => {
@@ -45,29 +67,9 @@ export const MediaContent: React.FC<MediaContentBlockType> = (props) => {
     imgs,
   } = props;
 
-  const getLinkUrl = (linkData: any): string | null => {
-    if (!linkData) return null;
-
-    if (linkData.type === "custom" && linkData.url) {
-      return linkData.url;
-    }
-
-    if (linkData.type === "reference" && linkData.reference) {
-      const { relationTo, value } = linkData.reference;
-
-      if (typeof value === "object" && value !== null && "slug" in value) {
-        return `/${relationTo}/${value.slug}`;
-      }
-
-      return `/${relationTo}/${value}`;
-    }
-
-    return null;
-  };
-
   const linkUrl = hasLink && link ? getLinkUrl(link) : null;
   const linkProps = link?.newTab
-    ? { target: "_blank", rel: "noopener noreferrer" }
+    ? { rel: "noopener noreferrer", target: "_blank" }
     : {};
 
   // Determine if we have valid images to show
@@ -88,7 +90,7 @@ export const MediaContent: React.FC<MediaContentBlockType> = (props) => {
           <div
             className={`${alignment === "mediaContent" ? "md:order-2" : "md:order-1"} p-4 md:p-6`}
           >
-            <div className="max-w-xl mx-auto md:mx-0">
+            <div className="mx-auto max-w-xl md:mx-0">
               {content && (
                 <div className="prose dark:prose-invert">
                   <RichText data={content} enableGutter={false} />
@@ -117,12 +119,14 @@ export const MediaContent: React.FC<MediaContentBlockType> = (props) => {
                   const imageMedia =
                     typeof imageItem.img === "object" ? imageItem.img : null;
 
-                  if (!imageMedia || !imageMedia.url) return null;
+                  if (!imageMedia || !imageMedia.url) {
+                    return null;
+                  }
 
                   return (
                     <div
                       key={imageItem.id || index}
-                      className="relative aspect-[4/3] rounded-lg overflow-hidden"
+                      className="relative aspect-[4/3] overflow-hidden rounded-lg"
                     >
                       <Image
                         src={imageMedia.url}

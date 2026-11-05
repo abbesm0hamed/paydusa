@@ -6,13 +6,10 @@ import {
 import type { Block } from "payload";
 
 export const Banner: Block = {
-  slug: "banner",
-  interfaceName: "BannerBlock",
   fields: [
     {
-      name: "style",
-      type: "select",
       defaultValue: "info",
+      name: "style",
       options: [
         { label: "Info", value: "info" },
         { label: "Warning", value: "warning" },
@@ -20,21 +17,22 @@ export const Banner: Block = {
         { label: "Success", value: "success" },
       ],
       required: true,
+      type: "select",
     },
     {
-      name: "content",
-      type: "richText",
       editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-          ];
-        },
+        features: ({ rootFeatures }) => [
+          ...rootFeatures,
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+        ],
       }),
       label: false,
+      name: "content",
       required: true,
+      type: "richText",
     },
   ],
+  interfaceName: "BannerBlock",
+  slug: "banner",
 };

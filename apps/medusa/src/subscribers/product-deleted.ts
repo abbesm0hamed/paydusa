@@ -1,6 +1,5 @@
-import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework";
+import type { SubscriberArgs, SubscriberConfig } from "@medusajs/framework";
 
-import { deletePayloadProductsWorkflow } from "../workflows/delete-payload-products";
 import { deleteProductsFromAlgoliaWorkflow } from "../workflows/delete-products-from-algolia";
 
 export default async function productDeletedHandler({
@@ -11,12 +10,6 @@ export default async function productDeletedHandler({
 
   try {
     logger.info(`Deleting product ${event.data.id} from Algolia...`);
-
-    await deletePayloadProductsWorkflow(container).run({
-      input: {
-        product_ids: [event.data.id],
-      },
-    });
 
     await deleteProductsFromAlgoliaWorkflow(container).run({
       input: {

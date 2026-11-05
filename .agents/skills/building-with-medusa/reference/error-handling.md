@@ -76,12 +76,12 @@ throw new MedusaError(
 
 ### CONFLICT
 
-Use when the operation conflicts with existing data:
+Use when the operation conflicts with an ongoing transaction or a lock that another process holds. The error message is replaced by a default message and is not returned to the client. If the client needs details about the conflict, use `NOT_ALLOWED` instead (returns 400):
 
 ```typescript
 throw new MedusaError(
   MedusaError.Types.CONFLICT,
-  "A product with this handle already exists"
+  "Operation conflicts with an ongoing transaction"
 );
 ```
 
@@ -235,7 +235,7 @@ Let validation middleware handle input validation errors:
 // ✅ GOOD: Middleware handles validation
 // middlewares.ts
 const MySchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.email("Invalid email address"),
   age: z.number().min(18, "Must be at least 18 years old"),
 });
 

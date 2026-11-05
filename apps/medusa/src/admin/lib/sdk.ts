@@ -8,9 +8,9 @@ const getEnvVar = (key: string, defaultValue: string = "") => {
 };
 
 export const sdk = new Medusa({
-  baseUrl: getEnvVar("BACKEND_URL", "/"),
-  debug: getEnvVar("NODE_ENV") === "development",
   auth: {
     type: "session",
   },
+  baseUrl: getEnvVar("BACKEND_URL", "/"),
+  debug: getEnvVar("NODE_ENV") === "development",
 });

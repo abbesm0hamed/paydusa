@@ -2,8 +2,8 @@
 
 import { sdk } from "@lib/config";
 import { filterProductsByPrice, sortProducts } from "@lib/util/sort-products";
-import { HttpTypes } from "@medusajs/types";
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products";
+import type { HttpTypes } from "@medusajs/types";
+import type { SortOptions } from "@modules/store/components/refinement-list/sort-products";
 
 import { getAuthHeaders } from "./cookies";
 import { getRegion, retrieveRegion } from "./regions";
@@ -41,8 +41,8 @@ export const listProducts = async ({
 
   if (!region) {
     return {
-      response: { products: [], count: 0 },
       nextPage: null,
+      response: { count: 0, products: [] },
     };
   }
 
@@ -51,39 +51,28 @@ export const listProducts = async ({
   };
 
   try {
-    return await sdk.client
-      .fetch<{ products: HttpTypes.StoreProduct[]; count: number }>(
-        `/store/products`,
-        {
-          method: "GET",
-          query: {
-            limit,
-            offset,
-            region_id: region?.id,
-            fields:
-              "*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags,*payload_product",
-            ...queryParams,
-          },
-          headers,
-        }
-      )
-      .then(({ products, count }) => {
-        const nextPage = count > offset + limit ? pageParam + 1 : null;
+    const { products, count } = await sdk.store.product.list(
+      {
+        fields:
+          "*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags",
+        limit,
+        offset,
+        region_id: region.id,
+        ...queryParams,
+      },
+      headers
+    );
 
-        return {
-          response: {
-            products,
-            count,
-          },
-          nextPage: nextPage,
-          queryParams,
-        };
-      });
+    return {
+      nextPage: count > offset + limit ? pageParam + 1 : null,
+      queryParams,
+      response: { count, products },
+    };
   } catch {
     return {
-      response: { products: [], count: 0 },
       nextPage: null,
       queryParams,
+      response: { count: 0, products: [] },
     };
   }
 };
@@ -112,12 +101,12 @@ export const listProductsWithSort = async ({
   const {
     response: { products },
   } = await listProducts({
+    countryCode,
     pageParam: 0,
     queryParams: {
       ...queryParams,
       limit: 100,
     },
-    countryCode,
   });
 
   const priceFiltered = filterProductsByPrice(products, priceFrom, priceTo);
@@ -132,11 +121,11 @@ export const listProductsWithSort = async ({
   const paginatedProducts = sortedProducts.slice(pageParam, pageParam + limit);
 
   return {
-    response: {
-      products: paginatedProducts,
-      count: priceFiltered.length,
-    },
     nextPage,
     queryParams,
+    response: {
+      count: priceFiltered.length,
+      products: paginatedProducts,
+    },
   };
 };

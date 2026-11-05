@@ -2,17 +2,17 @@
 
 import { X } from "lucide-react";
 
-type ActiveFilter = {
+interface ActiveFilter {
   key: string;
   value: string;
   label: string;
-};
+}
 
-type ActiveFiltersProps = {
+interface ActiveFiltersProps {
   filters: ActiveFilter[];
   onRemove: (key: string, value?: string) => void;
   onClear: () => void;
-};
+}
 
 const ActiveFilters = ({ filters, onRemove, onClear }: ActiveFiltersProps) => {
   if (filters.length === 0) {
@@ -20,13 +20,13 @@ const ActiveFilters = ({ filters, onRemove, onClear }: ActiveFiltersProps) => {
   }
 
   return (
-    <div className="flex items-center flex-wrap gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       {filters.map((filter) => (
         <button
           key={`${filter.key}-${filter.value}`}
           type="button"
           onClick={() => onRemove(filter.key, filter.value)}
-          className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-secondary text-secondary-foreground rounded-full text-xs font-medium hover:bg-secondary/80 transition-colors"
+          className="bg-secondary text-secondary-foreground hover:bg-secondary/80 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-colors"
         >
           {filter.label}
           <X className="size-3" />

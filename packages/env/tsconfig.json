@@ -1,5 +1,5 @@
 {
-  "extends": "@ecommerce/config/tsconfig.base.json",
+  "extends": "@paydusa/config/tsconfig.base.json",
   "compilerOptions": {
     "strictNullChecks": true
   }

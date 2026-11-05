@@ -1,5 +1,5 @@
-const SkeletonButton = () => {
-  return <div className="w-full min-h-[50px] px-5 py-[10px] bg-gray-100"></div>;
-};
+const SkeletonButton = () => (
+  <div className="min-h-[50px] w-full bg-gray-100 px-5 py-[10px]"></div>
+);
 
 export default SkeletonButton;

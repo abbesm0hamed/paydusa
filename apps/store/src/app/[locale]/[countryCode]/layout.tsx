@@ -16,12 +16,12 @@ import { InitTheme } from "@/providers/Theme/InitTheme";
 import { getServerSideURL } from "@/utilities/getURL";
 import { mergeOpenGraph } from "@/utilities/mergeOpenGraph";
 
-type Args = {
+interface Args {
   children: React.ReactNode;
   params: Promise<{
     locale: TypedLocale;
   }>;
-};
+}
 
 // export const metadata: Metadata = {
 //   metadataBase: new URL(getBaseURL()),
@@ -72,11 +72,11 @@ export default async function RootLayout({ children, params }: Args) {
   );
 }
 
-type HomeProps = {
+interface HomeProps {
   params: Promise<{
     locale: string;
   }>;
-};
+}
 
 export const generateMetadata = async ({
   params,
@@ -87,10 +87,10 @@ export const generateMetadata = async ({
   const rootMeta = createMetadata({
     metadataBase: new URL(getServerSideURL()),
     openGraph: mergeOpenGraph({
-      title: "ecommerce home page",
       description: "ecommerce landing page",
-      url: new URL(getServerSideURL()),
       images: [],
+      title: "ecommerce home page",
+      url: new URL(getServerSideURL()),
     }),
     other: {
       "facebook-domain-verification": process.env.FACEBOOK_DOMAIN_VERIFICATION!,
@@ -105,7 +105,7 @@ export function generateStaticParams() {
   const defaultRegion = process.env.NEXT_PUBLIC_DEFAULT_REGION || "tn";
 
   return routing.locales.map((locale) => ({
-    locale,
     countryCode: defaultRegion,
+    locale,
   }));
 }

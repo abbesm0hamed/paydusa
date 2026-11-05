@@ -3,7 +3,7 @@ import PlaceholderImage from "@modules/common/icons/placeholder-image";
 import Image from "next/image";
 import React from "react";
 
-type ThumbnailProps = {
+interface ThumbnailProps {
   thumbnail?: string | null;
   // TODO: Fix image typings
   images?: any[] | null;
@@ -11,7 +11,7 @@ type ThumbnailProps = {
   isFeatured?: boolean;
   className?: string;
   "data-testid"?: string;
-};
+}
 
 const Thumbnail: React.FC<ThumbnailProps> = ({
   thumbnail,
@@ -29,9 +29,9 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
         "relative w-full overflow-hidden p-4 bg-ui-bg-subtle shadow-elevation-card-rest rounded-large group-hover:shadow-elevation-card-hover transition-shadow ease-in-out duration-150",
         className,
         {
+          "aspect-[1/1]": size === "square",
           "aspect-[11/14]": isFeatured,
           "aspect-[9/16]": !isFeatured && size !== "square",
-          "aspect-[1/1]": size === "square",
           "w-[180px]": size === "small",
           "w-[290px]": size === "medium",
           "w-[440px]": size === "large",
@@ -53,8 +53,8 @@ const ImageOrPlaceholder = ({
   image,
   size,
   isFeatured,
-}: Pick<ThumbnailProps, "size"> & { image?: string; isFeatured?: boolean }) => {
-  return image ? (
+}: Pick<ThumbnailProps, "size"> & { image?: string; isFeatured?: boolean }) =>
+  image ? (
     <Image
       src={image}
       alt="Thumbnail"
@@ -67,10 +67,9 @@ const ImageOrPlaceholder = ({
       priority={isFeatured}
     />
   ) : (
-    <div className="w-full h-full absolute inset-0 flex items-center justify-center">
+    <div className="absolute inset-0 flex h-full w-full items-center justify-center">
       <PlaceholderImage size={size === "small" ? 16 : 24} />
     </div>
   );
-};
 
 export default Thumbnail;

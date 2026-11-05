@@ -1,12 +1,12 @@
 import { isEmpty } from "./isEmpty";
 
-type ConvertToLocaleParams = {
+interface ConvertToLocaleParams {
   amount: number;
   currency_code: string;
   minimumFractionDigits?: number;
   maximumFractionDigits?: number;
   locale?: string;
-};
+}
 
 export const convertToLocale = ({
   amount,
@@ -14,13 +14,12 @@ export const convertToLocale = ({
   minimumFractionDigits,
   maximumFractionDigits,
   locale = "en-US",
-}: ConvertToLocaleParams) => {
-  return currency_code && !isEmpty(currency_code)
+}: ConvertToLocaleParams) =>
+  currency_code && !isEmpty(currency_code)
     ? new Intl.NumberFormat(locale, {
-        style: "currency",
         currency: currency_code,
-        minimumFractionDigits,
         maximumFractionDigits,
+        minimumFractionDigits,
+        style: "currency",
       }).format(amount)
     : amount.toString();
-};

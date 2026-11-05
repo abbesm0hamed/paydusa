@@ -10,11 +10,11 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: "Store",
   description: "Explore all of our products.",
+  title: "Store",
 };
 
-type Params = {
+interface Params {
   searchParams: Promise<{
     sortBy?: SortOptions;
     page?: string;
@@ -27,10 +27,12 @@ type Params = {
   params: Promise<{
     countryCode: string;
   }>;
-};
+}
 
 function toArray(value: string | string[] | undefined): string[] {
-  if (!value) return [];
+  if (!value) {
+    return [];
+  }
   return Array.isArray(value) ? value : [value];
 }
 
@@ -84,20 +86,20 @@ async function StoreContent({
       page={page}
       countryCode={countryCode}
       categories={categories.map((c) => ({
-        value: c.id,
         label: c.name,
+        value: c.id,
       }))}
       collections={collections.map((c) => ({
-        value: c.id,
         label: c.title,
+        value: c.id,
       }))}
       types={types.map((t) => ({
-        value: t.id,
         label: t.value,
+        value: t.id,
       }))}
       tags={tags.map((t) => ({
-        value: t.id,
         label: t.value,
+        value: t.id,
       }))}
       optionValues={optionValues.option_values}
       typeId={typeId}

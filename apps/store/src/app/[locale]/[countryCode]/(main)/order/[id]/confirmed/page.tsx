@@ -1,14 +1,14 @@
 import { retrieveOrder } from "@lib/data/orders";
 import OrderCompletedTemplate from "@modules/order/templates/order-completed-template";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-type Props = {
+interface Props {
   params: Promise<{ id: string }>;
-};
+}
 export const metadata: Metadata = {
-  title: "Order Confirmed",
   description: "You purchase was successful",
+  title: "Order Confirmed",
 };
 
 export default async function OrderConfirmedPage(props: Props) {

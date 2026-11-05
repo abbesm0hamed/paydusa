@@ -75,10 +75,10 @@ export default defineMiddlewares({
 ```typescript
 // api/store/[feature]/middlewares.ts
 import { MiddlewareRoute, validateAndTransformBody } from "@medusajs/framework";
-import { z } from "zod";
+import { z } from "@medusajs/framework/zod";
 
 export const CreateMySchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   name: z.string().min(2),
   // other fields
 });
@@ -100,6 +100,7 @@ export const myMiddlewares: MiddlewareRoute[] = [
 ```typescript
 // api/middlewares.ts
 import { defineMiddlewares } from "@medusajs/framework/http";
+
 import { myMiddlewares } from "./store/[feature]/middlewares";
 
 export default defineMiddlewares({
@@ -161,6 +162,7 @@ export default defineMiddlewares({
 ```typescript
 // api/store/my-route/route.ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http";
+
 import { CreateMySchema } from "./middlewares";
 
 // ✅ CORRECT: Pass the Zod schema type as type argument
@@ -192,7 +194,7 @@ Create a Zod schema for the query parameters. Since query parameters are origina
 
 ```typescript
 // api/custom/validators.ts
-import { z } from "zod";
+import { z } from "@medusajs/framework/zod";
 
 export const GetMyRouteSchema = z.object({
   cart_id: z.string(), // String parameters don't need preprocessing
@@ -214,6 +216,7 @@ import {
   validateAndTransformQuery,
   defineMiddlewares,
 } from "@medusajs/framework/http";
+
 import { GetMyRouteSchema } from "./custom/validators";
 
 export default defineMiddlewares({
@@ -393,16 +396,18 @@ You can combine custom query parameters with query config:
 
 ```typescript
 // validators.ts
-import { z } from "zod";
+import { z } from "@medusajs/framework/zod";
 import { createFindParams } from "@medusajs/medusa/api/utils/validators";
 
-export const GetProductsSchema = createFindParams().merge(
-  z.object({
+export const GetProductsSchema = z
+  .object({
     category_id: z.string().optional(),
     in_stock: z.preprocess((val) => val === "true", z.boolean().optional()),
   })
-);
+  .extend(createFindParams().shape);
 ```
+
+**⚠️ Zod v4:** Medusa uses Zod v4 (since v2.14.0), where `.merge()` is removed. Combine schemas with `.extend(otherSchema.shape)`, and always import Zod from `@medusajs/framework/zod` — not from `zod` directly.
 
 ```typescript
 // route.ts
@@ -433,6 +438,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 ```typescript
 // api/store/reviews/route.ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http";
+
 import { createReviewWorkflow } from "../../../workflows/create-review";
 import { CreateReviewSchema } from "./middlewares";
 
@@ -551,8 +557,11 @@ throw new MedusaError(
   "Authentication required"
 );
 
-// Conflict
-throw new MedusaError(MedusaError.Types.CONFLICT, "Resource already exists");
+// Conflict (message is replaced by a default; use NOT_ALLOWED if the client needs details)
+throw new MedusaError(
+  MedusaError.Types.CONFLICT,
+  "Operation conflicts with an ongoing transaction"
+);
 
 // Other types: INVALID_STATE, NOT_ALLOWED, DUPLICATE_ERROR
 ```
@@ -804,12 +813,12 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
 ```typescript
 // validators.ts
-export const GetMyEntitiesSchema = createFindParams().merge(
-  z.object({
+export const GetMyEntitiesSchema = z
+  .object({
     q: z.string().optional(), // Search query
     status: z.enum(["active", "pending", "completed"]).optional(),
   })
-);
+  .extend(createFindParams().shape);
 
 // middlewares.ts
 export default defineMiddlewares({

@@ -2,12 +2,12 @@ import { listOrders } from "@lib/data/orders";
 import OrderOverview from "@modules/account/components/order-overview";
 import TransferRequestForm from "@modules/account/components/transfer-request-form";
 import Divider from "@modules/common/components/divider";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Orders",
   description: "Overview of your previous orders.",
+  title: "Orders",
 };
 
 export default async function Orders() {

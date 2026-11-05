@@ -67,7 +67,7 @@ const Payment = ({
   );
 
   const handleEdit = () => {
-    router.push(pathname + "?" + createQueryString("step", "payment"), {
+    router.push(`${pathname}?${createQueryString("step", "payment")}`, {
       scroll: false,
     });
   };
@@ -89,14 +89,14 @@ const Payment = ({
 
       if (!shouldInputCard) {
         return router.push(
-          pathname + "?" + createQueryString("step", "review"),
+          `${pathname}?${createQueryString("step", "review")}`,
           {
             scroll: false,
           }
         );
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (error_: any) {
+      setError(error_.message);
     } finally {
       setIsLoading(false);
     }
@@ -108,7 +108,7 @@ const Payment = ({
 
   return (
     <div className="bg-white">
-      <div className="flex flex-row items-center justify-between mb-6">
+      <div className="mb-6 flex flex-row items-center justify-between">
         <Heading
           level="h2"
           className={clx(
@@ -167,7 +167,7 @@ const Payment = ({
           )}
 
           {paidByGiftcard && (
-            <div className="flex flex-col w-1/3">
+            <div className="flex w-1/3 flex-col">
               <Text className="txt-medium-plus text-ui-fg-base mb-1">
                 Payment method
               </Text>
@@ -204,8 +204,8 @@ const Payment = ({
 
         <div className={isOpen ? "hidden" : "block"}>
           {cart && paymentReady && activeSession ? (
-            <div className="flex items-start gap-x-1 w-full">
-              <div className="flex flex-col w-1/3">
+            <div className="flex w-full items-start gap-x-1">
+              <div className="flex w-1/3 flex-col">
                 <Text className="txt-medium-plus text-ui-fg-base mb-1">
                   Payment method
                 </Text>
@@ -217,15 +217,15 @@ const Payment = ({
                     activeSession?.provider_id}
                 </Text>
               </div>
-              <div className="flex flex-col w-1/3">
+              <div className="flex w-1/3 flex-col">
                 <Text className="txt-medium-plus text-ui-fg-base mb-1">
                   Payment details
                 </Text>
                 <div
-                  className="flex gap-2 txt-medium text-ui-fg-subtle items-center"
+                  className="txt-medium text-ui-fg-subtle flex items-center gap-2"
                   data-testid="payment-details-summary"
                 >
-                  <Container className="flex items-center h-7 w-fit p-2 bg-ui-button-neutral-hover">
+                  <Container className="bg-ui-button-neutral-hover flex h-7 w-fit items-center p-2">
                     {paymentInfoMap[selectedPaymentMethod]?.icon || (
                       <CreditCard />
                     )}
@@ -239,7 +239,7 @@ const Payment = ({
               </div>
             </div>
           ) : paidByGiftcard ? (
-            <div className="flex flex-col w-1/3">
+            <div className="flex w-1/3 flex-col">
               <Text className="txt-medium-plus text-ui-fg-base mb-1">
                 Payment method
               </Text>

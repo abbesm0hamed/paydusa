@@ -3,25 +3,24 @@ import { nestedDocsPlugin } from "@payloadcms/plugin-nested-docs";
 import { redirectsPlugin } from "@payloadcms/plugin-redirects";
 import { searchPlugin } from "@payloadcms/plugin-search";
 import { seoPlugin } from "@payloadcms/plugin-seo";
-import { GenerateTitle, GenerateURL } from "@payloadcms/plugin-seo/types";
+import type { GenerateTitle, GenerateURL } from "@payloadcms/plugin-seo/types";
 import {
   FixedToolbarFeature,
   HeadingFeature,
   lexicalEditor,
 } from "@payloadcms/richtext-lexical";
-import { Plugin } from "payload";
+import type { Plugin } from "payload";
 
 import { revalidateRedirects } from "@/hooks/revalidateRedirects";
-import { Page, Post } from "@/payload-types";
+import type { Page, Post } from "@/payload-types";
 import { beforeSyncWithSearch } from "@/search/beforeSync";
 import { searchFields } from "@/search/fieldOverrides";
 import { getServerSideURL } from "@/utilities/getURL";
 
-const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title
+const generateTitle: GenerateTitle<Post | Page> = ({ doc }) =>
+  doc?.title
     ? `${doc.title} | Ecommerce for poweful digital solutions`
     : "Ecommerce for poweful digital solutions";
-};
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
   const url = getServerSideURL();
@@ -36,8 +35,8 @@ export const plugins: Plugin[] = [
       versions: false,
       authorship: false,
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
-      fields: ({ defaultFields }) => {
-        return defaultFields.map((field) => {
+      fields: ({ defaultFields }) =>
+        defaultFields.map((field) => {
           if ("name" in field && field.name === "from") {
             return {
               ...field,
@@ -48,8 +47,7 @@ export const plugins: Plugin[] = [
             };
           }
           return field;
-        });
-      },
+        }),
       hooks: {
         afterChange: [revalidateRedirects],
       },
@@ -68,44 +66,39 @@ export const plugins: Plugin[] = [
       payment: false,
     },
     formOverrides: {
-      versions: false,
       authorship: false,
-      fields: ({ defaultFields }) => {
-        return defaultFields.map((field) => {
+      fields: ({ defaultFields }) =>
+        defaultFields.map((field) => {
           if ("name" in field && field.name === "confirmationMessage") {
             return {
               ...field,
               editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
-                  return [
-                    ...rootFeatures,
-                    FixedToolbarFeature(),
-                    HeadingFeature({
-                      enabledHeadingSizes: ["h1", "h2", "h3", "h4"],
-                    }),
-                  ];
-                },
+                features: ({ rootFeatures }) => [
+                  ...rootFeatures,
+                  FixedToolbarFeature(),
+                  HeadingFeature({
+                    enabledHeadingSizes: ["h1", "h2", "h3", "h4"],
+                  }),
+                ],
               }),
             };
           }
           return field;
-        });
-      },
+        }),
+      versions: false,
     },
     formSubmissionOverrides: {
-      versions: false,
       authorship: false,
+      versions: false,
     },
   }),
   searchPlugin({
-    collections: ["posts"],
     beforeSync: beforeSyncWithSearch,
+    collections: ["posts"],
     searchOverrides: {
-      versions: false,
       authorship: false,
-      fields: ({ defaultFields }) => {
-        return [...defaultFields, ...searchFields];
-      },
+      fields: ({ defaultFields }) => [...defaultFields, ...searchFields],
+      versions: false,
     },
   }),
 ];

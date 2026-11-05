@@ -1,18 +1,18 @@
 "use client";
 
-import { Input } from "@ecommerce/design-system/components/input";
-import { cn } from "@ecommerce/design-system/lib/utils";
 import { useDebounce } from "@lib/hooks/use-debounce";
+import { Input } from "@paydusa/design-system/components/input";
+import { cn } from "@paydusa/design-system/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const DEBOUNCE_MS = 400;
 
-type FilterPriceRangeProps = {
+interface FilterPriceRangeProps {
   priceFrom?: string;
   priceTo?: string;
   onChange: (key: string, value: string | null) => void;
-};
+}
 
 const FilterPriceRange = ({
   priceFrom: initialFrom,
@@ -47,7 +47,7 @@ const FilterPriceRange = ({
 
   const handleFromChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
+      const { value } = e.target;
       if (value === "" || /^\d+$/.test(value)) {
         setFrom(value);
       }
@@ -57,7 +57,7 @@ const FilterPriceRange = ({
 
   const handleToChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
+      const { value } = e.target;
       if (value === "" || /^\d+$/.test(value)) {
         setTo(value);
       }
@@ -76,14 +76,14 @@ const FilterPriceRange = ({
     <div className="flex flex-col gap-y-3">
       <button
         type="button"
-        className="flex items-center justify-between w-full text-left group"
+        className="group flex w-full items-center justify-between text-left"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
       >
         <span className="text-sm font-medium">Price range</span>
         <ChevronDown
           className={cn(
-            "size-4 transition-transform duration-200 text-muted-foreground",
+            "text-muted-foreground size-4 transition-transform duration-200",
             isOpen && "rotate-180"
           )}
         />
@@ -97,7 +97,7 @@ const FilterPriceRange = ({
         <div>
           <div className="flex items-center gap-x-2">
             <div className="relative flex-1">
-              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
+              <span className="text-muted-foreground absolute top-1/2 left-2.5 -translate-y-1/2 text-sm">
                 $
               </span>
               <Input
@@ -107,13 +107,13 @@ const FilterPriceRange = ({
                 placeholder="Min"
                 value={from}
                 onChange={handleFromChange}
-                className="pl-6 h-9 text-sm"
+                className="h-9 pl-6 text-sm"
                 aria-label="Minimum price"
               />
             </div>
             <span className="text-muted-foreground text-sm">—</span>
             <div className="relative flex-1">
-              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
+              <span className="text-muted-foreground absolute top-1/2 left-2.5 -translate-y-1/2 text-sm">
                 $
               </span>
               <Input
@@ -123,7 +123,7 @@ const FilterPriceRange = ({
                 placeholder="Max"
                 value={to}
                 onChange={handleToChange}
-                className="pl-6 h-9 text-sm"
+                className="h-9 pl-6 text-sm"
                 aria-label="Maximum price"
               />
             </div>
@@ -132,7 +132,7 @@ const FilterPriceRange = ({
             <button
               type="button"
               onClick={handleClear}
-              className="mt-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="text-muted-foreground hover:text-foreground mt-2 text-xs transition-colors"
             >
               Clear price
             </button>

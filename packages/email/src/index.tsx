@@ -1,5 +1,5 @@
 import { render } from "react-email";
-import { Resend } from "resend";
+import type { Resend } from "resend";
 
 import { OrderPlacedEmail } from "./templates/order-placed-email";
 import { PasswordResetEmail } from "./templates/password-reset-email";
@@ -63,8 +63,8 @@ export async function sendEmail(
 
   return resendClient.emails.send({
     from: options.from,
-    to: [options.to],
-    subject,
     html,
+    subject,
+    to: [options.to],
   });
 }

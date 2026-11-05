@@ -122,7 +122,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply font-sans bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
   html {
     @apply font-sans;
@@ -132,11 +132,11 @@
 /* /* Components layer */
 @layer components {
   .content-container {
-    @apply w-full mx-auto px-4 lg:px-6;
+    @apply mx-auto w-full px-4 lg:px-6;
   }
 
   .contrast-btn {
-    @apply px-4 py-2 border border-black rounded-full hover:bg-black hover:text-white transition-colors duration-200 ease-in;
+    @apply rounded-full border border-black px-4 py-2 transition-colors duration-200 ease-in hover:bg-black hover:text-white;
   }
 
   .text-xsmall-regular {
@@ -226,7 +226,7 @@
     background-size: 8px 8px;
   }
   .tiptap p.is-editor-empty:first-child::before {
-    @apply text-muted-foreground float-left h-0 pointer-events-none;
+    @apply text-muted-foreground pointer-events-none float-left h-0;
     content: attr(data-placeholder);
   }
 }

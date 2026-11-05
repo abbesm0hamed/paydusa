@@ -1,5 +1,5 @@
 import { defineWidgetConfig } from "@medusajs/admin-sdk";
-import { AdminOrder, DetailWidgetProps } from "@medusajs/framework/types";
+import type { AdminOrder, DetailWidgetProps } from "@medusajs/framework/types";
 import { Button, Container, Heading, Text, toast } from "@medusajs/ui";
 import { useState } from "react";
 
@@ -15,10 +15,10 @@ const OrderInvoiceWidget = ({ data: order }: DetailWidgetProps<AdminOrder>) => {
       const response: Response = await sdk.client.fetch(
         `/admin/orders/${order.id}/invoices`,
         {
-          method: "GET",
           headers: {
             accept: "application/pdf",
           },
+          method: "GET",
         }
       );
 
@@ -27,7 +27,7 @@ const OrderInvoiceWidget = ({ data: order }: DetailWidgetProps<AdminOrder>) => {
       const a = document.createElement("a");
       a.href = url;
       a.download = `invoice-${order.id}.pdf`;
-      document.body.appendChild(a);
+      document.body.append(a);
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);

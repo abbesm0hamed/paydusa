@@ -1,5 +1,4 @@
-import { EmailTemplate, emailSubjects, renderTemplate } from "@ecommerce/email";
-import {
+import type {
   ProviderSendNotificationDTO,
   ProviderSendNotificationResultsDTO,
   Logger,
@@ -8,9 +7,11 @@ import {
   AbstractNotificationProviderService,
   MedusaError,
 } from "@medusajs/framework/utils";
+import type { EmailTemplate } from "@paydusa/email";
+import { emailSubjects, renderTemplate } from "@paydusa/email";
 import { Resend } from "resend";
 
-type ResendOptions = {
+interface ResendOptions {
   api_key: string;
   from: string;
   html_templates?: Record<
@@ -20,11 +21,11 @@ type ResendOptions = {
       content: string;
     }
   >;
-};
+}
 
-type InjectedDependencies = {
+interface InjectedDependencies {
   logger: Logger;
-};
+}
 
 class ResendNotificationProviderService extends AbstractNotificationProviderService {
   static identifier = "notification-resend";
@@ -78,8 +79,8 @@ class ResendNotificationProviderService extends AbstractNotificationProviderServ
 
     const commonOptions = {
       from: this.options.from,
-      to: [notification.to],
       subject: this.getTemplateSubject(template),
+      to: [notification.to],
     };
 
     let html: string;
