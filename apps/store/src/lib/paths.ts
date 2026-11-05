@@ -1,8 +1,8 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const { filename } = import.meta;
-const { dirname } = import.meta;
+// oxlint-disable-next-line unicorn/prefer-import-meta-properties -- Next.js does not provide import.meta.dirname at runtime.
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * Resolve paths consistently with TypeScript path mapping

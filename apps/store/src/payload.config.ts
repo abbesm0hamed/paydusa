@@ -43,8 +43,8 @@ import { plugins } from "@/plugins";
 import { getServerSideURL } from "./utilities/getURL";
 import { getMediaFileURL } from "./utilities/mediaURLs";
 
-const { filename } = import.meta;
-const { dirname } = import.meta;
+// oxlint-disable-next-line unicorn/prefer-import-meta-properties -- Next.js does not provide import.meta.dirname at runtime.
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const serverURL = getServerSideURL();
 const mediaPrefix = "cms/media";
