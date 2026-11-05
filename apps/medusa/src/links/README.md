@@ -7,9 +7,10 @@ A module link forms an association between two data models of different modules,
 For example:
 
 ```ts
-import BlogModule from "../modules/blog";
-import ProductModule from "@medusajs/medusa/product";
 import { defineLink } from "@medusajs/framework/utils";
+import ProductModule from "@medusajs/medusa/product";
+
+import BlogModule from "../modules/blog";
 
 export default defineLink(
   ProductModule.linkable.product,

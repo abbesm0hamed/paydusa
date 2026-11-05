@@ -1,11 +1,11 @@
-import { OrderDTO } from "@medusajs/framework/types";
+import type { OrderDTO } from "@medusajs/framework/types";
 import { Modules } from "@medusajs/framework/utils";
 import { createWorkflow, createStep } from "@medusajs/framework/workflows-sdk";
 import { useQueryGraphStep } from "@medusajs/medusa/core-flows";
 
-type StepInput = {
+interface StepInput {
   order: OrderDTO;
-};
+}
 
 const trackOrderPlacedStep = createStep(
   "track-order-placed-step",
@@ -13,25 +13,25 @@ const trackOrderPlacedStep = createStep(
     const analyticsModuleService = container.resolve(Modules.ANALYTICS);
 
     await analyticsModuleService.track({
-      event: "order_placed",
       actor_id: order.customer_id,
+      event: "order_placed",
       properties: {
-        order_id: order.id,
-        total: order.total,
+        customer_id: order.customer_id,
         items: order.items?.map((item) => ({
-          variant_id: item.variant_id,
           product_id: item.product_id,
           quantity: item.quantity,
+          variant_id: item.variant_id,
         })),
-        customer_id: order.customer_id,
+        order_id: order.id,
+        total: order.total,
       },
     });
   }
 );
 
-type WorkflowInput = {
+interface WorkflowInput {
   order_id: string;
-};
+}
 
 export const trackOrderPlacedWorkflow = createWorkflow(
   "track-order-placed-workflow",

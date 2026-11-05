@@ -5,7 +5,9 @@ import type { Media } from "@/payload-types";
 export const getMediaUrl = (
   media: number | Media | null | undefined
 ): string | undefined => {
-  if (!media) return undefined;
+  if (!media) {
+    return undefined;
+  }
 
   // If media is a Media object with url property
   if (typeof media === "object" && "url" in media && media.url) {
@@ -20,13 +22,15 @@ export const getMediaUrl = (
 export const convertToGroupImage = (
   media: number | Media | null | undefined
 ): { url: string; alt?: string } | undefined => {
-  if (!media) return undefined;
+  if (!media) {
+    return undefined;
+  }
 
   // If media is a Media object with url property
   if (typeof media === "object" && "url" in media && media.url) {
     return {
-      url: media.url as string,
       alt: "alt" in media ? (media.alt as string) : undefined,
+      url: media.url as string,
     };
   }
 

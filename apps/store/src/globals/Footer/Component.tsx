@@ -1,4 +1,4 @@
-import type { Footer } from "@payload-types";
+import type { Footer as FooterData } from "@payload-types";
 import NextImage from "next/image";
 import type { TypedLocale } from "payload";
 import React from "react";
@@ -8,22 +8,22 @@ import { ThemeSelector } from "@/providers/Theme/ThemeSelector";
 import { getCachedGlobal } from "@/utilities/getGlobals";
 
 export async function Footer({ locale }: { locale: TypedLocale }) {
-  const footerData: Footer = await getCachedGlobal("footer", 1, locale);
+  const footerData: FooterData = await getCachedGlobal("footer", 1, locale);
   const footerLogo = footerData?.logo;
   const footerColumns = footerData?.columns || [];
 
   return (
-    <footer className="w-full bg-background">
-      <div className="w-full flex flex-col justify-between">
-        <div className="flex flex-col content-container">
+    <footer className="bg-background w-full">
+      <div className="flex w-full flex-col justify-between">
+        <div className="content-container flex flex-col">
           {footerLogo && (
-            <div className="h-20 sm:h-32 md:h-38 lg:h-48 xl:h-56 relative overflow-hidden">
+            <div className="relative h-20 overflow-hidden sm:h-32 md:h-38 lg:h-48 xl:h-56">
               <NextImage
                 src={footerLogo.url}
                 alt={footerLogo.alt || "Footer logo"}
                 width={footerLogo.width || 200}
                 height={footerLogo.height || 30}
-                className="object-contain w-full h-auto max-w-full absolute left-0 top-[25%] sm:top-[30%] md:top-[40%] lg:top-[15%] xl:top-[5%]"
+                className="absolute top-[25%] left-0 h-auto w-full max-w-full object-contain sm:top-[30%] md:top-[40%] lg:top-[15%] xl:top-[5%]"
                 style={{
                   aspectRatio: `${footerLogo.width}/${footerLogo.height}`,
                 }}
@@ -32,28 +32,28 @@ export async function Footer({ locale }: { locale: TypedLocale }) {
           )}
         </div>
 
-        <div className="flex items-center justify-between content-container w-full flex-wrap">
+        <div className="content-container flex w-full flex-wrap items-center justify-between">
           <p className="text-sm text-gray-500">© 2026 Ecommerce</p>
           <div className="flex gap-4">
-            <a href="#" className="text-gray-500 hover:text-primary">
+            <a href="#" className="hover:text-primary text-gray-500">
               instagram
             </a>
-            <a href="#" className="text-gray-500 hover:text-primary">
+            <a href="#" className="hover:text-primary text-gray-500">
               facebook
             </a>
-            <a href="#" className="text-gray-500 hover:text-primary">
+            <a href="#" className="hover:text-primary text-gray-500">
               twitter
             </a>
-            <a href="#" className="text-gray-500 hover:text-primary">
+            <a href="#" className="hover:text-primary text-gray-500">
               linkedin
             </a>
           </div>
         </div>
       </div>
 
-      <div className="w-full content-container border-t">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div className="flex justify-end w-full">
+      <div className="content-container w-full border-t">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+          <div className="flex w-full justify-end">
             <ThemeSelector />
           </div>
           {footerColumns.map((col, i) => (

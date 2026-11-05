@@ -1,7 +1,7 @@
 "use client";
 
 import { updateLineItem } from "@lib/data/cart";
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import { Table, Text, clx } from "@medusajs/ui";
 import CartItemSelect from "@modules/cart/components/cart-item-select";
 import ErrorMessage from "@modules/checkout/components/error-message";
@@ -14,11 +14,11 @@ import Spinner from "@modules/common/icons/spinner";
 import Thumbnail from "@modules/products/components/thumbnail";
 import { useState } from "react";
 
-type ItemProps = {
+interface ItemProps {
   item: HttpTypes.StoreCartLineItem;
   type?: "full" | "preview";
   currencyCode: string;
-};
+}
 
 const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   const [updating, setUpdating] = useState(false);
@@ -32,8 +32,8 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
       lineId: item.id,
       quantity,
     })
-      .catch((err) => {
-        setError(err.message);
+      .catch((error_) => {
+        setError(error_.message);
       })
       .finally(() => {
         setUpdating(false);
@@ -46,12 +46,12 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
 
   return (
     <Table.Row className="w-full" data-testid="product-row">
-      <Table.Cell className="!pl-0 p-4 w-24">
+      <Table.Cell className="w-24 p-4 !pl-0">
         <LocalizedClientLink
           href={`/products/${item.product_handle}`}
           className={clx("flex", {
-            "w-16": type === "preview",
             "small:w-24 w-12": type === "full",
+            "w-16": type === "preview",
           })}
         >
           <Thumbnail
@@ -74,12 +74,14 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
 
       {type === "full" && (
         <Table.Cell>
-          <div className="flex gap-2 items-center w-28">
+          <div className="flex w-28 items-center gap-2">
             <DeleteButton id={item.id} data-testid="product-delete-button" />
             <CartItemSelect
               value={item.quantity}
-              onChange={(value) => changeQuantity(parseInt(value.target.value))}
-              className="w-14 h-10 p-4"
+              onChange={(value) =>
+                changeQuantity(Number.parseInt(value.target.value))
+              }
+              className="h-10 w-14 p-4"
               data-testid="product-select-button"
             >
               {/* TODO: Update this with the v2 way of managing inventory */}
@@ -105,7 +107,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
       )}
 
       {type === "full" && (
-        <Table.Cell className="hidden small:table-cell">
+        <Table.Cell className="small:table-cell hidden">
           <LineItemUnitPrice
             item={item}
             style="tight"
@@ -121,7 +123,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
           })}
         >
           {type === "preview" && (
-            <span className="flex gap-x-1 ">
+            <span className="flex gap-x-1">
               <Text className="text-ui-fg-muted">{item.quantity}x </Text>
               <LineItemUnitPrice
                 item={item}

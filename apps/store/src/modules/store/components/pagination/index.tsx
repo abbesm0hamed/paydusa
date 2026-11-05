@@ -49,7 +49,7 @@ export function Pagination({
   const renderEllipsis = (key: string) => (
     <span
       key={key}
-      className="txt-xlarge-plus text-ui-fg-muted items-center cursor-default"
+      className="txt-xlarge-plus text-ui-fg-muted cursor-default items-center"
     >
       ...
     </span>
@@ -71,32 +71,28 @@ export function Pagination({
       if (page <= 4) {
         // Show 1, 2, 3, 4, 5, ..., lastpage
         buttons.push(
-          ...arrayRange(1, 5).map((p) => renderPageButton(p, p, p === page))
-        );
-        buttons.push(renderEllipsis("ellipsis1"));
-        buttons.push(
+          ...arrayRange(1, 5).map((p) => renderPageButton(p, p, p === page)),
+          renderEllipsis("ellipsis1"),
           renderPageButton(totalPages, totalPages, totalPages === page)
         );
       } else if (page >= totalPages - 3) {
         // Show 1, ..., lastpage - 4, lastpage - 3, lastpage - 2, lastpage - 1, lastpage
-        buttons.push(renderPageButton(1, 1, 1 === page));
-        buttons.push(renderEllipsis("ellipsis2"));
         buttons.push(
+          renderPageButton(1, 1, page === 1),
+          renderEllipsis("ellipsis2"),
           ...arrayRange(totalPages - 4, totalPages).map((p) =>
             renderPageButton(p, p, p === page)
           )
         );
       } else {
         // Show 1, ..., page - 1, page, page + 1, ..., lastpage
-        buttons.push(renderPageButton(1, 1, 1 === page));
-        buttons.push(renderEllipsis("ellipsis3"));
         buttons.push(
+          renderPageButton(1, 1, page === 1),
+          renderEllipsis("ellipsis3"),
           ...arrayRange(page - 1, page + 1).map((p) =>
             renderPageButton(p, p, p === page)
-          )
-        );
-        buttons.push(renderEllipsis("ellipsis4"));
-        buttons.push(
+          ),
+          renderEllipsis("ellipsis4"),
           renderPageButton(totalPages, totalPages, totalPages === page)
         );
       }
@@ -107,8 +103,8 @@ export function Pagination({
 
   // Render the component
   return (
-    <div className="flex justify-center w-full mt-12">
-      <div className="flex gap-3 items-end" data-testid={dataTestid}>
+    <div className="mt-12 flex w-full justify-center">
+      <div className="flex items-end gap-3" data-testid={dataTestid}>
         {renderPageButtons()}
       </div>
     </div>

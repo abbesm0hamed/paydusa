@@ -5,47 +5,49 @@ import { link } from "@/fields/link";
 import { revalidateFooter } from "./hooks/revalidateFooter";
 
 export const Footer: GlobalConfig = {
-  slug: "footer",
   access: {
     read: () => true,
   },
+  authorship: false,
   fields: [
     {
       name: "logo",
-      type: "upload",
       relationTo: "media",
+      type: "upload",
     },
     {
-      name: "columns",
-      type: "array",
       fields: [
         {
-          name: "label",
-          type: "text",
           localized: true,
+          name: "label",
           required: true,
+          type: "text",
         },
         {
-          name: "navItems",
-          type: "array",
+          admin: {
+            components: {
+              RowLabel: "@/globals/Footer/RowLabel#RowLabel",
+            },
+            initCollapsed: true,
+          },
           fields: [
             link({
               appearances: false,
             }),
           ],
-          admin: {
-            initCollapsed: true,
-            components: {
-              RowLabel: "@/globals/Footer/RowLabel#RowLabel",
-            },
-          },
+          name: "navItems",
+          type: "array",
         },
       ],
       maxRows: 4,
       minRows: 1,
+      name: "columns",
+      type: "array",
     },
   ],
   hooks: {
     afterChange: [revalidateFooter],
   },
+  slug: "footer",
+  versions: false,
 };

@@ -1,4 +1,4 @@
-import {
+import type {
   ProviderSendNotificationDTO,
   ProviderSendNotificationResultsDTO,
   Logger,
@@ -7,26 +7,11 @@ import {
   AbstractNotificationProviderService,
   MedusaError,
 } from "@medusajs/framework/utils";
-import { CreateEmailOptions, Resend } from "resend";
+import type { EmailTemplate } from "@paydusa/email";
+import { emailSubjects, renderTemplate } from "@paydusa/email";
+import { Resend } from "resend";
 
-import { orderPlacedEmail } from "./emails/order-placed";
-import { passwordResetEmail } from "./emails/password-reset";
-import { userInvitedEmail } from "./emails/user-invited";
-
-enum Templates {
-  ORDER_PLACED = "order-placed",
-  USER_INVITED = "user-invited",
-  PASSWORD_RESET = "password-reset",
-}
-
-const templates: { [key in Templates]?: (props: unknown) => React.ReactNode } =
-  {
-    [Templates.ORDER_PLACED]: orderPlacedEmail,
-    [Templates.USER_INVITED]: userInvitedEmail,
-    [Templates.PASSWORD_RESET]: passwordResetEmail,
-  };
-
-type ResendOptions = {
+interface ResendOptions {
   api_key: string;
   from: string;
   html_templates?: Record<
@@ -36,11 +21,11 @@ type ResendOptions = {
       content: string;
     }
   >;
-};
+}
 
-type InjectedDependencies = {
+interface InjectedDependencies {
   logger: Logger;
-};
+}
 
 class ResendNotificationProviderService extends AbstractNotificationProviderService {
   static identifier = "notification-resend";
@@ -70,67 +55,54 @@ class ResendNotificationProviderService extends AbstractNotificationProviderServ
     }
   }
 
-  getTemplate(template: Templates) {
-    if (this.options.html_templates?.[template]) {
-      return this.options.html_templates[template].content;
-    }
-    const allowedTemplates = Object.keys(templates);
-
-    if (!allowedTemplates.includes(template)) {
-      return null;
-    }
-
-    return templates[template];
-  }
-
-  getTemplateSubject(template: Templates) {
+  getTemplateSubject(template: EmailTemplate) {
     if (this.options.html_templates?.[template]?.subject) {
       return this.options.html_templates[template].subject;
     }
-    switch (template) {
-      case Templates.ORDER_PLACED:
-        return "Order Confirmation";
-      case Templates.USER_INVITED:
-        return "You're Invited!";
-      case Templates.PASSWORD_RESET:
-        return "Reset Your Password";
-      default:
-        return "New Email";
-    }
+    return emailSubjects[template] || "New Email";
   }
 
   async send(
     notification: ProviderSendNotificationDTO
   ): Promise<ProviderSendNotificationResultsDTO> {
-    const template = this.getTemplate(notification.template as Templates);
+    const template = notification.template as EmailTemplate;
 
-    if (!template) {
+    if (
+      !(template in emailSubjects) &&
+      !this.options.html_templates?.[template]
+    ) {
       this.logger.error(
-        `Couldn't find an email template for ${notification.template}. The valid options are ${Object.values(Templates)}`
+        `Couldn't find an email template for ${notification.template}. The valid options are ${Object.keys(emailSubjects).join(", ")}`
       );
       return {};
     }
 
     const commonOptions = {
       from: this.options.from,
+      subject: this.getTemplateSubject(template),
       to: [notification.to],
-      subject: this.getTemplateSubject(notification.template as Templates),
     };
 
-    let emailOptions: CreateEmailOptions;
-    if (typeof template === "string") {
-      emailOptions = {
-        ...commonOptions,
-        html: template,
-      };
+    let html: string;
+
+    if (this.options.html_templates?.[template]) {
+      html = this.options.html_templates[template].content;
     } else {
-      emailOptions = {
-        ...commonOptions,
-        react: template(notification.data),
-      };
+      try {
+        html = await renderTemplate(template, notification.data);
+      } catch (error) {
+        this.logger.error(
+          `Failed to render email template ${template}`,
+          error as Error
+        );
+        return {};
+      }
     }
 
-    const { data, error } = await this.resendClient.emails.send(emailOptions);
+    const { data, error } = await this.resendClient.emails.send({
+      ...commonOptions,
+      html,
+    });
 
     if (error || !data) {
       if (error) {

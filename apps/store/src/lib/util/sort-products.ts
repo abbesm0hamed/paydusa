@@ -1,50 +1,76 @@
-import { HttpTypes } from "@medusajs/types";
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products";
+import type { HttpTypes } from "@medusajs/types";
+import type { SortOptions } from "@modules/store/components/refinement-list/sort-products";
 
 interface MinPricedProduct extends HttpTypes.StoreProduct {
   _minPrice?: number;
 }
 
-/**
- * Helper function to sort products by price until the store API supports sorting by price
- * @param products
- * @param sortBy
- * @returns products sorted by price
- */
-export function sortProducts(
+const getMinPrice = (product: HttpTypes.StoreProduct): number => {
+  if (product.variants && product.variants.length > 0) {
+    return Math.min(
+      ...product.variants.map(
+        (variant) => variant?.calculated_price?.calculated_amount || 0
+      )
+    );
+  }
+  return Infinity;
+};
+
+export const filterProductsByPrice = (
+  products: HttpTypes.StoreProduct[],
+  priceFrom?: number,
+  priceTo?: number
+): HttpTypes.StoreProduct[] => {
+  if (priceFrom === undefined && priceTo === undefined) {
+    return products;
+  }
+
+  return products.filter((product) => {
+    const minPrice = getMinPrice(product);
+    if (minPrice === Infinity) {
+      return false;
+    }
+    if (priceFrom !== undefined && minPrice < priceFrom) {
+      return false;
+    }
+    if (priceTo !== undefined && minPrice > priceTo) {
+      return false;
+    }
+    return true;
+  });
+};
+
+const getCreatedAtTimestamp = (product: HttpTypes.StoreProduct): number => {
+  const date = product.created_at === null ? 0 : product.created_at;
+  if (date === undefined) {
+    return Number.NaN;
+  }
+  return new Date(date).getTime();
+};
+
+export const sortProducts = (
   products: HttpTypes.StoreProduct[],
   sortBy: SortOptions
-): HttpTypes.StoreProduct[] {
-  let sortedProducts = products as MinPricedProduct[];
+): HttpTypes.StoreProduct[] => {
+  const sortedProducts = products as MinPricedProduct[];
 
   if (["price_asc", "price_desc"].includes(sortBy)) {
-    // Precompute the minimum price for each product
-    sortedProducts.forEach((product) => {
-      if (product.variants && product.variants.length > 0) {
-        product._minPrice = Math.min(
-          ...product.variants.map(
-            (variant) => variant?.calculated_price?.calculated_amount || 0
-          )
-        );
-      } else {
-        product._minPrice = Infinity;
-      }
-    });
+    for (const product of sortedProducts) {
+      product._minPrice = getMinPrice(product);
+    }
 
-    // Sort products based on the precomputed minimum prices
     sortedProducts.sort((a, b) => {
-      const diff = a._minPrice! - b._minPrice!;
+      const diff =
+        (a._minPrice ?? getMinPrice(a)) - (b._minPrice ?? getMinPrice(b));
       return sortBy === "price_asc" ? diff : -diff;
     });
   }
 
   if (sortBy === "created_at") {
-    sortedProducts.sort((a, b) => {
-      return (
-        new Date(b.created_at!).getTime() - new Date(a.created_at!).getTime()
-      );
-    });
+    sortedProducts.sort(
+      (a, b) => getCreatedAtTimestamp(b) - getCreatedAtTimestamp(a)
+    );
   }
 
   return sortedProducts;
-}
+};

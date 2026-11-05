@@ -5,15 +5,13 @@ import {
 } from "@medusajs/framework/workflows-sdk";
 import { useQueryGraphStep } from "@medusajs/medusa/core-flows";
 
-import {
-  generateInvoicePdfStep,
-  GenerateInvoicePdfStepInput,
-} from "./steps/generate-invoice-pdf";
+import type { GenerateInvoicePdfStepInput } from "./steps/generate-invoice-pdf";
+import { generateInvoicePdfStep } from "./steps/generate-invoice-pdf";
 import { getOrderInvoiceStep } from "./steps/get-order-invoice";
 
-type WorkflowInput = {
+interface WorkflowInput {
   order_id: string;
-};
+}
 
 export const generateInvoicePdfWorkflow = createWorkflow(
   "generate-invoice-pdf",
@@ -68,8 +66,8 @@ export const generateInvoicePdfWorkflow = createWorkflow(
 
     const transformedOrder = transform(
       {
-        orders,
         countries,
+        orders,
       },
       (data) => {
         const order = data.orders[0];
@@ -98,9 +96,9 @@ export const generateInvoicePdfWorkflow = createWorkflow(
     });
 
     const { pdf_buffer } = generateInvoicePdfStep({
-      order: transformedOrder,
-      items: transformedOrder.items,
       invoice_id: invoice.id,
+      items: transformedOrder.items,
+      order: transformedOrder,
     } as unknown as GenerateInvoicePdfStepInput);
 
     return new WorkflowResponse({

@@ -5,7 +5,6 @@ import { Banner } from "@/blocks/Banner/config";
 import { isAdmin } from "../access/isAdmin";
 
 export const ReusableContent: CollectionConfig = {
-  slug: "reusable-content",
   access: {
     create: isAdmin,
     delete: isAdmin,
@@ -16,21 +15,24 @@ export const ReusableContent: CollectionConfig = {
   admin: {
     useAsTitle: "title",
   },
+  authorship: false,
   fields: [
     {
       name: "title",
-      type: "text",
       required: true,
+      type: "text",
     },
     {
-      name: "layout",
-      type: "blocks",
       blocks: [],
+      name: "layout",
       required: true,
+      type: "blocks",
     },
   ],
   labels: {
     plural: "Reusable Contents",
     singular: "Reusable Content",
   },
+  slug: "reusable-content",
+  versions: false,
 };

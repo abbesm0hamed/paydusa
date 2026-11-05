@@ -32,7 +32,8 @@ Comprehensive performance optimization guide for React and Next.js applications,
    - 2.2 [Conditional Module Loading](#22-conditional-module-loading)
    - 2.3 [Defer Non-Critical Third-Party Libraries](#23-defer-non-critical-third-party-libraries)
    - 2.4 [Dynamic Imports for Heavy Components](#24-dynamic-imports-for-heavy-components)
-   - 2.5 [Preload Based on User Intent](#25-preload-based-on-user-intent)
+   - 2.5 [Prefer Statically Analyzable Paths](#25-prefer-statically-analyzable-paths)
+   - 2.6 [Preload Based on User Intent](#26-preload-based-on-user-intent)
 3. [Server-Side Performance](#3-server-side-performance) — **HIGH**
    - 3.1 [Authenticate Server Actions Like API Routes](#31-authenticate-server-actions-like-api-routes)
    - 3.2 [Avoid Duplicate Serialization in RSC Props](#32-avoid-duplicate-serialization-in-rsc-props)
@@ -442,11 +443,10 @@ Popular icon and component libraries can have **up to 10,000 re-exports** in the
 **Incorrect: imports entire library**
 
 ```tsx
-import { Check, X, Menu } from "lucide-react";
+import { Button, TextField } from "@mui/material";
 // Loads 1,583 modules, takes ~2.8s extra in dev
 // Runtime cost: 200-800ms on every cold start
-
-import { Button, TextField } from "@mui/material";
+import { Check, X, Menu } from "lucide-react";
 // Loads 2,225 modules, takes ~4.2s extra in dev
 ```
 
@@ -539,9 +539,7 @@ import dynamic from "next/dynamic";
 
 const Analytics = dynamic(
   () => import("@vercel/analytics/react").then((m) => m.Analytics),
-  {
-    ssr: false,
-  }
+  { ssr: false }
 );
 
 export default function RootLayout({ children }) {
@@ -579,9 +577,7 @@ import dynamic from "next/dynamic";
 
 const MonacoEditor = dynamic(
   () => import("./monaco-editor").then((m) => m.MonacoEditor),
-  {
-    ssr: false,
-  }
+  { ssr: false }
 );
 
 function CodePanel({ code }: { code: string }) {
@@ -589,7 +585,66 @@ function CodePanel({ code }: { code: string }) {
 }
 ```
 
-### 2.5 Preload Based on User Intent
+### 2.5 Prefer Statically Analyzable Paths
+
+**Impact: HIGH (avoids accidental broad bundles and file traces)**
+
+Build tools work best when import and file-system paths are obvious at build time. If you hide the real path inside a variable or compose it too dynamically, the tool either has to include a broad set of possible files, warn that it cannot analyze the import, or widen file tracing to stay safe.
+
+Prefer explicit maps or literal paths so the set of reachable files stays narrow and predictable. This is the same rule whether you are choosing modules with `import()` or reading files in server/build code.
+
+When analysis becomes too broad, the cost is real:
+
+- Larger server bundles
+
+- Slower builds
+
+- Worse cold starts
+
+- More memory use
+
+**Incorrect: the bundler cannot tell what may be imported**
+
+```ts
+const PAGE_MODULES = {
+  home: "./pages/home",
+  settings: "./pages/settings",
+} as const;
+
+const Page = await import(PAGE_MODULES[pageName]);
+```
+
+**Correct: use an explicit map of allowed modules**
+
+```ts
+const PAGE_MODULES = {
+  home: () => import("./pages/home"),
+  settings: () => import("./pages/settings"),
+} as const;
+
+const Page = await PAGE_MODULES[pageName]();
+```
+
+**Incorrect: a 2-value enum still hides the final path from static analysis**
+
+```ts
+const baseDir = path.join(process.cwd(), "content/" + contentKind);
+```
+
+**Correct: make each final path literal at the callsite**
+
+```ts
+const baseDir =
+  kind === ContentKind.Blog
+    ? path.join(process.cwd(), "content/blog")
+    : path.join(process.cwd(), "content/docs");
+```
+
+In Next.js server code, this matters for output file tracing too. `path.join(process.cwd(), someVar)` can widen the traced file set because Next.js statically analyze `import`, `require`, and `fs` usage.
+
+Reference: [https://nextjs.org/docs/app/api-reference/config/next-config-js/output](https://nextjs.org/docs/app/api-reference/config/next-config-js/output), [https://nextjs.org/learn/seo/dynamic-imports](https://nextjs.org/learn/seo/dynamic-imports), [https://vite.dev/guide/features.html](https://vite.dev/guide/features.html), [https://esbuild.github.io/api/](https://esbuild.github.io/api/), [https://www.npmjs.com/package/@rollup/plugin-dynamic-import-vars](https://www.npmjs.com/package/@rollup/plugin-dynamic-import-vars), [https://webpack.js.org/guides/dependency-management/](https://webpack.js.org/guides/dependency-management/)
+
+### 2.6 Preload Based on User Intent
 
 **Impact: MEDIUM (reduces perceived latency)**
 
@@ -690,8 +745,9 @@ export async function deleteUser(userId: string) {
 ```typescript
 "use server";
 
-import { verifySession } from "@/lib/auth";
 import { z } from "zod";
+
+import { verifySession } from "@/lib/auth";
 
 const updateProfileSchema = z.object({
   userId: z.string().uuid(),
@@ -1257,8 +1313,9 @@ export async function POST(request: Request) {
 **Correct: non-blocking**
 
 ```tsx
-import { after } from "next/server";
 import { headers, cookies } from "next/headers";
+import { after } from "next/server";
+
 import { logUserAction } from "@/app/utils";
 
 export async function POST(request: Request) {
@@ -3140,9 +3197,7 @@ function handleSearch(query: string) {
 // Ensure analytics fires within 2 seconds even if browser stays busy
 requestIdleCallback(
   () => analytics.track("page_view", { path: location.pathname }),
-  {
-    timeout: 2000,
-  }
+  { timeout: 2000 }
 );
 ```
 

@@ -61,6 +61,7 @@ import {
   createWorkflow,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk";
+
 import { createMyModelStep } from "./steps/create-my-model";
 
 type Input = {
@@ -225,6 +226,7 @@ const myWorkflow = createWorkflow(
 // ✅ CORRECT - Loop in calling code
 // API route that calls the workflow
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http";
+
 import myWorkflow from "../../workflows/my-workflow";
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
@@ -322,8 +324,9 @@ const myWorkflow = createWorkflow(
 ```typescript
 // Link definition in src/links/review-product.ts
 import { defineLink } from "@medusajs/framework/utils";
-import ReviewModule from "../modules/review";
 import ProductModule from "@medusajs/medusa/product";
+
+import ReviewModule from "../modules/review";
 
 // Order: review FIRST, then product
 export default defineLink(
@@ -336,14 +339,15 @@ export default defineLink(
 ```
 
 ```typescript
-// ✅ CORRECT - Order matches defineLink (review first, then product)
-import { createRemoteLinkStep } from "@medusajs/medusa/core-flows";
+import { Modules } from "@medusajs/framework/utils";
 import {
   createWorkflow,
   transform,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk";
-import { Modules } from "@medusajs/framework/utils";
+// ✅ CORRECT - Order matches defineLink (review first, then product)
+import { createRemoteLinkStep } from "@medusajs/medusa/core-flows";
+
 import { REVIEW_MODULE } from "../modules/review";
 
 export const createReviewWorkflow = createWorkflow(
@@ -424,12 +428,12 @@ export const deleteReviewWorkflow = createWorkflow(
 **Querying Data in Workflows:**
 
 ```typescript
-// ✅ CORRECT - Use Medusa's built-in useQueryGraphStep
-import { useQueryGraphStep } from "@medusajs/medusa/core-flows";
 import {
   createWorkflow,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk";
+// ✅ CORRECT - Use Medusa's built-in useQueryGraphStep
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows";
 
 export const getProductReviewsWorkflow = createWorkflow(
   "get-product-reviews",

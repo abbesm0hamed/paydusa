@@ -5,8 +5,8 @@ import {
   ParagraphFeature,
   lexicalEditor,
   UnderlineFeature,
-  type LinkFields,
 } from "@payloadcms/richtext-lexical";
+import type { LinkFields } from "@payloadcms/richtext-lexical";
 import type { TextFieldSingleValidation } from "payload";
 
 export const defaultLexical = lexicalEditor({
@@ -19,21 +19,23 @@ export const defaultLexical = lexicalEditor({
       enabledCollections: ["pages", "posts"],
       fields: ({ defaultFields }) => {
         const defaultFieldsWithoutUrl = defaultFields.filter((field) => {
-          if ("name" in field && field.name === "url") return false;
+          if ("name" in field && field.name === "url") {
+            return false;
+          }
           return true;
         });
 
         return [
           ...defaultFieldsWithoutUrl,
           {
-            name: "url",
-            type: "text",
             admin: {
               condition: (_data, siblingData) =>
                 siblingData?.linkType !== "internal",
             },
             label: ({ t }) => t("fields:enterURL"),
+            name: "url",
             required: true,
+            type: "text",
             validate: ((value, options) => {
               if (
                 (options?.siblingData as LinkFields)?.linkType === "internal"

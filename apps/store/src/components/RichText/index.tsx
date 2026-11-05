@@ -3,36 +3,37 @@ import type {
   CallToActionBlock as CTABlockProps,
   MediaBlock as MediaBlockProps,
 } from "@payload-types";
-import {
-  DefaultNodeTypes,
+import type {
   SerializedBlockNode,
   SerializedLinkNode,
-  type DefaultTypedEditorState,
+  WithDefaultNodes,
 } from "@payloadcms/richtext-lexical";
+import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical";
+import type { JSXConvertersFunction } from "@payloadcms/richtext-lexical/react";
 import {
-  JSXConvertersFunction,
   LinkJSXConverter,
   RichText as ConvertRichText,
 } from "@payloadcms/richtext-lexical/react";
 
 import { Banner } from "@/blocks/Banner/Component";
 import { CallToActionBlock } from "@/blocks/CallToAction/Component";
-import { CodeBlock, CodeBlockProps } from "@/blocks/Code/Component";
+import type { CodeBlockProps } from "@/blocks/Code/Component";
+import { CodeBlock } from "@/blocks/Code/Component";
 import { MediaBlock } from "@/blocks/MediaBlock/Component";
 import { cn } from "@/utilities/ui";
 
-type NodeTypes =
-  | DefaultNodeTypes
-  | SerializedBlockNode<
-      CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps
-    >;
+type NodeTypes = WithDefaultNodes<
+  SerializedBlockNode<
+    CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps
+  >
+>;
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   const { value, relationTo } = linkNode.fields.doc!;
   if (typeof value !== "object") {
-    throw new Error("Expected value to be an object");
+    throw new TypeError("Expected value to be an object");
   }
-  const slug = value.slug;
+  const { slug } = value;
   return relationTo === "posts" ? `/posts/${slug}` : `/${slug}`;
 };
 
@@ -45,9 +46,11 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({
     banner: ({ node }) => (
       <Banner className="col-start-2 mb-4" {...node.fields} />
     ),
+    code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
+    cta: ({ node }) => <CallToActionBlock {...node.fields} />,
     mediaBlock: ({ node }) => (
       <MediaBlock
-        className="col-start-1 col-span-3"
+        className="col-span-3 col-start-1"
         imgClassName="m-0"
         {...node.fields}
         captionClassName="mx-auto max-w-[48rem]"
@@ -55,13 +58,11 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({
         disableInnerContainer={true}
       />
     ),
-    code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
-    cta: ({ node }) => <CallToActionBlock {...node.fields} />,
   },
 });
 
 type Props = {
-  data: DefaultTypedEditorState;
+  data: SerializedEditorState;
   enableGutter?: boolean;
   enableProse?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>;
@@ -76,7 +77,7 @@ export default function RichText(props: Props) {
         {
           container: enableGutter,
           "max-w-none": !enableGutter,
-          "mx-auto prose md:prose-md dark:prose-invert": enableProse,
+          "prose md:prose-md dark:prose-invert mx-auto": enableProse,
         },
         className
       )}

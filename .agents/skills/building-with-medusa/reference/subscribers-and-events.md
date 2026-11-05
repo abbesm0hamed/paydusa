@@ -39,18 +39,19 @@ Create a TypeScript file in the `src/subscribers/` directory:
 ```typescript
 // src/subscribers/order-placed.ts
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework";
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils";
 
 export default async function orderPlacedHandler({
-  event: { eventName, data },
+  event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const logger = container.resolve("logger");
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
 
   logger.info(`Order ${data.id} was placed`);
 
   // Resolve services
-  const orderService = container.resolve("order");
-  const notificationService = container.resolve("notification");
+  const orderService = container.resolve(Modules.ORDER);
+  const notificationService = container.resolve(Modules.NOTIFICATION);
 
   // Retrieve full order data
   const order = await orderService.retrieveOrder(data.id, {
@@ -78,17 +79,18 @@ export const config: SubscriberConfig = {
 ```typescript
 // src/subscribers/product-changes.ts
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework";
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils";
 
 export default async function productChangesHandler({
-  event: { eventName, data },
+  event: { name, data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const logger = container.resolve("logger");
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
 
-  logger.info(`Product event: ${eventName} for product ${data.id}`);
+  logger.info(`Product event: ${name} for product ${data.id}`);
 
   // Handle different events
-  switch (eventName) {
+  switch (name) {
     case "product.created":
       // Handle product creation
       break;
@@ -142,11 +144,46 @@ export const config: SubscriberConfig = {
 "cart.updated"; // Cart was updated
 ```
 
+### Inventory Events
+
+**All of the events below were added in v2.17.3** — they don't exist in earlier versions.
+
+```typescript
+"inventory-item.created"; // Inventory items were created
+"inventory-item.updated"; // Inventory items were updated
+"inventory-item.deleted"; // Inventory items were deleted
+"inventory-level.created"; // Inventory levels were created
+"inventory-level.updated"; // Stocked/reserved quantity changed (e.g. during fulfillment)
+"inventory-level.deleted"; // Inventory levels were deleted
+```
+
+Use these to sync stock to external systems or alert on low levels. `inventory-level.updated` carries `{ id, order_id? }` — `order_id` is set when the change came from an order flow.
+
 ### Auth Events
 
 ```typescript
 "auth.password_reset"; // Password reset was requested
+"auth.verification_requested"; // A verification code was generated (v2.15.5+)
+"auth.mfa_enabled"; // An MFA factor was enabled (v2.15.5+)
+"auth.mfa_disabled"; // An MFA factor was disabled
+"auth.mfa_recovery_codes_generated"; // Recovery codes were generated
 ```
+
+**⚠️ `auth.verification_requested` payload changed in v2.16.0.** It is now:
+
+```typescript
+{
+  entity_id; // The identifier being verified, e.g. an email address
+  entity_type; // e.g. "email"
+  code_provider; // Defaults to "token"
+  auth_identity_id;
+  code; // The verification code — was called `token` before v2.16.0
+  expires_at;
+  metadata;
+}
+```
+
+`token`, `actor_type`, `provider`, and `provider_identity_id` are **gone**. In subscribers, build the verification URL from `code`, and guard on `entity_type` (e.g. `if (entity_type !== "email") return`) instead of `actor_type`.
 
 ### Invite Events
 
@@ -163,7 +200,7 @@ export const config: SubscriberConfig = {
 ```typescript
 interface SubscriberArgs<T> {
   event: {
-    eventName: string; // e.g., "order.placed"
+    name: string; // e.g., "order.placed"
     data: T; // Event payload (usually contains { id: string })
   };
   container: MedusaContainer; // DI container
@@ -312,18 +349,18 @@ export const config: SubscriberConfig = {
 
 ```typescript
 export default async function mySubscriber({
-  event: { eventName, data },
+  event: { name, data },
   container,
 }: SubscriberArgs<{ id: string }>) {
   const logger = container.resolve("logger");
 
-  logger.info(`Handling ${eventName} for ${data.id}`);
+  logger.info(`Handling ${name} for ${data.id}`);
 
   try {
     // Subscriber logic
-    logger.info(`Successfully handled ${eventName}`);
+    logger.info(`Successfully handled ${name}`);
   } catch (error) {
-    logger.error(`Failed to handle ${eventName}: ${error.message}`);
+    logger.error(`Failed to handle ${name}: ${error.message}`);
   }
 }
 ```

@@ -11,12 +11,12 @@ const AlgoliaPageContent = () => {
       sdk.client.fetch("/admin/algolia/sync", {
         method: "POST",
       }),
-    onSuccess: () => {
-      toast.success("Successfully triggered data sync to Algolia");
-    },
     onError: (err) => {
       console.error(err);
       toast.error("Failed to sync data to Algolia");
+    },
+    onSuccess: () => {
+      toast.success("Successfully triggered data sync to Algolia");
     },
   });
 
@@ -38,13 +38,11 @@ const AlgoliaPageContent = () => {
   );
 };
 
-const AlgoliaPage = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <AlgoliaPageContent />
-    </QueryClientProvider>
-  );
-};
+const AlgoliaPage = () => (
+  <QueryClientProvider client={queryClient}>
+    <AlgoliaPageContent />
+  </QueryClientProvider>
+);
 
 export const config = defineRouteConfig({
   label: "Algolia",

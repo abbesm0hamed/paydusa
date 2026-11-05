@@ -1,5 +1,5 @@
 {
-  "name": "@ecommerce/env",
+  "name": "@paydusa/env",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -14,7 +14,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@ecommerce/config": "workspace:*",
+    "@paydusa/config": "workspace:*",
     "@types/node": "catalog:",
     "typescript": "catalog:"
   }

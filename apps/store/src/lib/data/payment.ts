@@ -1,7 +1,7 @@
 "use server";
 
 import { sdk } from "@lib/config";
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 
 import { getAuthHeaders, getCacheOptions } from "./cookies";
 
@@ -18,19 +18,15 @@ export const listCartPaymentMethods = async (regionId: string) => {
     .fetch<HttpTypes.StorePaymentProviderListResponse>(
       `/store/payment-providers`,
       {
-        method: "GET",
-        query: { region_id: regionId },
-        headers,
-        next,
         cache: "force-cache",
+        headers,
+        method: "GET",
+        next,
+        query: { region_id: regionId },
       }
     )
     .then(({ payment_providers }) =>
-      payment_providers.sort((a, b) => {
-        return a.id > b.id ? 1 : -1;
-      })
+      payment_providers.sort((a, b) => (a.id > b.id ? 1 : -1))
     )
-    .catch(() => {
-      return null;
-    });
+    .catch(() => null);
 };

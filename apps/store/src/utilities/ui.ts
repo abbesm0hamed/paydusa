@@ -4,7 +4,8 @@
  * Other functions may be exported from here in the future or by installing other shadcn components.
  */
 
-import { type ClassValue, clsx } from "clsx";
+import { clsx } from "clsx";
+import type { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {

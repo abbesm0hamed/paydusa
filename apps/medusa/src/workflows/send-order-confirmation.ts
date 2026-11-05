@@ -6,9 +6,9 @@ import { useQueryGraphStep } from "@medusajs/medusa/core-flows";
 
 import { sendNotificationStep } from "./steps/send-notification";
 
-type WorkflowInput = {
+interface WorkflowInput {
   id: string;
-};
+}
 
 export const sendOrderConfirmationWorkflow = createWorkflow(
   "send-order-confirmation",
@@ -42,12 +42,12 @@ export const sendOrderConfirmationWorkflow = createWorkflow(
 
     const notification = sendNotificationStep([
       {
-        to: orders[0].email,
         channel: "email",
-        template: "order-placed",
         data: {
           order: orders[0],
         },
+        template: "order-placed",
+        to: orders[0].email,
       },
     ]);
 

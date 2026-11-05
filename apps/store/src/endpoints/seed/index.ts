@@ -50,14 +50,14 @@ export const seed = async ({
   await Promise.all(
     globals.map((global) =>
       payload.updateGlobal({
-        slug: global,
+        context: {
+          disableRevalidate: true,
+        },
         data: {
           navItems: [],
         },
         depth: 0,
-        context: {
-          disableRevalidate: true,
-        },
+        slug: global,
       })
     )
   );
@@ -113,8 +113,8 @@ export const seed = async ({
       payload.create({
         collection: "users",
         data: {
-          name: "Demo Author",
           email: "demo-author@example.com",
+          name: "Demo Author",
           password: "password",
         },
       }),
@@ -142,77 +142,77 @@ export const seed = async ({
       payload.create({
         collection: "categories",
         data: {
-          title: "Technology",
           breadcrumbs: [
             {
               label: "Technology",
               url: "/technology",
             },
           ],
+          title: "Technology",
         },
       }),
 
       payload.create({
         collection: "categories",
         data: {
-          title: "News",
           breadcrumbs: [
             {
               label: "News",
               url: "/news",
             },
           ],
+          title: "News",
         },
       }),
 
       payload.create({
         collection: "categories",
         data: {
-          title: "Finance",
           breadcrumbs: [
             {
               label: "Finance",
               url: "/finance",
             },
           ],
+          title: "Finance",
         },
       }),
       payload.create({
         collection: "categories",
         data: {
-          title: "Design",
           breadcrumbs: [
             {
               label: "Design",
               url: "/design",
             },
           ],
+          title: "Design",
         },
       }),
 
       payload.create({
         collection: "categories",
         data: {
-          title: "Software",
           breadcrumbs: [
             {
               label: "Software",
               url: "/software",
             },
           ],
+          title: "Software",
         },
       }),
 
       payload.create({
         collection: "categories",
         data: {
-          title: "Engineering",
           breadcrumbs: [
             {
               label: "Engineering",
               url: "/engineering",
             },
           ],
+          title: "Engineering",
         },
       }),
     ]);
@@ -223,72 +223,72 @@ export const seed = async ({
   // This way we can sort them by `createdAt` or `publishedAt` and they will be in the expected order
   const post1Doc = await payload.create({
     collection: "posts",
-    depth: 0,
     context: {
       disableRevalidate: true,
     },
     data: post1({
-      heroImage: image1Doc,
-      blockImage: image2Doc,
       author: demoAuthor,
+      blockImage: image2Doc,
+      heroImage: image1Doc,
     }),
+    depth: 0,
   });
 
   const post2Doc = await payload.create({
     collection: "posts",
-    depth: 0,
     context: {
       disableRevalidate: true,
     },
     data: post2({
-      heroImage: image2Doc,
-      blockImage: image3Doc,
       author: demoAuthor,
+      blockImage: image3Doc,
+      heroImage: image2Doc,
     }),
+    depth: 0,
   });
 
   const post3Doc = await payload.create({
     collection: "posts",
-    depth: 0,
     context: {
       disableRevalidate: true,
     },
     data: post3({
-      heroImage: image3Doc,
-      blockImage: image1Doc,
       author: demoAuthor,
+      blockImage: image1Doc,
+      heroImage: image3Doc,
     }),
+    depth: 0,
   });
 
   // update each post with related posts
   await payload.update({
-    id: post1Doc.id,
     collection: "posts",
     data: {
       relatedPosts: [post2Doc.id, post3Doc.id],
     },
+    id: post1Doc.id,
   });
   await payload.update({
-    id: post2Doc.id,
     collection: "posts",
     data: {
       relatedPosts: [post1Doc.id, post3Doc.id],
     },
+    id: post2Doc.id,
   });
   await payload.update({
-    id: post3Doc.id,
     collection: "posts",
     data: {
       relatedPosts: [post1Doc.id, post2Doc.id],
     },
+    id: post3Doc.id,
   });
 
   payload.logger.info(`— Seeding contact form...`);
 
   const contactForm = await payload.create({
     collection: "forms",
-    depth: 0,
     data: contactFormData,
+    depth: 0,
   });
 
   payload.logger.info(`— Seeding pages...`);
@@ -296,13 +296,13 @@ export const seed = async ({
   const [_, contactPage] = await Promise.all([
     payload.create({
       collection: "pages",
-      depth: 0,
       data: home({ heroImage: imageHomeDoc, metaImage: image2Doc }),
+      depth: 0,
     }),
     payload.create({
       collection: "pages",
+      data: contactPageData({ contactForm }),
       depth: 0,
-      data: contactPageData({ contactForm: contactForm }),
     }),
   ]);
 
@@ -310,58 +310,58 @@ export const seed = async ({
 
   await Promise.all([
     payload.updateGlobal({
-      slug: "header",
       data: {
         navItems: [
           {
             link: {
-              type: "custom",
               label: "Posts",
+              type: "custom",
               url: "/posts",
             },
           },
           {
             link: {
-              type: "reference",
               label: "Contact",
               reference: {
                 relationTo: "pages",
                 value: contactPage.id,
               },
+              type: "reference",
             },
           },
         ],
       },
+      slug: "header",
     }),
     payload.updateGlobal({
-      slug: "footer",
       data: {
         navItems: [
           {
             link: {
-              type: "custom",
               label: "Admin",
+              type: "custom",
               url: "/admin",
             },
           },
           {
             link: {
-              type: "custom",
               label: "Source Code",
               newTab: true,
+              type: "custom",
               url: "https://github.com/payloadcms/payload/tree/main/templates/website",
             },
           },
           {
             link: {
-              type: "custom",
               label: "Payload",
               newTab: true,
+              type: "custom",
               url: "https://payloadcms.com/",
             },
           },
         ],
       },
+      slug: "footer",
     }),
   ]);
 
@@ -381,9 +381,9 @@ async function fetchFileByURL(url: string): Promise<File> {
   const data = await res.arrayBuffer();
 
   return {
-    name: url.split("/").pop() || `file-${Date.now()}`,
     data: Buffer.from(data),
     mimetype: `image/${url.split(".").pop()}`,
+    name: url.split("/").pop() || `file-${Date.now()}`,
     size: data.byteLength,
   };
 }

@@ -8,7 +8,7 @@ export const revalidateFooter: GlobalAfterChangeHook = ({
   if (!context.disableRevalidate) {
     payload.logger.info(`Revalidating footer`);
 
-    revalidateTag("global_footer");
+    revalidateTag("global_footer", { expire: 60 });
   }
 
   return doc;

@@ -1,25 +1,25 @@
 import { isStripe, paymentInfoMap } from "@lib/constants";
 import { convertToLocale } from "@lib/util/money";
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import { Container, Heading, Text } from "@medusajs/ui";
 import Divider from "@modules/common/components/divider";
 
-type PaymentDetailsProps = {
+interface PaymentDetailsProps {
   order: HttpTypes.StoreOrder;
-};
+}
 
 const PaymentDetails = ({ order }: PaymentDetailsProps) => {
   const payment = order.payment_collections?.[0].payments?.[0];
 
   return (
     <div>
-      <Heading level="h2" className="flex flex-row text-3xl-regular my-6">
+      <Heading level="h2" className="text-3xl-regular my-6 flex flex-row">
         Payment
       </Heading>
       <div>
         {payment && (
-          <div className="flex items-start gap-x-1 w-full">
-            <div className="flex flex-col w-1/3">
+          <div className="flex w-full items-start gap-x-1">
+            <div className="flex w-1/3 flex-col">
               <Text className="txt-medium-plus text-ui-fg-base mb-1">
                 Payment method
               </Text>
@@ -30,12 +30,12 @@ const PaymentDetails = ({ order }: PaymentDetailsProps) => {
                 {paymentInfoMap[payment.provider_id].title}
               </Text>
             </div>
-            <div className="flex flex-col w-2/3">
+            <div className="flex w-2/3 flex-col">
               <Text className="txt-medium-plus text-ui-fg-base mb-1">
                 Payment details
               </Text>
-              <div className="flex gap-2 txt-medium text-ui-fg-subtle items-center">
-                <Container className="flex items-center h-7 w-fit p-2 bg-ui-button-neutral-hover">
+              <div className="txt-medium text-ui-fg-subtle flex items-center gap-2">
+                <Container className="bg-ui-button-neutral-hover flex h-7 w-fit items-center p-2">
                   {paymentInfoMap[payment.provider_id].icon}
                 </Container>
                 <Text data-testid="payment-amount">

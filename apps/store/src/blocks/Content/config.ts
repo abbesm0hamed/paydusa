@@ -10,9 +10,8 @@ import { link } from "@/fields/link";
 
 const columnFields: Field[] = [
   {
-    name: "size",
-    type: "select",
     defaultValue: "oneThird",
+    name: "size",
     options: [
       {
         label: "One Third",
@@ -31,21 +30,20 @@ const columnFields: Field[] = [
         value: "full",
       },
     ],
+    type: "select",
   },
   {
-    name: "richText",
-    type: "richText",
     editor: lexicalEditor({
-      features: ({ rootFeatures }) => {
-        return [
-          ...rootFeatures,
-          HeadingFeature({ enabledHeadingSizes: ["h2", "h3", "h4"] }),
-          FixedToolbarFeature(),
-          InlineToolbarFeature(),
-        ];
-      },
+      features: ({ rootFeatures }) => [
+        ...rootFeatures,
+        HeadingFeature({ enabledHeadingSizes: ["h2", "h3", "h4"] }),
+        FixedToolbarFeature(),
+        InlineToolbarFeature(),
+      ],
     }),
     label: false,
+    name: "richText",
+    type: "richText",
   },
   {
     name: "enableLink",
@@ -54,25 +52,23 @@ const columnFields: Field[] = [
   link({
     overrides: {
       admin: {
-        condition: (_data, siblingData) => {
-          return Boolean(siblingData?.enableLink);
-        },
+        condition: (_data, siblingData) => Boolean(siblingData?.enableLink),
       },
     },
   }),
 ];
 
 export const Content: Block = {
-  slug: "content",
-  interfaceName: "ContentBlock",
   fields: [
     {
-      name: "columns",
-      type: "array",
       admin: {
         initCollapsed: true,
       },
       fields: columnFields,
+      name: "columns",
+      type: "array",
     },
   ],
+  interfaceName: "ContentBlock",
+  slug: "content",
 };

@@ -1,7 +1,6 @@
-import { HttpTypes } from "@medusajs/types";
-import NativeSelect, {
-  NativeSelectProps,
-} from "@modules/common/components/native-select";
+import type { HttpTypes } from "@medusajs/types";
+import type { NativeSelectProps } from "@modules/common/components/native-select";
+import NativeSelect from "@modules/common/components/native-select";
 import { forwardRef, useImperativeHandle, useMemo, useRef } from "react";
 
 const CountrySelect = forwardRef<
@@ -23,8 +22,8 @@ const CountrySelect = forwardRef<
     }
 
     return region.countries?.map((country) => ({
-      value: country.iso_2,
       label: country.display_name,
+      value: country.iso_2,
     }));
   }, [region]);
 

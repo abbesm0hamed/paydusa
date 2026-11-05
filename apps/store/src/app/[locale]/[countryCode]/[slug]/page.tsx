@@ -1,11 +1,8 @@
 import config from "@payload-config";
 import type { Metadata } from "next";
 import { draftMode } from "next/headers";
-import {
-  type RequiredDataFromCollectionSlug,
-  type TypedLocale,
-  getPayload,
-} from "payload";
+import { getPayload } from "payload";
+import type { RequiredDataFromCollectionSlug, TypedLocale } from "payload";
 
 import { RenderBlocks } from "@/blocks/RenderBlocks";
 import { PayloadRedirects } from "@/components/PayloadRedirects";
@@ -38,24 +35,24 @@ import PageClient from "./page.client";
 //   return params;
 // }
 
-type Args = {
+interface Args {
   params: Promise<{
     slug?: string;
     locale: TypedLocale;
   }>;
-};
+}
 
 export default async function Page({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode();
   const { slug = "home", locale = "en" } = await paramsPromise;
-  const url = "/" + slug;
+  const url = `/${slug}`;
 
   let page: RequiredDataFromCollectionSlug<"pages"> | null;
 
   page = await queryPageBySlug({
-    slug,
-    locale,
     draft,
+    locale,
+    slug,
   });
 
   if (!page) {
@@ -81,9 +78,9 @@ export async function generateMetadata({
 }: Args): Promise<Metadata> {
   const { slug = "home", locale = "en" } = await paramsPromise;
   const page = await queryPageBySlug({
-    slug,
-    locale,
     draft: false,
+    locale,
+    slug,
   });
 
   return generateMeta({ doc: page });
@@ -106,9 +103,9 @@ async function queryPageBySlug({
     collection: "pages",
     draft,
     limit: 1,
-    pagination: false,
+    locale,
     overrideAccess: draft,
-    locale: locale,
+    pagination: false,
     where: {
       slug: {
         equals: slug,

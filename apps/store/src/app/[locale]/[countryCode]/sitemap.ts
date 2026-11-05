@@ -42,10 +42,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Add locale-specific home pages with high priority
   for (const locale of routing.locales) {
     sitemapItems.push({
-      url: new URL(`/${locale}`, url).href,
-      lastModified: new Date(),
       changeFrequency: "weekly",
+      lastModified: new Date(),
       priority: 1,
+      url: new URL(`/${locale}`, url).href,
     });
   }
 
@@ -55,10 +55,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       if (page !== "api" && page !== "sitemap.xml") {
         // Skip non-page directories
         sitemapItems.push({
-          url: new URL(`/${locale}/${page}`, url).href,
-          lastModified: new Date(),
           changeFrequency: "monthly",
+          lastModified: new Date(),
           priority: 0.8,
+          url: new URL(`/${locale}/${page}`, url).href,
         });
       }
     }
@@ -68,10 +68,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const locale of routing.locales) {
     for (const post of blogPosts) {
       sitemapItems.push({
-        url: new URL(`/${locale}/blog/${post}`, url).href,
-        lastModified: new Date(),
         changeFrequency: "monthly",
+        lastModified: new Date(),
         priority: 0.7,
+        url: new URL(`/${locale}/blog/${post}`, url).href,
       });
     }
   }

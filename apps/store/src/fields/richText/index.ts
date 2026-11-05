@@ -11,8 +11,8 @@ const richText: RichText = (overrides = {}): RichTextField => {
 
   return {
     name: "richText",
-    type: "richText",
     required: true,
+    type: "richText",
     ...overridesToMerge,
   };
 };

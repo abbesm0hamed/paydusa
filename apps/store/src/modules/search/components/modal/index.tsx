@@ -3,25 +3,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState, useRef } from "react";
-import {
-  Hits,
-  InstantSearch,
-  SearchBox,
-  useSearchBox,
-} from "react-instantsearch";
+import React, { useEffect, useState } from "react";
+import { Hits, InstantSearch, SearchBox } from "react-instantsearch";
 
 import { searchClient } from "../../../../lib/config";
 import Modal from "../../../common/components/modal";
 
-type Hit = {
+interface SearchHit {
   objectID: string;
   id: string;
   title: string;
   description: string;
   handle: string;
   thumbnail: string;
-};
+}
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -31,7 +26,6 @@ interface SearchModalProps {
 export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const pathname = usePathname();
   const [previousPathname, setPreviousPathname] = useState(pathname);
-  const searchInputRef = useRef<HTMLInputElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -93,10 +87,10 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   return (
     <Modal isOpen={isOpen} close={onClose} search={true}>
-      <div className="bg-white rounded-lg shadow-xl border border-ui-border-base max-w-2xl w-full mx-auto">
+      <div className="border-ui-border-base mx-auto w-full max-w-2xl rounded-lg border bg-white shadow-xl">
         {/* Header */}
-        <div className="border-b border-ui-border-base p-4">
-          <h2 className="text-lg font-medium text-ui-fg-base">
+        <div className="border-ui-border-base border-b p-4">
+          <h2 className="text-ui-fg-base text-lg font-medium">
             Search Products
           </h2>
         </div>
@@ -111,14 +105,14 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
               <SearchBox
                 className="w-full"
                 classNames={{
-                  root: "relative",
                   form: "relative",
                   input:
                     "w-full px-4 py-3 border border-ui-border-base rounded-md focus:outline-none focus:ring-2 focus:ring-ui-fg-interactive focus:border-transparent text-ui-fg-base placeholder-ui-fg-muted",
-                  submit:
-                    "absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-ui-fg-muted hover:text-ui-fg-base",
                   reset:
                     "absolute right-8 top-1/2 transform -translate-y-1/2 p-1 text-ui-fg-muted hover:text-ui-fg-base",
+                  root: "relative",
+                  submit:
+                    "absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-ui-fg-muted hover:text-ui-fg-base",
                 }}
                 placeholder="Search for products..."
               />
@@ -127,12 +121,15 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             <div className="max-h-96 overflow-y-auto">
               <Hits
                 hitComponent={(props) => (
-                  <Hit hit={props.hit as unknown as Hit} onClose={onClose} />
+                  <Hit
+                    hit={props.hit as unknown as SearchHit}
+                    onClose={onClose}
+                  />
                 )}
                 classNames={{
-                  root: "space-y-2",
-                  list: "space-y-2",
                   item: "",
+                  list: "space-y-2",
+                  root: "space-y-2",
                 }}
               />
             </div>
@@ -143,11 +140,11 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   );
 }
 
-const Hit = ({ hit, onClose }: { hit: Hit; onClose: () => void }) => {
+const Hit = ({ hit, onClose }: { hit: SearchHit; onClose: () => void }) => {
   const hasValidThumbnail = hit.thumbnail && hit.thumbnail.trim() !== "";
 
   return (
-    <div className="relative p-3 border border-ui-border-base rounded hover:bg-ui-bg-subtle">
+    <div className="border-ui-border-base hover:bg-ui-bg-subtle relative rounded border p-3">
       <div className="flex gap-3">
         {hasValidThumbnail ? (
           <Image
@@ -158,15 +155,15 @@ const Hit = ({ hit, onClose }: { hit: Hit; onClose: () => void }) => {
             className="rounded object-cover"
           />
         ) : (
-          <div className="w-[60px] h-[60px] bg-ui-bg-subtle rounded flex items-center justify-center">
+          <div className="bg-ui-bg-subtle flex h-[60px] w-[60px] items-center justify-center rounded">
             <span className="text-ui-fg-muted text-xs">No Image</span>
           </div>
         )}
-        <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-medium text-ui-fg-base truncate">
+        <div className="min-w-0 flex-1">
+          <h3 className="text-ui-fg-base truncate text-sm font-medium">
             {hit.title}
           </h3>
-          <p className="text-xs text-ui-fg-muted mt-1 line-clamp-2">
+          <p className="text-ui-fg-muted mt-1 line-clamp-2 text-xs">
             {hit.description}
           </p>
         </div>

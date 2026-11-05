@@ -53,6 +53,7 @@ Define relationships between data models in the same module:
 ```typescript
 // src/modules/blog/models/post.ts
 import { model } from "@medusajs/framework/utils";
+
 import { Comment } from "./comment";
 
 export const Post = model.define("post", {
@@ -65,6 +66,7 @@ export const Post = model.define("post", {
 
 // src/modules/blog/models/comment.ts
 import { model } from "@medusajs/framework/utils";
+
 import { Post } from "./post";
 
 export const Comment = model.define("comment", {

@@ -1,10 +1,9 @@
 "use client";
 
-import { Button } from "@ecommerce/ui/components/button";
 import Link from "next/link";
 import React from "react";
 
-export type LinkGridBlockType = {
+export interface LinkGridBlockType {
   blockName?: string | null;
   blockType: "linkGrid";
   links?:
@@ -23,17 +22,21 @@ export type LinkGridBlockType = {
       }[]
     | null;
   id?: string | null;
-};
+}
 
 export const LinkGrid: React.FC<LinkGridBlockType> = (props) => {
   const { links } = props;
 
   const hasLinks = links && links.length > 0;
 
-  if (!hasLinks) return null;
+  if (!hasLinks) {
+    return null;
+  }
 
   const getLinkUrl = (linkData: any): string | null => {
-    if (!linkData) return null;
+    if (!linkData) {
+      return null;
+    }
 
     if (linkData.type === "custom" && linkData.url) {
       return linkData.url;
@@ -54,9 +57,15 @@ export const LinkGrid: React.FC<LinkGridBlockType> = (props) => {
 
   // Determine grid columns based on number of links
   const getGridCols = (count: number) => {
-    if (count <= 2) return "grid-cols-1 sm:grid-cols-2";
-    if (count <= 3) return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3";
-    if (count <= 4) return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";
+    if (count <= 2) {
+      return "grid-cols-1 sm:grid-cols-2";
+    }
+    if (count <= 3) {
+      return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3";
+    }
+    if (count <= 4) {
+      return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";
+    }
     return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4";
   };
 
@@ -66,10 +75,12 @@ export const LinkGrid: React.FC<LinkGridBlockType> = (props) => {
         <div className={`grid ${getGridCols(links.length)} gap-4 md:gap-6`}>
           {links.map((item, i) => {
             const linkUrl = getLinkUrl(item.link);
-            if (!linkUrl || !item.link.label) return null;
+            if (!linkUrl || !item.link.label) {
+              return null;
+            }
 
             const linkProps = item.link.newTab
-              ? { target: "_blank", rel: "noopener noreferrer" }
+              ? { rel: "noopener noreferrer", target: "_blank" }
               : {};
 
             return (
@@ -79,7 +90,7 @@ export const LinkGrid: React.FC<LinkGridBlockType> = (props) => {
                 {...linkProps}
                 className="block h-full"
               >
-                <div className="h-full p-6 border border-border rounded-lg hover:border-primary hover:shadow-sm transition-all flex items-center justify-center text-center">
+                <div className="border-border hover:border-primary flex h-full items-center justify-center rounded-lg border p-6 text-center transition-all hover:shadow-sm">
                   <span className="text-lg font-medium">{item.link.label}</span>
                 </div>
               </Link>

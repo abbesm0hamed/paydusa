@@ -6,7 +6,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@ecommerce/ui/components/select";
+} from "@paydusa/design-system/components/select";
 import React, { useState } from "react";
 
 import { useTheme } from "..";
@@ -36,7 +36,7 @@ export const ThemeSelector: React.FC = () => {
     <Select onValueChange={onThemeChange} value={value}>
       <SelectTrigger
         aria-label="Select a theme"
-        className="w-full bg-transparent gap-2 p-0 border-none"
+        className="w-full gap-2 border-none bg-transparent p-0"
       >
         <SelectValue placeholder="Theme" />
       </SelectTrigger>

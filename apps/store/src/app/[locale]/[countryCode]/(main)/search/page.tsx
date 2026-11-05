@@ -3,17 +3,17 @@ import type { Metadata } from "next/types";
 import { getPayload } from "payload";
 import React from "react";
 
-import { CardPostData } from "@/components/Card";
+import type { CardPostData } from "@/components/Card";
 import { CollectionArchive } from "@/components/CollectionArchive";
 import { Search } from "@/search/Component";
 
 import PageClient from "./page.client";
 
-type Args = {
+interface Args {
   searchParams: Promise<{
     q: string;
   }>;
-};
+}
 export default async function Page({
   searchParams: searchParamsPromise,
 }: Args) {
@@ -25,10 +25,10 @@ export default async function Page({
     depth: 1,
     limit: 12,
     select: {
-      title: true,
-      slug: true,
       categories: true,
       meta: true,
+      slug: true,
+      title: true,
     },
     // pagination: false reduces overhead if you don't need totalDocs
     pagination: false,
@@ -69,7 +69,7 @@ export default async function Page({
         <div className="prose dark:prose-invert max-w-none text-center">
           <h1 className="mb-8 lg:mb-16">Search</h1>
 
-          <div className="max-w-[50rem] mx-auto">
+          <div className="mx-auto max-w-[50rem]">
             <Search />
           </div>
         </div>

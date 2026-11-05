@@ -57,6 +57,7 @@ For example, to execute the workflow in an API route:
 
 ```ts
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework";
+
 import myWorkflow from "../../../workflows/hello-world";
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {

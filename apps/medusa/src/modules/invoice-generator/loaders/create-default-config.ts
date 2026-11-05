@@ -1,9 +1,9 @@
-import {
+import type {
   LoaderOptions,
   IMedusaInternalService,
 } from "@medusajs/framework/types";
 
-import { InvoiceConfig } from "../models/invoice-config";
+import type { InvoiceConfig } from "../models/invoice-config";
 
 export default async function createDefaultConfigLoader({
   container,
@@ -18,9 +18,9 @@ export default async function createDefaultConfigLoader({
   }
 
   await service.create({
-    company_name: "Paydusa",
     company_address: "123 Paydusa, TN, 37201",
-    company_phone: "+216 ** *** ***",
     company_email: "admin@paydusa.com",
+    company_name: "Paydusa",
+    company_phone: "+216 ** *** ***",
   });
 }

@@ -30,23 +30,19 @@ export const link: LinkType = ({
   overrides = {},
 } = {}) => {
   const linkResult: GroupField = {
-    name: "link",
-    type: "group",
     admin: {
       hideGutter: true,
     },
     fields: [
       {
-        type: "row",
         fields: [
           {
-            name: "type",
-            type: "radio",
             admin: {
               layout: "horizontal",
               width: "50%",
             },
             defaultValue: "reference",
+            name: "type",
             options: [
               {
                 label: "Internal link",
@@ -57,10 +53,9 @@ export const link: LinkType = ({
                 value: "custom",
               },
             ],
+            type: "radio",
           },
           {
-            name: "newTab",
-            type: "checkbox",
             admin: {
               style: {
                 alignSelf: "flex-end",
@@ -68,35 +63,42 @@ export const link: LinkType = ({
               width: "50%",
             },
             label: "Open in new tab",
+            name: "newTab",
+            type: "checkbox",
           },
         ],
+        type: "row",
       },
     ],
+    name: "link",
+    type: "group",
   };
 
   const linkTypes: Field[] = [
     {
-      name: "reference",
-      type: "relationship",
       admin: {
         condition: (_, siblingData) => siblingData?.type === "reference",
       },
       label: "Document to link to",
+      name: "reference",
       relationTo: ["pages", "posts"],
       required: true,
+      type: "relationship",
     },
     {
-      name: "url",
-      type: "text",
       admin: {
         condition: (_, siblingData) => siblingData?.type === "custom",
       },
       label: "Custom URL",
+      name: "url",
       required: true,
+      type: "text",
     },
   ];
 
-  if (!disableLabel) {
+  if (disableLabel) {
+    linkResult.fields = [...linkResult.fields, ...linkTypes];
+  } else {
     linkTypes.map((linkType) => ({
       ...linkType,
       admin: {
@@ -106,22 +108,20 @@ export const link: LinkType = ({
     }));
 
     linkResult.fields.push({
-      type: "row",
       fields: [
         ...linkTypes,
         {
-          name: "label",
-          type: "text",
           admin: {
             width: "50%",
           },
           label: "Label",
+          name: "label",
           required: true,
+          type: "text",
         },
       ],
+      type: "row",
     });
-  } else {
-    linkResult.fields = [...linkResult.fields, ...linkTypes];
   }
 
   if (appearances !== false) {
@@ -137,13 +137,13 @@ export const link: LinkType = ({
     }
 
     linkResult.fields.push({
-      name: "appearance",
-      type: "select",
       admin: {
         description: "Choose how the link should be rendered.",
       },
       defaultValue: "default",
+      name: "appearance",
       options: appearanceOptionsToUse,
+      type: "select",
     });
   }
 

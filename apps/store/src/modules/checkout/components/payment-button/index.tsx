@@ -2,7 +2,7 @@
 
 import { isManual, isStripe } from "@lib/constants";
 import { placeOrder } from "@lib/data/cart";
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import { Button } from "@medusajs/ui";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { useParams } from "next/navigation";
@@ -10,10 +10,10 @@ import React, { useState } from "react";
 
 import ErrorMessage from "../error-message";
 
-type PaymentButtonProps = {
+interface PaymentButtonProps {
   cart: HttpTypes.StoreCart;
   "data-testid": string;
-};
+}
 
 const PaymentButton: React.FC<PaymentButtonProps> = ({
   cart,
@@ -30,7 +30,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
   const paymentSession = cart.payment_collection?.payment_sessions?.[0];
 
   switch (true) {
-    case isStripe(paymentSession?.provider_id):
+    case isStripe(paymentSession?.provider_id): {
       return (
         <StripePaymentButton
           notReady={notReady}
@@ -39,7 +39,8 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
           locale={locale}
         />
       );
-    case isManual(paymentSession?.provider_id):
+    }
+    case isManual(paymentSession?.provider_id): {
       return (
         <ManualTestPaymentButton
           notReady={notReady}
@@ -47,8 +48,10 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
           locale={locale}
         />
       );
-    default:
+    }
+    default: {
       return <Button disabled>Select a payment method</Button>;
+    }
   }
 };
 
@@ -68,8 +71,8 @@ const StripePaymentButton = ({
 
   const onPaymentCompleted = async () => {
     await placeOrder(locale)
-      .catch((err) => {
-        setErrorMessage(err.message);
+      .catch((error) => {
+        setErrorMessage(error.message);
       })
       .finally(() => {
         setSubmitting(false);
@@ -97,12 +100,7 @@ const StripePaymentButton = ({
     await stripe
       .confirmCardPayment(session?.data.client_secret as string, {
         payment_method: {
-          card: card,
           billing_details: {
-            name:
-              cart.billing_address?.first_name +
-              " " +
-              cart.billing_address?.last_name,
             address: {
               city: cart.billing_address?.city ?? undefined,
               country: cart.billing_address?.country_code ?? undefined,
@@ -112,8 +110,12 @@ const StripePaymentButton = ({
               state: cart.billing_address?.province ?? undefined,
             },
             email: cart.email,
+            name: `${cart.billing_address?.first_name} ${
+              cart.billing_address?.last_name
+            }`,
             phone: cart.billing_address?.phone ?? undefined,
           },
+          card,
         },
       })
       .then(({ error, paymentIntent }) => {
@@ -173,8 +175,8 @@ const ManualTestPaymentButton = ({
 
   const onPaymentCompleted = async () => {
     await placeOrder(locale)
-      .catch((err) => {
-        setErrorMessage(err.message);
+      .catch((error) => {
+        setErrorMessage(error.message);
       })
       .finally(() => {
         setSubmitting(false);

@@ -1,7 +1,7 @@
 "use server";
 
 import { sdk } from "@lib/config";
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 
 import { getAuthHeaders, getCacheOptions } from "./cookies";
 
@@ -18,21 +18,19 @@ export const listCartShippingMethods = async (cartId: string) => {
     .fetch<HttpTypes.StoreShippingOptionListResponse>(
       `/store/shipping-options`,
       {
+        cache: "force-cache",
+        headers,
         method: "GET",
+        next,
         query: {
           cart_id: cartId,
           fields:
             "+service_zone.fulfllment_set.type,*service_zone.fulfillment_set.location.address",
         },
-        headers,
-        next,
-        cache: "force-cache",
       }
     )
     .then(({ shipping_options }) => shipping_options)
-    .catch(() => {
-      return null;
-    });
+    .catch(() => null);
 };
 
 export const calculatePriceForShippingOption = async (
@@ -58,14 +56,12 @@ export const calculatePriceForShippingOption = async (
     .fetch<{ shipping_option: HttpTypes.StoreCartShippingOption }>(
       `/store/shipping-options/${optionId}/calculate`,
       {
-        method: "POST",
         body,
         headers,
+        method: "POST",
         next,
       }
     )
     .then(({ shipping_option }) => shipping_option)
-    .catch((e) => {
-      return null;
-    });
+    .catch((error) => null);
 };

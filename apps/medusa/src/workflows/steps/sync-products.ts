@@ -1,12 +1,12 @@
-import { ProductDTO } from "@medusajs/framework/types";
+import type { ProductDTO } from "@medusajs/framework/types";
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
 
 import { ALGOLIA_MODULE } from "../../modules/algolia";
-import AlgoliaModuleService from "../../modules/algolia/service";
+import type AlgoliaModuleService from "../../modules/algolia/service";
 
-export type SyncProductsStepInput = {
+export interface SyncProductsStepInput {
   products: ProductDTO[];
-};
+}
 
 export const syncProductsStep = createStep(
   "sync-products",
@@ -29,8 +29,8 @@ export const syncProductsStep = createStep(
     );
 
     return new StepResponse(undefined, {
-      newProducts: newProducts.map((product) => product.id),
       existingProducts,
+      newProducts: newProducts.map((product) => product.id),
     });
   },
   async (input, { container }) => {

@@ -168,6 +168,7 @@ pnpm add @tanstack/react-query@[exact-version]
 
 ```tsx
 import { useQuery } from "@tanstack/react-query";
+
 import { sdk } from "../lib/client";
 
 const { data, isLoading, error } = useQuery({
@@ -232,8 +233,8 @@ const { data: displayProducts } = useQuery({
 ### Basic Mutation
 
 ```tsx
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@medusajs/ui";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const queryClient = useQueryClient();
 
@@ -452,9 +453,10 @@ queryFn: () => sdk.admin.product.list({ q: searchValue });
 ## Complete Example: Widget with Separate Queries
 
 ```tsx
+import { Container, Heading, Button, FocusModal, toast } from "@medusajs/ui";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useMemo } from "react";
-import { Container, Heading, Button, FocusModal, toast } from "@medusajs/ui";
+
 import { sdk } from "../lib/client";
 
 const RelatedProductsWidget = ({ data: product }) => {

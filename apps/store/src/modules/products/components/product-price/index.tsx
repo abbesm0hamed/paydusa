@@ -1,5 +1,5 @@
 import { getProductPrice } from "@lib/util/get-product-price";
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import { clx } from "@medusajs/ui";
 
 export default function ProductPrice({
@@ -17,11 +17,11 @@ export default function ProductPrice({
   const selectedPrice = variant ? variantPrice : cheapestPrice;
 
   if (!selectedPrice) {
-    return <div className="block w-32 h-9 bg-gray-100 animate-pulse" />;
+    return <div className="block h-9 w-32 animate-pulse bg-gray-100" />;
   }
 
   return (
-    <div className="flex flex-col text-ui-fg-base">
+    <div className="text-ui-fg-base flex flex-col">
       <span
         className={clx("text-xl-semi", {
           "text-ui-fg-interactive": selectedPrice.price_type === "sale",

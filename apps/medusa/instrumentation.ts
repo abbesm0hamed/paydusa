@@ -9,8 +9,8 @@ import {
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
-  tracesSampleRate: 1.0,
-  // @ts-ignore
+  tracesSampleRate: 1,
+  // @ts-expect-error
   instrumenter: "otel",
 });
 
@@ -18,14 +18,14 @@ otelApi.propagation.setGlobalPropagator(new SentryPropagator());
 
 export function register() {
   registerOtel({
+    instrument: {
+      db: true,
+      http: true,
+      query: true,
+      workflows: true,
+    },
     serviceName: "medusa",
     spanProcessors: [new SentrySpanProcessor()],
     traceExporter: new OTLPTraceExporter(),
-    instrument: {
-      http: true,
-      workflows: true,
-      query: true,
-      db: true,
-    },
   });
 }

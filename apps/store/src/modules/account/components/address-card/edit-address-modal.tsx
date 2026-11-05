@@ -6,7 +6,7 @@ import {
 } from "@lib/data/customer";
 import useToggleState from "@lib/hooks/use-toggle-state";
 import { PencilSquare as Edit, Trash } from "@medusajs/icons";
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import { Button, Heading, Text, clx } from "@medusajs/ui";
 import CountrySelect from "@modules/checkout/components/country-select";
 import { SubmitButton } from "@modules/checkout/components/submit-button";
@@ -15,11 +15,11 @@ import Modal from "@modules/common/components/modal";
 import Spinner from "@modules/common/icons/spinner";
 import React, { useEffect, useState, useActionState } from "react";
 
-type EditAddressProps = {
+interface EditAddressProps {
   region: HttpTypes.StoreRegion;
   address: HttpTypes.StoreCustomerAddress;
   isActive?: boolean;
-};
+}
 
 const EditAddress: React.FC<EditAddressProps> = ({
   region,
@@ -31,9 +31,9 @@ const EditAddress: React.FC<EditAddressProps> = ({
   const { state, open, close: closeModal } = useToggleState(false);
 
   const [formState, formAction] = useActionState(updateCustomerAddress, {
-    success: false,
-    error: null,
     addressId: address.id,
+    error: null,
+    success: false,
   });
 
   const close = () => {
@@ -73,7 +73,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
       >
         <div className="flex flex-col">
           <Heading
-            className="text-left text-base-semi"
+            className="text-base-semi text-left"
             data-testid="address-name"
           >
             {address.first_name} {address.last_name}
@@ -86,7 +86,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
               {address.company}
             </Text>
           )}
-          <Text className="flex flex-col text-left text-base-regular mt-2">
+          <Text className="text-base-regular mt-2 flex flex-col text-left">
             <span data-testid="address-address">
               {address.address_1}
               {address.address_2 && <span>, {address.address_2}</span>}
@@ -210,13 +210,13 @@ const EditAddress: React.FC<EditAddressProps> = ({
               />
             </div>
             {formState.error && (
-              <div className="text-rose-500 text-small-regular py-2">
+              <div className="text-small-regular py-2 text-rose-500">
                 {formState.error}
               </div>
             )}
           </Modal.Body>
           <Modal.Footer>
-            <div className="flex gap-3 mt-6">
+            <div className="mt-6 flex gap-3">
               <Button
                 type="reset"
                 variant="secondary"

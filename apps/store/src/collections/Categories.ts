@@ -6,7 +6,6 @@ import { anyone } from "../access/anyone";
 import { authenticated } from "../access/authenticated";
 
 export const Categories: CollectionConfig = {
-  slug: "categories",
   access: {
     create: authenticated,
     delete: authenticated,
@@ -16,13 +15,16 @@ export const Categories: CollectionConfig = {
   admin: {
     useAsTitle: "title",
   },
+  authorship: false,
   fields: [
     {
-      name: "title",
-      type: "text",
       localized: true,
+      name: "title",
       required: true,
+      type: "text",
     },
     ...slugField(),
   ],
+  slug: "categories",
+  versions: false,
 };

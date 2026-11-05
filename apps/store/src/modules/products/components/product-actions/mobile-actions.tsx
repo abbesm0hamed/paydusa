@@ -2,7 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import useToggleState from "@lib/hooks/use-toggle-state";
 import { getProductPrice } from "@lib/util/get-product-price";
 import { isSimpleProduct } from "@lib/util/product";
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import { Button, clx } from "@medusajs/ui";
 import ChevronDown from "@modules/common/icons/chevron-down";
 import X from "@modules/common/icons/x";
@@ -10,7 +10,7 @@ import React, { Fragment, useMemo } from "react";
 
 import OptionSelect from "./option-select";
 
-type MobileActionsProps = {
+interface MobileActionsProps {
   product: HttpTypes.StoreProduct;
   variant?: HttpTypes.StoreProductVariant;
   options: Record<string, string | undefined>;
@@ -20,7 +20,7 @@ type MobileActionsProps = {
   isAdding?: boolean;
   show: boolean;
   optionsDisabled: boolean;
-};
+}
 
 const MobileActions: React.FC<MobileActionsProps> = ({
   product,
@@ -36,7 +36,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
   const { state, open, close } = useToggleState();
 
   const price = getProductPrice({
-    product: product,
+    product,
     variantId: variant?.id,
   });
 
@@ -69,17 +69,17 @@ const MobileActions: React.FC<MobileActionsProps> = ({
           leaveTo="opacity-0"
         >
           <div
-            className="bg-white flex flex-col gap-y-3 justify-center items-center text-large-regular p-4 h-full w-full border-t border-gray-200"
+            className="text-large-regular flex h-full w-full flex-col items-center justify-center gap-y-3 border-t border-gray-200 bg-white p-4"
             data-testid="mobile-actions"
           >
             <div className="flex items-center gap-x-2">
               <span data-testid="mobile-title">{product.title}</span>
               <span>—</span>
               {selectedPrice ? (
-                <div className="flex items-end gap-x-2 text-ui-fg-base">
+                <div className="text-ui-fg-base flex items-end gap-x-2">
                   {selectedPrice.price_type === "sale" && (
                     <p>
-                      <span className="line-through text-small-regular">
+                      <span className="text-small-regular line-through">
                         {selectedPrice.original_price}
                       </span>
                     </p>
@@ -109,7 +109,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                   className="w-full"
                   data-testid="mobile-actions-button"
                 >
-                  <div className="flex items-center justify-between w-full">
+                  <div className="flex w-full items-center justify-between">
                     <span>
                       {variant
                         ? Object.values(options).join(" / ")
@@ -126,11 +126,11 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                 isLoading={isAdding}
                 data-testid="mobile-cart-button"
               >
-                {!variant
-                  ? "Select variant"
-                  : !inStock
-                    ? "Out of stock"
-                    : "Add to cart"}
+                {variant
+                  ? inStock
+                    ? "Add to cart"
+                    : "Out of stock"
+                  : "Select variant"}
               </Button>
             </div>
           </div>
@@ -147,11 +147,11 @@ const MobileActions: React.FC<MobileActionsProps> = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-gray-700 bg-opacity-75 backdrop-blur-sm" />
+            <div className="bg-opacity-75 fixed inset-0 bg-gray-700 backdrop-blur-sm" />
           </Transition.Child>
 
-          <div className="fixed bottom-0 inset-x-0">
-            <div className="flex min-h-full h-full items-center justify-center text-center">
+          <div className="fixed inset-x-0 bottom-0">
+            <div className="flex h-full min-h-full items-center justify-center text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -162,13 +162,13 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                 leaveTo="opacity-0"
               >
                 <Dialog.Panel
-                  className="w-full h-full transform overflow-hidden text-left flex flex-col gap-y-3"
+                  className="flex h-full w-full transform flex-col gap-y-3 overflow-hidden text-left"
                   data-testid="mobile-actions-modal"
                 >
-                  <div className="w-full flex justify-end pr-6">
+                  <div className="flex w-full justify-end pr-6">
                     <button
                       onClick={close}
-                      className="bg-white w-12 h-12 rounded-full text-ui-fg-base flex justify-center items-center"
+                      className="text-ui-fg-base flex h-12 w-12 items-center justify-center rounded-full bg-white"
                       data-testid="close-modal-button"
                     >
                       <X />
@@ -177,19 +177,17 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                   <div className="bg-white px-6 py-12">
                     {(product.variants?.length ?? 0) > 1 && (
                       <div className="flex flex-col gap-y-6">
-                        {(product.options || []).map((option) => {
-                          return (
-                            <div key={option.id}>
-                              <OptionSelect
-                                option={option}
-                                current={options[option.id]}
-                                updateOption={updateOptions}
-                                title={option.title ?? ""}
-                                disabled={optionsDisabled}
-                              />
-                            </div>
-                          );
-                        })}
+                        {(product.options || []).map((option) => (
+                          <div key={option.id}>
+                            <OptionSelect
+                              option={option}
+                              current={options[option.id]}
+                              updateOption={updateOptions}
+                              title={option.title ?? ""}
+                              disabled={optionsDisabled}
+                            />
+                          </div>
+                        ))}
                       </div>
                     )}
                   </div>

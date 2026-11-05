@@ -33,6 +33,9 @@ See the main SKILL.md for full pnpm setup instructions.
 
 ```tsx
 import { defineWidgetConfig } from "@medusajs/admin-sdk";
+import { DetailWidgetProps } from "@medusajs/framework/types";
+import { PencilSquare } from "@medusajs/icons";
+import { HttpTypes } from "@medusajs/types";
 import {
   Container,
   Heading,
@@ -46,12 +49,10 @@ import {
   createDataTableColumnHelper,
   useDataTable,
 } from "@medusajs/ui";
-import { HttpTypes } from "@medusajs/types";
-import { useMemo, useState } from "react";
-import { DetailWidgetProps } from "@medusajs/framework/types";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
+
 import { sdk } from "../lib/client";
-import { PencilSquare } from "@medusajs/icons";
 
 const ProductRelatedProductsWidget = ({
   data: product,
@@ -281,7 +282,7 @@ const useColumns = () => {
 };
 
 export const config = defineWidgetConfig({
-  zone: "product.details.after",
+  zone: "product.details",
 });
 
 export default ProductRelatedProductsWidget;
@@ -365,15 +366,9 @@ const table = useDataTable({
   getRowId: (row) => row.id,
   rowCount: data?.count || 0,
   isLoading,
-  rowSelection: {
-    /* config */
-  },
-  search: {
-    /* config */
-  },
-  pagination: {
-    /* config */
-  },
+  rowSelection: {/* config */},
+  search: {/* config */},
+  pagination: {/* config */},
 });
 ```
 

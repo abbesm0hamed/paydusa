@@ -9,15 +9,12 @@ import type { Field } from "payload";
 import { linkGroup } from "@/fields/linkGroup";
 
 export const hero: Field = {
-  name: "hero",
-  type: "group",
   fields: [
     {
-      name: "type",
-      type: "select",
       defaultValue: "flickeringImpact",
       label: "Type",
       localized: true,
+      name: "type",
       options: [
         {
           label: "None",
@@ -41,22 +38,21 @@ export const hero: Field = {
         },
       ],
       required: true,
+      type: "select",
     },
     {
-      name: "richText",
-      type: "richText",
-      localized: true,
       editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ["h1", "h2", "h3", "h4"] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-          ];
-        },
+        features: ({ rootFeatures }) => [
+          ...rootFeatures,
+          HeadingFeature({ enabledHeadingSizes: ["h1", "h2", "h3", "h4"] }),
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+        ],
       }),
       label: false,
+      localized: true,
+      name: "richText",
+      type: "richText",
     },
     linkGroup({
       overrides: {
@@ -64,15 +60,17 @@ export const hero: Field = {
       },
     }),
     {
-      name: "media",
-      type: "upload",
       admin: {
         condition: (_, { type } = {}) =>
           ["highImpact", "mediumImpact"].includes(type),
       },
+      name: "media",
       relationTo: "media",
       required: true,
+      type: "upload",
     },
   ],
   label: false,
+  name: "hero",
+  type: "group",
 };

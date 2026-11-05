@@ -1,11 +1,11 @@
 "use server";
 
 import { sdk } from "@lib/config";
-import { sortProducts } from "@lib/util/sort-products";
-import { HttpTypes } from "@medusajs/types";
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products";
+import { filterProductsByPrice, sortProducts } from "@lib/util/sort-products";
+import type { HttpTypes } from "@medusajs/types";
+import type { SortOptions } from "@modules/store/components/refinement-list/sort-products";
 
-import { getAuthHeaders, getCacheOptions } from "./cookies";
+import { getAuthHeaders } from "./cookies";
 import { getRegion, retrieveRegion } from "./regions";
 
 export const listProducts = async ({
@@ -41,8 +41,8 @@ export const listProducts = async ({
 
   if (!region) {
     return {
-      response: { products: [], count: 0 },
       nextPage: null,
+      response: { count: 0, products: [] },
     };
   }
 
@@ -50,58 +50,47 @@ export const listProducts = async ({
     ...(await getAuthHeaders()),
   };
 
-  const next = {
-    ...(await getCacheOptions("products")),
-  };
-
-  return sdk.client
-    .fetch<{ products: HttpTypes.StoreProduct[]; count: number }>(
-      `/store/products`,
+  try {
+    const { products, count } = await sdk.store.product.list(
       {
-        method: "GET",
-        query: {
-          limit,
-          offset,
-          region_id: region?.id,
-          fields:
-            "*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags,*payload_product",
-          ...queryParams,
-        },
-        headers,
-        // cache: "force-cache",
-        // next: {
-        //   revalidate: 60, // Revalidate every 60 seconds
-        // }
-      }
-    )
-    .then(({ products, count }) => {
-      const nextPage = count > offset + limit ? pageParam + 1 : null;
+        fields:
+          "*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags",
+        limit,
+        offset,
+        region_id: region.id,
+        ...queryParams,
+      },
+      headers
+    );
 
-      return {
-        response: {
-          products,
-          count,
-        },
-        nextPage: nextPage,
-        queryParams,
-      };
-    });
+    return {
+      nextPage: count > offset + limit ? pageParam + 1 : null,
+      queryParams,
+      response: { count, products },
+    };
+  } catch {
+    return {
+      nextPage: null,
+      queryParams,
+      response: { count: 0, products: [] },
+    };
+  }
 };
 
-/**
- * This will fetch 100 products to the Next.js cache and sort them based on the sortBy parameter.
- * It will then return the paginated products based on the page and limit parameters.
- */
 export const listProductsWithSort = async ({
   page = 0,
   queryParams,
   sortBy = "created_at",
   countryCode,
+  priceFrom,
+  priceTo,
 }: {
   page?: number;
   queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams;
   sortBy?: SortOptions;
   countryCode: string;
+  priceFrom?: number;
+  priceTo?: number;
 }): Promise<{
   response: { products: HttpTypes.StoreProduct[]; count: number };
   nextPage: number | null;
@@ -110,30 +99,33 @@ export const listProductsWithSort = async ({
   const limit = queryParams?.limit || 12;
 
   const {
-    response: { products, count },
+    response: { products },
   } = await listProducts({
+    countryCode,
     pageParam: 0,
     queryParams: {
       ...queryParams,
       limit: 100,
     },
-    countryCode,
   });
 
-  const sortedProducts = sortProducts(products, sortBy);
+  const priceFiltered = filterProductsByPrice(products, priceFrom, priceTo);
+
+  const sortedProducts = sortProducts(priceFiltered, sortBy);
 
   const pageParam = (page - 1) * limit;
 
-  const nextPage = count > pageParam + limit ? pageParam + limit : null;
+  const nextPage =
+    sortedProducts.length > pageParam + limit ? sortedProducts.length : null;
 
   const paginatedProducts = sortedProducts.slice(pageParam, pageParam + limit);
 
   return {
-    response: {
-      products: paginatedProducts,
-      count,
-    },
     nextPage,
     queryParams,
+    response: {
+      count: priceFiltered.length,
+      products: paginatedProducts,
+    },
   };
 };

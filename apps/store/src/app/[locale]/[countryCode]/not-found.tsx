@@ -1,4 +1,6 @@
-import { Button } from "@ecommerce/ui/components/button";
+"use client";
+
+import { Button } from "@paydusa/design-system/components/button";
 import { useTranslations } from "next-intl";
 import React from "react";
 

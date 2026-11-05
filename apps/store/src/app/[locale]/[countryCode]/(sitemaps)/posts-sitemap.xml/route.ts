@@ -15,19 +15,19 @@ async function getPostsSitemap() {
 
   const results = await payload.find({
     collection: "posts",
-    overrideAccess: false,
-    draft: false,
     depth: 0,
+    draft: false,
     limit: 1000,
+    overrideAccess: false,
     pagination: false,
+    select: {
+      slug: true,
+      updatedAt: true,
+    },
     where: {
       _status: {
         equals: "published",
       },
-    },
-    select: {
-      slug: true,
-      updatedAt: true,
     },
   });
 
@@ -35,8 +35,8 @@ async function getPostsSitemap() {
     ? results.docs
         .filter((post) => Boolean(post?.slug))
         .map((post) => ({
-          loc: `${SITE_URL}/posts/${post?.slug}`,
           lastmod: post.updatedAt,
+          loc: `${SITE_URL}/posts/${post?.slug}`,
         }))
     : [];
 

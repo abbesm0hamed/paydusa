@@ -2,19 +2,19 @@ import { listProducts } from "@lib/data/products";
 import { getRegion, listRegions } from "@lib/data/regions";
 import type { HttpTypes } from "@medusajs/types";
 import ProductTemplate from "@modules/products/templates";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 export const instant = false;
 
-type Props = {
+interface Props {
   params: Promise<{ countryCode: string; handle: string }>;
-};
+}
 
 export async function generateStaticParams() {
   try {
     const countryCodes = await listRegions().then((regions) =>
-      regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat()
+      regions?.flatMap((r) => r.countries?.map((c) => c.iso_2))
     );
 
     if (!countryCodes) {
@@ -24,7 +24,7 @@ export async function generateStaticParams() {
     const promises = countryCodes.map(async (country) => {
       const { response } = await listProducts({
         countryCode: country,
-        queryParams: { limit: 100, fields: "handle" },
+        queryParams: { fields: "handle", limit: 100 },
       });
 
       return {
@@ -72,13 +72,13 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${product.title} | Medusa Store`,
     description: `${product.title}`,
     openGraph: {
-      title: `${product.title} | Medusa Store`,
       description: `${product.title}`,
       images: product.thumbnail ? [product.thumbnail] : [],
+      title: `${product.title} | Medusa Store`,
     },
+    title: `${product.title} | Medusa Store`,
   };
 }
 

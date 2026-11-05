@@ -1,16 +1,16 @@
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
 
 import { INVOICE_MODULE } from "../../modules/invoice-generator";
-import { InvoiceStatus } from "../../modules/invoice-generator/models/invoice";
+import type { InvoiceStatus } from "../../modules/invoice-generator/models/invoice";
 
-type StepInput = {
+interface StepInput {
   selector: {
     order_id: string;
   };
   data: {
     status: InvoiceStatus;
   };
-};
+}
 
 export const updateInvoicesStep = createStep(
   "update-invoices",
@@ -20,8 +20,8 @@ export const updateInvoicesStep = createStep(
     const prevData = await invoiceGeneratorService.listInvoices(selector);
 
     const updatedInvoices = await invoiceGeneratorService.updateInvoices({
-      selector,
       data,
+      selector,
     });
 
     return new StepResponse(updatedInvoices, prevData);

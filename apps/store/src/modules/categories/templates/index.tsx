@@ -1,28 +1,49 @@
-import { HttpTypes } from "@medusajs/types";
+import type { OptionValueGroup } from "@lib/data/product-options";
+import type { HttpTypes } from "@medusajs/types";
 import InteractiveLink from "@modules/common/components/interactive-link";
 import LocalizedClientLink from "@modules/common/components/localized-client-link";
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid";
 import RefinementList from "@modules/store/components/refinement-list";
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products";
+import type { SortOptions } from "@modules/store/components/refinement-list/sort-products";
 import PaginatedProducts from "@modules/store/templates/paginated-products";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+
+import type { FilterOption } from "../../../types/filters";
 
 export default function CategoryTemplate({
   category,
   sortBy,
   page,
   countryCode,
+  subcategories,
+  types,
+  tags,
+  optionValues,
+  typeId,
+  tagId,
+  priceFrom,
+  priceTo,
 }: {
   category: HttpTypes.StoreProductCategory;
   sortBy?: SortOptions;
   page?: string;
   countryCode: string;
+  subcategories?: FilterOption[];
+  types?: FilterOption[];
+  tags?: FilterOption[];
+  optionValues?: Record<string, OptionValueGroup>;
+  typeId?: string[];
+  tagId?: string[];
+  priceFrom?: string;
+  priceTo?: string;
 }) {
-  const pageNumber = page ? parseInt(page) : 1;
+  const pageNumber = page ? Number.parseInt(page) : 1;
   const sort = sortBy || "created_at";
 
-  if (!category || !countryCode) notFound();
+  if (!category || !countryCode) {
+    notFound();
+  }
 
   const parents = [] as HttpTypes.StoreProductCategory[];
 
@@ -37,12 +58,18 @@ export default function CategoryTemplate({
 
   return (
     <div
-      className="flex flex-col small:flex-row small:items-start py-6 content-container"
+      className="small:flex-row small:items-start content-container flex flex-col py-6"
       data-testid="category-container"
     >
-      <RefinementList sortBy={sort} data-testid="sort-by-container" />
+      <RefinementList
+        sortBy={sort}
+        categories={subcategories}
+        types={types}
+        tags={tags}
+        optionValues={optionValues}
+      />
       <div className="w-full">
-        <div className="flex flex-row mb-8 text-2xl-semi gap-4">
+        <div className="text-2xl-semi mb-8 flex flex-row gap-4">
           {parents &&
             parents.map((parent) => (
               <span key={parent.id} className="text-ui-fg-subtle">
@@ -59,12 +86,12 @@ export default function CategoryTemplate({
           <h1 data-testid="category-page-title">{category.name}</h1>
         </div>
         {category.description && (
-          <div className="mb-8 text-base-regular">
+          <div className="text-base-regular mb-8">
             <p>{category.description}</p>
           </div>
         )}
         {category.category_children && (
-          <div className="mb-8 text-base-large">
+          <div className="text-base-large mb-8">
             <ul className="grid grid-cols-1 gap-2">
               {category.category_children?.map((c) => (
                 <li key={c.id}>
@@ -88,6 +115,10 @@ export default function CategoryTemplate({
             page={pageNumber}
             categoryId={category.id}
             countryCode={countryCode}
+            typeId={typeId}
+            tagId={tagId}
+            priceFrom={priceFrom}
+            priceTo={priceTo}
           />
         </Suspense>
       </div>

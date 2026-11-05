@@ -20,7 +20,7 @@ const Review = ({ cart }: { cart: any }) => {
 
   return (
     <div className="bg-white">
-      <div className="flex flex-row items-center justify-between mb-6">
+      <div className="mb-6 flex flex-row items-center justify-between">
         <Heading
           level="h2"
           className={clx(
@@ -35,7 +35,7 @@ const Review = ({ cart }: { cart: any }) => {
       </div>
       {isOpen && previousStepsCompleted && (
         <>
-          <div className="flex items-start gap-x-1 w-full mb-6">
+          <div className="mb-6 flex w-full items-start gap-x-1">
             <div className="w-full">
               <Text className="txt-medium-plus text-ui-fg-base mb-1">
                 By clicking the Place Order button, you confirm that you have
