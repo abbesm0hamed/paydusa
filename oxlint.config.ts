@@ -3,8 +3,10 @@ import core from "ultracite/oxlint/core";
 import next from "ultracite/oxlint/next";
 
 export default defineConfig({
+  env: core.env,
   extends: [core, next],
   ignorePatterns: [
+    ...(core.ignorePatterns ?? []),
     // Vendor-mirrored agent skills + downloaded Next.js docs: upstream
     // artifacts whose reformatted/edited content breaks skills-lock hashes.
     ".agents/**",
