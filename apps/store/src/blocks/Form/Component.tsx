@@ -16,13 +16,13 @@ import { getClientSideURL } from "@/utilities/getURL";
 
 import { fields } from "./fields";
 
-export type FormBlockType = {
+export interface FormBlockType {
   blockName?: string;
   blockType?: "formBlock";
   enableIntro: boolean;
   form: FormType;
   introContent?: SerializedEditorState;
-};
+}
 
 export const FormBlock: React.FC<
   {
@@ -113,10 +113,12 @@ export const FormBlock: React.FC<
 
             const redirectUrl = url;
 
-            if (redirectUrl) router.push(redirectUrl);
+            if (redirectUrl) {
+              router.push(redirectUrl);
+            }
           }
-        } catch (err) {
-          console.warn(err);
+        } catch (error_) {
+          console.warn(error_);
           setIsLoading(false);
           setError({
             message: "Something went wrong.",

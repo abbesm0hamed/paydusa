@@ -1,5 +1,5 @@
 import { Modules } from "@medusajs/framework/utils";
-import { SubscriberArgs, type SubscriberConfig } from "@medusajs/medusa";
+import type { SubscriberArgs, SubscriberConfig } from "@medusajs/medusa";
 
 export default async function resetPasswordTokenHandler({
   event: {
@@ -16,21 +16,21 @@ export default async function resetPasswordTokenHandler({
     urlPrefix = config.admin.storefrontUrl || "https://storefront.com";
   } else {
     const backendUrl =
-      config.admin.backendUrl !== "/"
-        ? config.admin.backendUrl
-        : "http://localhost:9000";
+      config.admin.backendUrl === "/"
+        ? "http://localhost:9000"
+        : config.admin.backendUrl;
     const adminPath = config.admin.path;
     urlPrefix = `${backendUrl}${adminPath}`;
   }
 
   await notificationModuleService.createNotifications({
-    to: email,
     channel: "email",
-    template: "password-reset",
     data: {
       // a URL to a frontend application
       reset_url: `${urlPrefix}/reset-password?token=${token}&email=${email}`,
     },
+    template: "password-reset",
+    to: email,
   });
 }
 

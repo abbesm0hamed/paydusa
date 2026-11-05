@@ -27,7 +27,7 @@ export default async function ProductPreview({
           size="full"
           isFeatured={isFeatured}
         />
-        <div className="flex txt-compact-medium mt-4 justify-between">
+        <div className="txt-compact-medium mt-4 flex justify-between">
           <Text className="text-ui-fg-subtle" data-testid="product-title">
             {product.title}
           </Text>

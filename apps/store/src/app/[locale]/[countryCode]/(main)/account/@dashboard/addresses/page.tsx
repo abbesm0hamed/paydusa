@@ -1,12 +1,12 @@
 import { retrieveCustomer } from "@lib/data/customer";
 import { getRegion } from "@lib/data/regions";
 import AddressBook from "@modules/account/components/address-book";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Addresses",
   description: "View your addresses",
+  title: "Addresses",
 };
 
 export default async function Addresses(props: {

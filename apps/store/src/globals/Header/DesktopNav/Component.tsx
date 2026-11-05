@@ -15,15 +15,15 @@ export async function Header({ locale }: { locale: TypedLocale }) {
   const categories = await listCategories({ limit: 100 });
 
   return (
-    <div className="sticky top-0 inset-x-0 z-50 group">
-      <header className="relative bg-background dark:bg-background border-b duration-200 border-border">
+    <div className="group sticky inset-x-0 top-0 z-50">
+      <header className="bg-background dark:bg-background border-border relative border-b duration-200">
         {/* First Line: Logo, Navigation, Language & Sign Up */}
-        <div className="h-12 mx-auto">
-          <div className="content-container flex items-center justify-between w-full h-full">
-            <div className="flex-1 basis-0 h-full flex items-center">
+        <div className="mx-auto h-12">
+          <div className="content-container flex h-full w-full items-center justify-between">
+            <div className="flex h-full flex-1 basis-0 items-center">
               <LocalizedClientLink
                 href="/"
-                className="txt-compact-xlarge-plus text-foreground hover:text-foreground/80 uppercase mr-8"
+                className="txt-compact-xlarge-plus text-foreground hover:text-foreground/80 mr-8 uppercase"
                 data-testid="nav-store-link"
               >
                 Medusa Store
@@ -32,9 +32,9 @@ export async function Header({ locale }: { locale: TypedLocale }) {
 
             <HeaderClient data={headerData} showOnlyNav={true} />
 
-            <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
+            <div className="flex h-full flex-1 basis-0 items-center justify-end gap-x-6">
               <HeaderClient data={headerData} showOnlyActions={true} />
-              <div className="hidden small:flex items-center gap-x-6 h-full">
+              <div className="small:flex hidden h-full items-center gap-x-6">
                 <LocalizedClientLink
                   className="text-foreground hover:text-foreground/80"
                   href="/account"
@@ -47,17 +47,17 @@ export async function Header({ locale }: { locale: TypedLocale }) {
           </div>
         </div>
 
-        <div className="h-8 mx-auto border-t border-border bg-muted/30">
-          <div className="content-container flex items-center justify-between w-full h-full txt-xsmall-plus text-muted-foreground">
-            <div className="flex-1 basis-0 h-full flex items-center">
+        <div className="border-border bg-muted/30 mx-auto h-8 border-t">
+          <div className="content-container txt-xsmall-plus text-muted-foreground flex h-full w-full items-center justify-between">
+            <div className="flex h-full flex-1 basis-0 items-center">
               <CategoryDropdown categories={categories} />
             </div>
 
-            <div className="flex items-center h-full">
+            <div className="flex h-full items-center">
               <HeaderClient data={headerData} showOnlySearch={true} />
             </div>
 
-            <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
+            <div className="flex h-full flex-1 basis-0 items-center justify-end gap-x-6">
               <Suspense
                 fallback={
                   <LocalizedClientLink

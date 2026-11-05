@@ -6,7 +6,6 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "check-types": "turbo run check-types",
-    "knip": "node scripts/knip.mjs",
     "dev:store": "turbo run dev -F @paydusa/store",
     "dev:medusa": "turbo run dev -F @paydusa/medusa",
     "bump-deps": "pnpm update --recursive --interactive",

@@ -3,7 +3,7 @@
 import { setAddresses } from "@lib/data/cart";
 import compareAddresses from "@lib/util/compare-addresses";
 import { CheckCircleSolid } from "@medusajs/icons";
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import { Heading, Text, useToggleState } from "@medusajs/ui";
 import Divider from "@modules/common/components/divider";
 import Spinner from "@modules/common/icons/spinner";
@@ -35,17 +35,17 @@ const Addresses = ({
   );
 
   const handleEdit = () => {
-    router.push(pathname + "?step=address");
+    router.push(`${pathname}?step=address`);
   };
 
   const [message, formAction] = useActionState(setAddresses, null);
 
   return (
     <div className="bg-white">
-      <div className="flex flex-row items-center justify-between mb-6">
+      <div className="mb-6 flex flex-row items-center justify-between">
         <Heading
           level="h2"
-          className="flex flex-row text-3xl-regular gap-x-2 items-baseline"
+          className="text-3xl-regular flex flex-row items-baseline gap-x-2"
         >
           Shipping Address
           {!isOpen && <CheckCircleSolid />}
@@ -76,7 +76,7 @@ const Addresses = ({
               <div>
                 <Heading
                   level="h2"
-                  className="text-3xl-regular gap-x-4 pb-6 pt-8"
+                  className="text-3xl-regular gap-x-4 pt-8 pb-6"
                 >
                   Billing address
                 </Heading>
@@ -95,9 +95,9 @@ const Addresses = ({
           <div className="text-small-regular">
             {cart && cart.shipping_address ? (
               <div className="flex items-start gap-x-8">
-                <div className="flex items-start gap-x-1 w-full">
+                <div className="flex w-full items-start gap-x-1">
                   <div
-                    className="flex flex-col w-1/3"
+                    className="flex w-1/3 flex-col"
                     data-testid="shipping-address-summary"
                   >
                     <Text className="txt-medium-plus text-ui-fg-base mb-1">
@@ -121,7 +121,7 @@ const Addresses = ({
                   </div>
 
                   <div
-                    className="flex flex-col w-1/3 "
+                    className="flex w-1/3 flex-col"
                     data-testid="shipping-contact-summary"
                   >
                     <Text className="txt-medium-plus text-ui-fg-base mb-1">
@@ -136,7 +136,7 @@ const Addresses = ({
                   </div>
 
                   <div
-                    className="flex flex-col w-1/3"
+                    className="flex w-1/3 flex-col"
                     data-testid="billing-address-summary"
                   >
                     <Text className="txt-medium-plus text-ui-fg-base mb-1">

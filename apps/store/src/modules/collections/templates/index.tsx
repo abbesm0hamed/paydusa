@@ -1,8 +1,8 @@
 import type { OptionValueGroup } from "@lib/data/product-options";
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid";
 import RefinementList from "@modules/store/components/refinement-list";
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products";
+import type { SortOptions } from "@modules/store/components/refinement-list/sort-products";
 import PaginatedProducts from "@modules/store/templates/paginated-products";
 import { Suspense } from "react";
 
@@ -35,11 +35,11 @@ export default function CollectionTemplate({
   priceFrom?: string;
   priceTo?: string;
 }) {
-  const pageNumber = page ? parseInt(page) : 1;
+  const pageNumber = page ? Number.parseInt(page) : 1;
   const sort = sortBy || "created_at";
 
   return (
-    <div className="flex flex-col small:flex-row small:items-start py-6 content-container">
+    <div className="small:flex-row small:items-start content-container flex flex-col py-6">
       <RefinementList
         sortBy={sort}
         categories={categories}
@@ -48,7 +48,7 @@ export default function CollectionTemplate({
         optionValues={optionValues}
       />
       <div className="w-full">
-        <div className="mb-8 text-2xl-semi">
+        <div className="text-2xl-semi mb-8">
           <h1>{collection.title}</h1>
         </div>
         <Suspense

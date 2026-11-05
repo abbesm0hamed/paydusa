@@ -29,7 +29,7 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(false);
-  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+  const [canvasSize, setCanvasSize] = useState({ height: 0, width: 0 });
 
   const memoizedColor = useMemo(() => {
     const toRGBA = (color: string) => {
@@ -39,10 +39,12 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
       const canvas = document.createElement("canvas");
       canvas.width = canvas.height = 1;
       const ctx = canvas.getContext("2d");
-      if (!ctx) return "rgba(255, 0, 0,";
+      if (!ctx) {
+        return "rgba(255, 0, 0,";
+      }
       ctx.fillStyle = color;
       ctx.fillRect(0, 0, 1, 1);
-      const [r, g, b] = Array.from(ctx.getImageData(0, 0, 1, 1).data);
+      const [r, g, b] = [...ctx.getImageData(0, 0, 1, 1).data];
       return `rgba(${r}, ${g}, ${b},`;
     };
     return toRGBA(color);
@@ -63,7 +65,7 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
         squares[i] = Math.random() * maxOpacity;
       }
 
-      return { cols, rows, squares, dpr };
+      return { cols, dpr, rows, squares };
     },
     [squareSize, gridGap, maxOpacity]
   );
@@ -112,10 +114,14 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
-    if (!canvas || !container) return;
+    if (!canvas || !container) {
+      return;
+    }
 
     const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    if (!ctx) {
+      return;
+    }
 
     let animationFrameId: number;
     let gridParams: ReturnType<typeof setupCanvas>;
@@ -123,7 +129,7 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
     const updateCanvasSize = () => {
       const newWidth = width || container.clientWidth;
       const newHeight = height || container.clientHeight;
-      setCanvasSize({ width: newWidth, height: newHeight });
+      setCanvasSize({ height: newHeight, width: newWidth });
       gridParams = setupCanvas(canvas, newWidth, newHeight);
     };
 
@@ -131,7 +137,9 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
 
     let lastTime = 0;
     const animate = (time: number) => {
-      if (!isInView) return;
+      if (!isInView) {
+        return;
+      }
 
       const deltaTime = (time - lastTime) / 1000;
       lastTime = time;
@@ -185,8 +193,8 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
         ref={canvasRef}
         className="pointer-events-none"
         style={{
-          width: canvasSize.width,
           height: canvasSize.height,
+          width: canvasSize.width,
         }}
       />
     </div>

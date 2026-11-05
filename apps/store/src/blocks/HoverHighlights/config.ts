@@ -3,31 +3,24 @@ import type { Block } from "payload";
 import { link } from "@/fields/link";
 
 export const HoverHighlights: Block = {
-  slug: "hoverHighlights",
-  interfaceName: "HoverHighlightsBlock",
   fields: [
     {
       name: "beforeText",
       type: "textarea",
     },
     {
-      name: "highlights",
-      type: "array",
       fields: [
         {
           name: "text",
-          type: "text",
           required: true,
+          type: "text",
         },
         {
-          name: "media",
-          type: "group",
           admin: {
             hideGutter: true,
           },
           fields: [
             {
-              type: "row",
               fields: [
                 {
                   name: "top",
@@ -38,9 +31,9 @@ export const HoverHighlights: Block = {
                   relationTo: "media",
                 },
               ],
+              type: "row",
             },
             {
-              type: "row",
               fields: [
                 {
                   name: "bottom",
@@ -51,15 +44,20 @@ export const HoverHighlights: Block = {
                   relationTo: "media",
                 },
               ],
+              type: "row",
             },
           ],
           label: "Media",
+          name: "media",
+          type: "group",
         },
         link({
           appearances: false,
           disableLabel: true,
         }),
       ],
+      name: "highlights",
+      type: "array",
     },
     {
       name: "afterText",
@@ -72,8 +70,10 @@ export const HoverHighlights: Block = {
   graphQL: {
     singularName: "HoverHighlights",
   },
+  interfaceName: "HoverHighlightsBlock",
   labels: {
     plural: "Hover Highlights Blocks",
     singular: "Hover Highlights Block",
   },
+  slug: "hoverHighlights",
 };

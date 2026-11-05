@@ -14,11 +14,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import ProductPrice from "../product-price";
 import MobileActions from "./mobile-actions";
 
-type ProductActionsProps = {
+interface ProductActionsProps {
   product: HttpTypes.StoreProduct;
   region: HttpTypes.StoreRegion;
   disabled?: boolean;
-};
+}
 
 export default function ProductActions({
   product,
@@ -57,12 +57,14 @@ export default function ProductActions({
   };
 
   //check if the selected options produce a valid variant
-  const isValidVariant = useMemo(() => {
-    return product.variants?.some((v) => {
-      const variantOptions = getVariantOptions(v.options);
-      return isEqual(variantOptions, options);
-    });
-  }, [product.variants, options]);
+  const isValidVariant = useMemo(
+    () =>
+      product.variants?.some((v) => {
+        const variantOptions = getVariantOptions(v.options);
+        return isEqual(variantOptions, options);
+      }),
+    [product.variants, options]
+  );
 
   // check if the selected variant is in stock
   const inStock = useMemo(() => {
@@ -94,14 +96,16 @@ export default function ProductActions({
 
   // add the selected variant to the cart
   const handleAddToCart = async () => {
-    if (!selectedVariant?.id) return null;
+    if (!selectedVariant?.id) {
+      return null;
+    }
 
     setIsAdding(true);
 
     await addToCart({
-      variantId: selectedVariant.id,
-      quantity: 1,
       countryCode,
+      quantity: 1,
+      variantId: selectedVariant.id,
     });
 
     setIsAdding(false);
@@ -142,7 +146,7 @@ export default function ProductActions({
             !isValidVariant
           }
           variant="primary"
-          className="w-full h-10"
+          className="h-10 w-full"
           isLoading={isAdding}
           data-testid="add-product-button"
         >

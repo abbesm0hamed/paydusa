@@ -1,13 +1,13 @@
 import type { StorePrice } from "@medusajs/types";
 
-export type FeaturedProduct = {
+export interface FeaturedProduct {
   id: string;
   title: string;
   handle: string;
   thumbnail?: string;
-};
+}
 
-export type VariantPrice = {
+export interface VariantPrice {
   calculated_price_number: number;
   calculated_price: string;
   original_price_number: number;
@@ -15,7 +15,7 @@ export type VariantPrice = {
   currency_code: string;
   price_type: string;
   percentage_diff: string;
-};
+}
 
 export type StoreFreeShippingPrice = StorePrice & {
   target_reached: boolean;

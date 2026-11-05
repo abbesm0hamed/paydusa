@@ -6,28 +6,28 @@ import * as migration_20261025_075200_payload_v4_schema from "./20261025_075200_
 
 export const migrations = [
   {
-    up: migration_20250923_000738.up,
     down: migration_20250923_000738.down,
     name: "20250923_000738",
+    up: migration_20250923_000738.up,
   },
   {
-    up: migration_20250924_131937.up,
     down: migration_20250924_131937.down,
     name: "20250924_131937",
+    up: migration_20250924_131937.up,
   },
   {
-    up: migration_20260624_195826.up,
     down: migration_20260624_195826.down,
     name: "20260624_195826",
+    up: migration_20260624_195826.up,
   },
   {
-    up: migration_20261025_074821_sizes_to_variants.up,
     down: migration_20261025_074821_sizes_to_variants.down,
     name: "20261025_074821_sizes_to_variants",
+    up: migration_20261025_074821_sizes_to_variants.up,
   },
   {
-    up: migration_20261025_075200_payload_v4_schema.up,
     down: migration_20261025_075200_payload_v4_schema.down,
     name: "20261025_075200_payload_v4_schema",
+    up: migration_20261025_075200_payload_v4_schema.up,
   },
 ];

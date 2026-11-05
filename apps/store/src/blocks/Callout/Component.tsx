@@ -17,7 +17,7 @@ export const Callout: React.FC<COBlockProps> = ({
   const logoMedia = typeof logo === "number" ? null : (logo as Media);
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 my-8">
+    <div className="my-8 rounded-lg bg-white p-6 shadow-md">
       {/* Logo */}
       {logoMedia && (
         <div className="mb-6">
@@ -32,27 +32,29 @@ export const Callout: React.FC<COBlockProps> = ({
       )}
 
       {/* Content */}
-      <div className="mb-6 prose max-w-none">
+      <div className="prose mb-6 max-w-none">
         {content && <RichText className="mb-0" data={content} />}
       </div>
 
       {/* Author Information */}
       {(author || role) && (
         <div className="mb-6">
-          {author && <h4 className="font-medium text-lg">{author}</h4>}
+          {author && <h4 className="text-lg font-medium">{author}</h4>}
           {role && <p className="text-gray-600">{role}</p>}
         </div>
       )}
 
       {/* Images */}
       {imgs && imgs.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+        <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {imgs.map((item, index) => {
             // Type guard to check if img is a Media object
             const imgMedia =
               typeof item.img === "number" ? null : (item.img as Media);
 
-            if (!imgMedia) return null;
+            if (!imgMedia) {
+              return null;
+            }
 
             return (
               <div
@@ -75,6 +77,6 @@ export const Callout: React.FC<COBlockProps> = ({
 };
 
 // For use with Payload blocks renderer
-export const CalloutBlock: React.FC<{ data: COBlockProps }> = ({ data }) => {
-  return <Callout {...data} />;
-};
+export const CalloutBlock: React.FC<{ data: COBlockProps }> = ({ data }) => (
+  <Callout {...data} />
+);

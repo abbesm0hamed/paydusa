@@ -20,7 +20,7 @@ export default async function Page() {
         </div>
       </div>
 
-      <div className="content-container mb-8 fade-top-border">
+      <div className="content-container fade-top-border mb-8">
         <PageRange
           collection="posts"
           currentPage={posts.page}

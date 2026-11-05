@@ -14,47 +14,47 @@ const r2Hostname = process.env.R2_PUBLIC_URL
  */
 const nextConfig = {
   cacheComponents: true,
-  partialPrefetching: true,
-  turbopack: {
-    root: new URL("../../", import.meta.url).pathname,
+  images: {
+    qualities: [50, 75],
+    remotePatterns: [
+      {
+        hostname: "localhost",
+        protocol: "http",
+      },
+      {
+        hostname: "medusa-public-images.s3.eu-west-1.amazonaws.com",
+        protocol: "https",
+      },
+      {
+        hostname: "medusa-server-testing.s3.amazonaws.com",
+        protocol: "https",
+      },
+      {
+        hostname: "medusa-server-testing.s3.us-east-1.amazonaws.com",
+        protocol: "https",
+      },
+      ...(r2Hostname
+        ? [
+            {
+              hostname: r2Hostname,
+              protocol: "https",
+            },
+          ]
+        : []),
+    ],
   },
-  reactStrictMode: true,
   logging: {
     fetches: {
       fullUrl: true,
     },
   },
+  partialPrefetching: true,
+  reactStrictMode: true,
+  turbopack: {
+    root: new URL("../../", import.meta.url).pathname,
+  },
   typescript: {
     ignoreBuildErrors: false,
-  },
-  images: {
-    qualities: [50, 75],
-    remotePatterns: [
-      {
-        protocol: "http",
-        hostname: "localhost",
-      },
-      {
-        protocol: "https",
-        hostname: "medusa-public-images.s3.eu-west-1.amazonaws.com",
-      },
-      {
-        protocol: "https",
-        hostname: "medusa-server-testing.s3.amazonaws.com",
-      },
-      {
-        protocol: "https",
-        hostname: "medusa-server-testing.s3.us-east-1.amazonaws.com",
-      },
-      ...(r2Hostname
-        ? [
-            {
-              protocol: "https",
-              hostname: r2Hostname,
-            },
-          ]
-        : []),
-    ],
   },
 };
 

@@ -18,7 +18,7 @@ export const Checkbox: React.FC<
     register: UseFormRegister<FieldValues>;
   }
 > = ({ name, defaultValue, errors, label, register, required, width }) => {
-  const props = register(name, { required: required });
+  const props = register(name, { required });
   const { setValue } = useFormContext();
 
   return (

@@ -2,11 +2,11 @@ import { listProductsWithSort } from "@lib/data/products";
 import { getRegion } from "@lib/data/regions";
 import ProductPreview from "@modules/products/components/product-preview";
 import { Pagination } from "@modules/store/components/pagination";
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products";
+import type { SortOptions } from "@modules/store/components/refinement-list/sort-products";
 
 const PRODUCT_LIMIT = 12;
 
-type PaginatedProductsParams = {
+interface PaginatedProductsParams {
   limit: number;
   collection_id?: string[];
   category_id?: string[];
@@ -15,7 +15,7 @@ type PaginatedProductsParams = {
   type_id?: string[];
   tag_id?: string[];
   option_value_id?: string[];
-};
+}
 
 export default async function PaginatedProducts({
   sortBy,
@@ -82,15 +82,15 @@ export default async function PaginatedProducts({
     return null;
   }
 
-  let {
+  const {
     response: { products, count },
   } = await listProductsWithSort({
-    page,
-    queryParams,
-    sortBy,
     countryCode,
+    page,
     priceFrom: priceFrom ? Number(priceFrom) : undefined,
     priceTo: priceTo ? Number(priceTo) : undefined,
+    queryParams,
+    sortBy,
   });
 
   const totalPages = Math.ceil(count / PRODUCT_LIMIT);
@@ -98,16 +98,14 @@ export default async function PaginatedProducts({
   return (
     <>
       <ul
-        className="grid grid-cols-2 w-full small:grid-cols-3 medium:grid-cols-4 gap-x-6 gap-y-8"
+        className="small:grid-cols-3 medium:grid-cols-4 grid w-full grid-cols-2 gap-x-6 gap-y-8"
         data-testid="products-list"
       >
-        {products.map((p) => {
-          return (
-            <li key={p.id}>
-              <ProductPreview product={p} region={region} />
-            </li>
-          );
-        })}
+        {products.map((p) => (
+          <li key={p.id}>
+            <ProductPreview product={p} region={region} />
+          </li>
+        ))}
       </ul>
       {totalPages > 1 && (
         <Pagination

@@ -27,7 +27,7 @@ export const FlickeringHexMesh: React.FC<FlickeringHexMeshProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(false);
-  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+  const [canvasSize, setCanvasSize] = useState({ height: 0, width: 0 });
 
   interface Hex {
     x: number;
@@ -38,14 +38,18 @@ export const FlickeringHexMesh: React.FC<FlickeringHexMeshProps> = ({
   const hexes = useRef<Hex[]>([]);
 
   const getRGBA = useCallback((color: string) => {
-    if (typeof window === "undefined") return `rgba(0, 0, 0,`;
+    if (typeof window === "undefined") {
+      return `rgba(0, 0, 0,`;
+    }
     const canvas = document.createElement("canvas");
     canvas.width = canvas.height = 1;
     const ctx = canvas.getContext("2d");
-    if (!ctx) return "rgba(255, 0, 0,";
+    if (!ctx) {
+      return "rgba(255, 0, 0,";
+    }
     ctx.fillStyle = color;
     ctx.fillRect(0, 0, 1, 1);
-    const [r, g, b] = Array.from(ctx.getImageData(0, 0, 1, 1).data);
+    const [r, g, b] = [...ctx.getImageData(0, 0, 1, 1).data];
     return `rgba(${r}, ${g}, ${b},`;
   }, []);
 
@@ -63,9 +67,9 @@ export const FlickeringHexMesh: React.FC<FlickeringHexMeshProps> = ({
       for (let x = 0; x < width * dpr; x += hexWidth) {
         for (let y = 0; y < height * dpr; y += hexHeight) {
           hexes.current.push({
+            opacity: Math.random() * maxOpacity,
             x: x + (y % (hexHeight * 2) === 0 ? 0 : hexWidth / 2),
             y,
-            opacity: Math.random() * maxOpacity,
           });
         }
       }
@@ -119,10 +123,14 @@ export const FlickeringHexMesh: React.FC<FlickeringHexMeshProps> = ({
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
-    if (!canvas || !container) return;
+    if (!canvas || !container) {
+      return;
+    }
 
     const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    if (!ctx) {
+      return;
+    }
 
     let animationFrameId: number;
     let params: ReturnType<typeof setupCanvas>;
@@ -130,7 +138,7 @@ export const FlickeringHexMesh: React.FC<FlickeringHexMeshProps> = ({
     const updateCanvasSize = () => {
       const newWidth = width || container.clientWidth;
       const newHeight = height || container.clientHeight;
-      setCanvasSize({ width: newWidth, height: newHeight });
+      setCanvasSize({ height: newHeight, width: newWidth });
       params = setupCanvas(canvas, newWidth, newHeight);
     };
 
@@ -138,7 +146,9 @@ export const FlickeringHexMesh: React.FC<FlickeringHexMeshProps> = ({
 
     let lastTime = 0;
     const animate = (time: number) => {
-      if (!isInView) return;
+      if (!isInView) {
+        return;
+      }
       const deltaTime = (time - lastTime) / 1000;
       lastTime = time;
       updateHexes(deltaTime);
@@ -155,7 +165,9 @@ export const FlickeringHexMesh: React.FC<FlickeringHexMeshProps> = ({
     );
     intersectionObserver.observe(canvas);
 
-    if (isInView) animationFrameId = requestAnimationFrame(animate);
+    if (isInView) {
+      animationFrameId = requestAnimationFrame(animate);
+    }
 
     return () => {
       cancelAnimationFrame(animationFrameId);
@@ -173,7 +185,7 @@ export const FlickeringHexMesh: React.FC<FlickeringHexMeshProps> = ({
       <canvas
         ref={canvasRef}
         className="pointer-events-none"
-        style={{ width: canvasSize.width, height: canvasSize.height }}
+        style={{ height: canvasSize.height, width: canvasSize.width }}
       />
     </div>
   );

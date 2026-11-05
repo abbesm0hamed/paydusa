@@ -3,13 +3,13 @@ import { listProductFilterOptions } from "@lib/data/product-options";
 import { listProductTags } from "@lib/data/product-tags";
 import { listProductTypes } from "@lib/data/product-types";
 import { listRegions } from "@lib/data/regions";
-import { StoreCollection, StoreRegion } from "@medusajs/types";
+import type { StoreCollection, StoreRegion } from "@medusajs/types";
 import CollectionTemplate from "@modules/collections/templates";
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products";
-import { Metadata } from "next";
+import type { SortOptions } from "@modules/store/components/refinement-list/sort-products";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-type Props = {
+interface Props {
   params: Promise<{ handle: string; countryCode: string }>;
   searchParams: Promise<{
     page?: string;
@@ -21,10 +21,12 @@ type Props = {
     price_from?: string;
     price_to?: string;
   }>;
-};
+}
 
 function toArray(value: string | string[] | undefined): string[] {
-  if (!value) return [];
+  if (!value) {
+    return [];
+  }
   return Array.isArray(value) ? value : [value];
 }
 
@@ -42,8 +44,7 @@ export async function generateStaticParams() {
   const countryCodes = await listRegions().then(
     (regions: StoreRegion[]) =>
       regions
-        ?.map((r) => r.countries?.map((c) => c.iso_2))
-        .flat()
+        ?.flatMap((r) => r.countries?.map((c) => c.iso_2))
         .filter(Boolean) as string[]
   );
 
@@ -51,14 +52,12 @@ export async function generateStaticParams() {
     (collection: StoreCollection) => collection.handle
   );
 
-  const staticParams = countryCodes
-    ?.map((countryCode: string) =>
-      collectionHandles.map((handle: string | undefined) => ({
-        countryCode,
-        handle,
-      }))
-    )
-    .flat();
+  const staticParams = countryCodes?.flatMap((countryCode: string) =>
+    collectionHandles.map((handle: string | undefined) => ({
+      countryCode,
+      handle,
+    }))
+  );
 
   return staticParams;
 }
@@ -72,8 +71,8 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 
   const metadata = {
-    title: `${collection.title} | Medusa Store`,
     description: `${collection.title} collection`,
+    title: `${collection.title} | Medusa Store`,
   } as Metadata;
 
   return metadata;
@@ -109,8 +108,8 @@ export default async function CollectionPage(props: Props) {
       page={page}
       sortBy={sortBy}
       countryCode={params.countryCode}
-      types={types.map((t) => ({ value: t.id, label: t.value }))}
-      tags={tags.map((t) => ({ value: t.id, label: t.value }))}
+      types={types.map((t) => ({ label: t.value, value: t.id }))}
+      tags={tags.map((t) => ({ label: t.value, value: t.id }))}
       optionValues={optionValues.option_values}
       typeId={typeId}
       tagId={tagId}

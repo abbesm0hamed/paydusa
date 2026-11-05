@@ -37,8 +37,7 @@ This runs:
 
 ### pgAdmin
 
-Available at [http://localhost:5050](http://localhost:5050).
-The server is **automatically registered** in the sidebar. You just need to:
+Available at [http://localhost:5050](http://localhost:5050). The server is **automatically registered** in the sidebar. You just need to:
 
 1. Double-click **Ecommerce Monorepo** in the sidebar.
 2. Enter the DB password: `password`

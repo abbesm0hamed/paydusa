@@ -5,13 +5,11 @@ import type { Header } from "@payload-types";
 import { SearchIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type React from "react";
 import { useState, useRef, useEffect } from "react";
 
 import { CMSLink } from "@/components/Link";
-import Logo from "@/components/Logo/Logo";
 import LocaleSwitcher from "@/components/ui/locale-switcher";
 import SearchModal from "@/modules/search/components/modal";
 import { useHeaderTheme } from "@/providers/HeaderTheme";
@@ -49,11 +47,15 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
   }, [pathname, setHeaderTheme]);
 
   useEffect(() => {
-    if (headerTheme && headerTheme !== theme) setTheme(headerTheme);
+    if (headerTheme && headerTheme !== theme) {
+      setTheme(headerTheme);
+    }
   }, [headerTheme, theme]);
 
   const handleMouseEnter = (index: number) => {
-    if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
+    if (hoverTimeout.current) {
+      clearTimeout(hoverTimeout.current);
+    }
     setActiveMegaMenu(index);
   };
 
@@ -63,16 +65,19 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
     }, 300);
   };
 
-  useEffect(() => {
-    return () => {
-      if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
-    };
-  }, []);
+  useEffect(
+    () => () => {
+      if (hoverTimeout.current) {
+        clearTimeout(hoverTimeout.current);
+      }
+    },
+    []
+  );
 
   // Show only navigation items
   if (showOnlyNav) {
     return (
-      <nav className="flex items-stretch h-full relative">
+      <nav className="relative flex h-full items-stretch">
         {navItems.map((item, i) => {
           if (item.type === "link" && item.linkFields?.link) {
             return (
@@ -80,11 +85,13 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
                 key={i}
                 {...item.linkFields.link}
                 appearance="link"
-                className="flex items-center px-4 hover:text-ui-fg-base txt-compact-small"
+                className="hover:text-ui-fg-base txt-compact-small flex items-center px-4"
               />
             );
           }
-          if (item.type !== "group" || !item.groupFields) return null;
+          if (item.type !== "group" || !item.groupFields) {
+            return null;
+          }
 
           const groupIndex = groupItems.findIndex((g) => g === item);
           const { label } = item.groupFields;
@@ -92,11 +99,11 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
           return (
             <div
               key={i}
-              className="group relative h-full flex items-stretch"
+              className="group relative flex h-full items-stretch"
               onMouseEnter={() => handleMouseEnter(groupIndex)}
               onMouseLeave={handleMouseLeave}
             >
-              <div className="cursor-pointer flex items-center h-full px-4 hover:text-ui-fg-base txt-compact-small">
+              <div className="hover:text-ui-fg-base txt-compact-small flex h-full cursor-pointer items-center px-4">
                 <span>{label}</span>
               </div>
             </div>
@@ -116,7 +123,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
           }}
           className="text-ui-fg-subtle hover:text-ui-fg-base flex items-center gap-2"
         >
-          <SearchIcon className="w-4 h-4" />
+          <SearchIcon className="h-4 w-4" />
           <span className="txt-compact-small hidden sm:inline">
             {t("search")}
           </span>
@@ -142,26 +149,28 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
   if (showOnlyMegaMenu) {
     return (
       <div {...(theme ? { "data-theme": theme } : {})}>
-        <div className="absolute left-0 right-0 z-20 bg-muted">
+        <div className="bg-muted absolute right-0 left-0 z-20">
           {groupItems.map((item, i) => {
-            if (item.type !== "group" || !item.groupFields) return null;
+            if (item.type !== "group" || !item.groupFields) {
+              return null;
+            }
             const { groups } = item.groupFields;
 
             const formattedGroups =
               groups?.map((group) => ({
-                title: group.title,
+                description: group.description,
                 image:
                   group.image && "url" in group.image
                     ? {
-                        url: group.image.url as string,
                         alt: group.image.alt || "",
+                        url: group.image.url as string,
                       }
                     : undefined,
-                description: group.description,
                 links: (group.links || []).map((linkItem) => ({
-                  link: linkItem.link,
                   description: linkItem.description,
+                  link: linkItem.link,
                 })),
+                title: group.title,
               })) || [];
 
             return (
@@ -169,13 +178,13 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
                 key={i}
                 className={`${
                   activeMegaMenu === i ? "block" : "hidden"
-                } shadow-inset-top w-full transition-all duration-200 ease-in-out relative`}
+                } shadow-inset-top relative w-full transition-all duration-200 ease-in-out`}
                 onMouseEnter={() => handleMouseEnter(i)}
                 onMouseLeave={handleMouseLeave}
               >
-                <div className="absolute inset-y-0 left-0 w-24 z-0">
+                <div className="absolute inset-y-0 left-0 z-0 w-24">
                   <FlickeringGrid
-                    className="w-full h-full [mask-image:linear-gradient(to_left,transparent_0%,white_100%)] [mask-composite:intersect] shadow-inset-top"
+                    className="shadow-inset-top h-full w-full [mask-image:linear-gradient(to_left,transparent_0%,white_100%)] [mask-composite:intersect]"
                     color="#11A1EB"
                     maxOpacity={0.7}
                     flickerChance={0.2}
@@ -183,9 +192,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
                     width={96}
                   />
                 </div>
-                <div className="absolute inset-y-0 right-0 w-24 z-0">
+                <div className="absolute inset-y-0 right-0 z-0 w-24">
                   <FlickeringGrid
-                    className="w-full h-full [mask-image:linear-gradient(to_right,transparent_0%,white_100%)] [mask-composite:intersect] shadow-inset-top"
+                    className="shadow-inset-top h-full w-full [mask-image:linear-gradient(to_right,transparent_0%,white_100%)] [mask-composite:intersect]"
                     color="#60A5FA"
                     maxOpacity={0.7}
                     flickerChance={0.2}
@@ -196,13 +205,13 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
 
                 <div className="content-container relative z-10">
                   <div className="py-6">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
                       {formattedGroups.map((group, groupIndex) => (
                         <div key={groupIndex} className="space-y-4">
                           {(group.title || group.image) && (
                             <div>
                               {group.title && (
-                                <h3 className="txt-compact-small-plus uppercase tracking-wider text-ui-fg-muted font-medium mb-3">
+                                <h3 className="txt-compact-small-plus text-ui-fg-muted mb-3 font-medium tracking-wider uppercase">
                                   {group.title}
                                 </h3>
                               )}
@@ -217,7 +226,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
                                     group.title ||
                                     "Group image"
                                   }
-                                  className="rounded-md object-cover w-full h-40"
+                                  className="h-40 w-full rounded-md object-cover"
                                 />
                               )}
                               {group.description && (
@@ -233,7 +242,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
                                 <CMSLink
                                   {...item.link}
                                   appearance="link"
-                                  className="font-normal txt-compact-small text-ui-fg-base hover:text-ui-fg-interactive"
+                                  className="txt-compact-small text-ui-fg-base hover:text-ui-fg-interactive font-normal"
                                 />
                                 {item.description && (
                                   <p className="txt-compact-xsmall text-ui-fg-subtle">

@@ -29,7 +29,7 @@ export const FlickeringHLetters: React.FC<FlickeringHLettersProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(false);
-  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+  const [canvasSize, setCanvasSize] = useState({ height: 0, width: 0 });
 
   interface HLetter {
     x: number;
@@ -41,14 +41,18 @@ export const FlickeringHLetters: React.FC<FlickeringHLettersProps> = ({
   const hLetters = useRef<HLetter[]>([]);
 
   const getRGBA = useCallback((color: string) => {
-    if (typeof window === "undefined") return `rgba(0, 0, 0,`;
+    if (typeof window === "undefined") {
+      return `rgba(0, 0, 0,`;
+    }
     const canvas = document.createElement("canvas");
     canvas.width = canvas.height = 1;
     const ctx = canvas.getContext("2d");
-    if (!ctx) return "rgba(255, 0, 0,";
+    if (!ctx) {
+      return "rgba(255, 0, 0,";
+    }
     ctx.fillStyle = color;
     ctx.fillRect(0, 0, 1, 1);
-    const [r, g, b] = Array.from(ctx.getImageData(0, 0, 1, 1).data);
+    const [r, g, b] = [...ctx.getImageData(0, 0, 1, 1).data];
     return `rgba(${r}, ${g}, ${b},`;
   }, []);
 
@@ -66,10 +70,10 @@ export const FlickeringHLetters: React.FC<FlickeringHLettersProps> = ({
       for (let x = 0; x < width * dpr; x += stepX) {
         for (let y = 0; y < height * dpr; y += stepY) {
           hLetters.current.push({
-            x: x + Math.random() * 5 - 2.5, // Slight random offset for organic feel
-            y: y + Math.random() * 5 - 2.5,
             opacity: Math.random() * maxOpacity,
             rotation: (Math.random() - 0.5) * 0.2, // Small rotation for cuteness
+            x: x + Math.random() * 5 - 2.5, // Slight random offset for organic feel
+            y: y + Math.random() * 5 - 2.5,
           });
         }
       }
@@ -138,10 +142,14 @@ export const FlickeringHLetters: React.FC<FlickeringHLettersProps> = ({
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
-    if (!canvas || !container) return;
+    if (!canvas || !container) {
+      return;
+    }
 
     const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    if (!ctx) {
+      return;
+    }
 
     let animationFrameId: number;
     let params: ReturnType<typeof setupCanvas>;
@@ -149,7 +157,7 @@ export const FlickeringHLetters: React.FC<FlickeringHLettersProps> = ({
     const updateCanvasSize = () => {
       const newWidth = width || container.clientWidth;
       const newHeight = height || container.clientHeight;
-      setCanvasSize({ width: newWidth, height: newHeight });
+      setCanvasSize({ height: newHeight, width: newWidth });
       params = setupCanvas(canvas, newWidth, newHeight);
     };
 
@@ -157,7 +165,9 @@ export const FlickeringHLetters: React.FC<FlickeringHLettersProps> = ({
 
     let lastTime = 0;
     const animate = (time: number) => {
-      if (!isInView) return;
+      if (!isInView) {
+        return;
+      }
       const deltaTime = (time - lastTime) / 1000;
       lastTime = time;
       updateHLetters(deltaTime);
@@ -174,7 +184,9 @@ export const FlickeringHLetters: React.FC<FlickeringHLettersProps> = ({
     );
     intersectionObserver.observe(canvas);
 
-    if (isInView) animationFrameId = requestAnimationFrame(animate);
+    if (isInView) {
+      animationFrameId = requestAnimationFrame(animate);
+    }
 
     return () => {
       cancelAnimationFrame(animationFrameId);
@@ -192,7 +204,7 @@ export const FlickeringHLetters: React.FC<FlickeringHLettersProps> = ({
       <canvas
         ref={canvasRef}
         className="pointer-events-none"
-        style={{ width: canvasSize.width, height: canvasSize.height }}
+        style={{ height: canvasSize.height, width: canvasSize.width }}
       />
     </div>
   );

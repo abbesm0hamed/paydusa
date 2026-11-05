@@ -1,8 +1,8 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http";
+import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http";
 import { z } from "zod";
 
 import { ALGOLIA_MODULE } from "../../../../modules/algolia";
-import AlgoliaModuleService from "../../../../modules/algolia/service";
+import type AlgoliaModuleService from "../../../../modules/algolia/service";
 
 export const SearchSchema = z.object({
   query: z.string(),

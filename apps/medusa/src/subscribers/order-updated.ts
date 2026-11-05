@@ -1,4 +1,4 @@
-import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework";
+import type { SubscriberArgs, SubscriberConfig } from "@medusajs/framework";
 
 import { markInvoicesStaleWorkflow } from "../workflows/mark-invoices-stale";
 

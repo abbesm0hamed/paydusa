@@ -2,7 +2,7 @@
 
 import { sdk } from "@lib/config";
 import medusaError from "@lib/util/medusa-error";
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import { cacheTag } from "next/cache";
 
 export const listRegions = async () => {
@@ -54,7 +54,7 @@ export const getRegion = async (countryCode: string) => {
       : regionMap.get("tn");
 
     return region;
-  } catch (e: any) {
+  } catch {
     return null;
   }
 };

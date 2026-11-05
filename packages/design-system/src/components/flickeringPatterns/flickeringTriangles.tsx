@@ -27,7 +27,7 @@ export const FlickeringTriangles: React.FC<FlickeringTrianglesProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(false);
-  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+  const [canvasSize, setCanvasSize] = useState({ height: 0, width: 0 });
 
   interface Triangle {
     x: number;
@@ -39,14 +39,18 @@ export const FlickeringTriangles: React.FC<FlickeringTrianglesProps> = ({
   const triangles = useRef<Triangle[]>([]);
 
   const getRGBA = useCallback((color: string) => {
-    if (typeof window === "undefined") return `rgba(0, 0, 0,`;
+    if (typeof window === "undefined") {
+      return `rgba(0, 0, 0,`;
+    }
     const canvas = document.createElement("canvas");
     canvas.width = canvas.height = 1;
     const ctx = canvas.getContext("2d");
-    if (!ctx) return "rgba(255, 0, 0,";
+    if (!ctx) {
+      return "rgba(255, 0, 0,";
+    }
     ctx.fillStyle = color;
     ctx.fillRect(0, 0, 1, 1);
-    const [r, g, b] = Array.from(ctx.getImageData(0, 0, 1, 1).data);
+    const [r, g, b] = [...ctx.getImageData(0, 0, 1, 1).data];
     return `rgba(${r}, ${g}, ${b},`;
   }, []);
 
@@ -63,10 +67,10 @@ export const FlickeringTriangles: React.FC<FlickeringTrianglesProps> = ({
       for (let x = 0; x < width * dpr; x += triSize) {
         for (let y = 0; y < height * dpr; y += triHeight) {
           triangles.current.push({
-            x: x + (y % (triHeight * 2) === 0 ? 0 : triSize / 2),
-            y,
             opacity: Math.random() * maxOpacity,
             rotation: Math.random() * Math.PI,
+            x: x + (y % (triHeight * 2) === 0 ? 0 : triSize / 2),
+            y,
           });
         }
       }
@@ -129,10 +133,14 @@ export const FlickeringTriangles: React.FC<FlickeringTrianglesProps> = ({
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
-    if (!canvas || !container) return;
+    if (!canvas || !container) {
+      return;
+    }
 
     const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    if (!ctx) {
+      return;
+    }
 
     let animationFrameId: number;
     let params: ReturnType<typeof setupCanvas>;
@@ -140,7 +148,7 @@ export const FlickeringTriangles: React.FC<FlickeringTrianglesProps> = ({
     const updateCanvasSize = () => {
       const newWidth = width || container.clientWidth;
       const newHeight = height || container.clientHeight;
-      setCanvasSize({ width: newWidth, height: newHeight });
+      setCanvasSize({ height: newHeight, width: newWidth });
       params = setupCanvas(canvas, newWidth, newHeight);
     };
 
@@ -148,7 +156,9 @@ export const FlickeringTriangles: React.FC<FlickeringTrianglesProps> = ({
 
     let lastTime = 0;
     const animate = (time: number) => {
-      if (!isInView) return;
+      if (!isInView) {
+        return;
+      }
       const deltaTime = (time - lastTime) / 1000;
       lastTime = time;
       updateTriangles(deltaTime);
@@ -165,7 +175,9 @@ export const FlickeringTriangles: React.FC<FlickeringTrianglesProps> = ({
     );
     intersectionObserver.observe(canvas);
 
-    if (isInView) animationFrameId = requestAnimationFrame(animate);
+    if (isInView) {
+      animationFrameId = requestAnimationFrame(animate);
+    }
 
     return () => {
       cancelAnimationFrame(animationFrameId);
@@ -183,7 +195,7 @@ export const FlickeringTriangles: React.FC<FlickeringTrianglesProps> = ({
       <canvas
         ref={canvasRef}
         className="pointer-events-none"
-        style={{ width: canvasSize.width, height: canvasSize.height }}
+        style={{ height: canvasSize.height, width: canvasSize.width }}
       />
     </div>
   );

@@ -11,11 +11,11 @@ import React, { Suspense } from "react";
 
 import ProductActionsWrapper from "./product-actions-wrapper";
 
-type ProductTemplateProps = {
+interface ProductTemplateProps {
   product: HttpTypes.StoreProduct;
   region: HttpTypes.StoreRegion;
   countryCode: string;
-};
+}
 
 const ProductTemplate: React.FC<ProductTemplateProps> = ({
   product,
@@ -29,17 +29,17 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   return (
     <>
       <div
-        className="content-container flex flex-col small:flex-row small:items-start py-6 relative"
+        className="content-container small:flex-row small:items-start relative flex flex-col py-6"
         data-testid="product-container"
       >
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-6">
+        <div className="small:sticky small:top-48 small:py-0 small:max-w-[300px] flex w-full flex-col gap-y-6 py-8">
           <ProductInfo product={product} />
           <ProductTabs product={product} />
         </div>
-        <div className="block w-full relative">
+        <div className="relative block w-full">
           <ImageGallery images={product.images ?? []} />
         </div>
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
+        <div className="small:sticky small:top-48 small:py-0 small:max-w-[300px] flex w-full flex-col gap-y-12 py-8">
           <ProductOnboardingCta />
           <Suspense
             fallback={
@@ -55,7 +55,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
         </div>
       </div>
       <div
-        className="content-container my-16 small:my-32"
+        className="content-container small:my-32 my-16"
         data-testid="related-products-container"
       >
         <Suspense fallback={<SkeletonRelatedProducts />}>

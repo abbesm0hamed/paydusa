@@ -2,7 +2,7 @@ import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
 
 import { INVOICE_MODULE } from "../../modules/invoice-generator";
 
-type StepInput = {
+interface StepInput {
   id?: string;
   company_name?: string;
   company_address?: string;
@@ -10,7 +10,7 @@ type StepInput = {
   company_email?: string;
   company_logo?: string;
   notes?: string;
-};
+}
 
 export const updateInvoiceConfigStep = createStep(
   "update-invoice-config",
@@ -36,12 +36,12 @@ export const updateInvoiceConfigStep = createStep(
     const invoiceGeneratorService = container.resolve(INVOICE_MODULE);
 
     await invoiceGeneratorService.updateInvoiceConfigs({
-      id: prevInvoiceConfig.id,
-      company_name: prevInvoiceConfig.company_name,
       company_address: prevInvoiceConfig.company_address,
-      company_phone: prevInvoiceConfig.company_phone,
       company_email: prevInvoiceConfig.company_email,
       company_logo: prevInvoiceConfig.company_logo,
+      company_name: prevInvoiceConfig.company_name,
+      company_phone: prevInvoiceConfig.company_phone,
+      id: prevInvoiceConfig.id,
     });
   }
 );

@@ -4,20 +4,16 @@ import { link } from "@/fields/link";
 import richText from "@/fields/richText";
 
 export const MediaContent: Block = {
-  slug: "mediaContent",
-  interfaceName: "MediaContentBlock",
   fields: [
     {
-      type: "row",
       fields: [
         {
-          name: "alignment",
-          type: "select",
           admin: {
             description: "Choose how to align the content for this block.",
             width: "50%",
           },
           defaultValue: "contentMedia",
+          name: "alignment",
           options: [
             {
               label: "Content + Media",
@@ -28,15 +24,15 @@ export const MediaContent: Block = {
               value: "mediaContent",
             },
           ],
+          type: "select",
         },
         {
-          name: "mediaWidth",
-          type: "select",
           admin: {
             description: "Choose how wide the media should be.",
             width: "50%",
           },
           defaultValue: "stretch",
+          name: "mediaWidth",
           options: [
             {
               label: "Stretch To Edge",
@@ -47,8 +43,10 @@ export const MediaContent: Block = {
               value: "fit",
             },
           ],
+          type: "select",
         },
       ],
+      type: "row",
     },
     richText({
       name: "content",
@@ -66,23 +64,25 @@ export const MediaContent: Block = {
       },
     }),
     {
-      name: "imgs", // shortened from images
-      type: "array",
       fields: [
         {
           name: "img", // shortened from image
-          type: "upload",
           relationTo: "media",
           required: true,
+          type: "upload",
         },
       ],
+      name: "imgs", // shortened from images
+      type: "array",
     },
   ],
   graphQL: {
     singularName: "MediaContent",
   },
+  interfaceName: "MediaContentBlock",
   labels: {
     plural: "Media Content Blocks",
     singular: "Media Content Block",
   },
+  slug: "mediaContent",
 };

@@ -1,13 +1,13 @@
 "use client";
 
 import { Button } from "@paydusa/design-system/components/button";
-import { DefaultTypedEditorState } from "@payloadcms/richtext-lexical";
+import type { DefaultTypedEditorState } from "@payloadcms/richtext-lexical";
 import Link from "next/link";
 import React from "react";
 
 import RichText from "@/components/RichText";
 
-export type ContentGridBlockType = {
+export interface ContentGridBlockType {
   blockName?: string | null;
   blockType: "contentGrid";
   style?: "gridBelow" | "sideBySide";
@@ -35,7 +35,7 @@ export type ContentGridBlockType = {
       }[]
     | null;
   id?: string | null;
-};
+}
 
 export const ContentGrid: React.FC<ContentGridBlockType> = (props) => {
   const {
@@ -47,7 +47,9 @@ export const ContentGrid: React.FC<ContentGridBlockType> = (props) => {
   } = props;
 
   const getLinkUrl = (linkData: any): string | null => {
-    if (!linkData) return null;
+    if (!linkData) {
+      return null;
+    }
 
     if (linkData.type === "custom" && linkData.url) {
       return linkData.url;
@@ -68,11 +70,21 @@ export const ContentGrid: React.FC<ContentGridBlockType> = (props) => {
 
   // Determine grid columns based on number of cells
   const getGridCols = (cellCount: number) => {
-    if (cellCount === 1) return "grid-cols-1";
-    if (cellCount === 2) return "grid-cols-1 md:grid-cols-2";
-    if (cellCount === 3) return "grid-cols-1 md:grid-cols-3";
-    if (cellCount === 4) return "grid-cols-1 md:grid-cols-2 lg:grid-cols-4";
-    if (cellCount <= 6) return "grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
+    if (cellCount === 1) {
+      return "grid-cols-1";
+    }
+    if (cellCount === 2) {
+      return "grid-cols-1 md:grid-cols-2";
+    }
+    if (cellCount === 3) {
+      return "grid-cols-1 md:grid-cols-3";
+    }
+    if (cellCount === 4) {
+      return "grid-cols-1 md:grid-cols-2 lg:grid-cols-4";
+    }
+    if (cellCount <= 6) {
+      return "grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
+    }
     return "grid-cols-1 md:grid-cols-2 lg:grid-cols-4";
   };
 
@@ -87,7 +99,7 @@ export const ContentGrid: React.FC<ContentGridBlockType> = (props) => {
             {/* Header with content and links */}
             <div className="mb-12">
               {mainContent && (
-                <div className="max-w-3xl mb-8">
+                <div className="mb-8 max-w-3xl">
                   <RichText data={mainContent} enableGutter={false} />
                 </div>
               )}
@@ -96,10 +108,12 @@ export const ContentGrid: React.FC<ContentGridBlockType> = (props) => {
                 <div className="flex flex-wrap gap-4">
                   {links.map((item, i) => {
                     const linkUrl = getLinkUrl(item.link);
-                    if (!linkUrl || !item.link.label) return null;
+                    if (!linkUrl || !item.link.label) {
+                      return null;
+                    }
 
                     const linkProps = item.link.newTab
-                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      ? { rel: "noopener noreferrer", target: "_blank" }
                       : {};
 
                     return (
@@ -120,10 +134,10 @@ export const ContentGrid: React.FC<ContentGridBlockType> = (props) => {
                 {cells.map((cell, i) => (
                   <div
                     key={cell.id || i}
-                    className="p-6 border border-border rounded-lg"
+                    className="border-border rounded-lg border p-6"
                   >
                     {showNumbers && (
-                      <div className="text-3xl font-bold text-primary mb-4">
+                      <div className="text-primary mb-4 text-3xl font-bold">
                         {i + 1}
                       </div>
                     )}
@@ -150,10 +164,12 @@ export const ContentGrid: React.FC<ContentGridBlockType> = (props) => {
                 <div className="flex flex-wrap gap-4">
                   {links.map((item, i) => {
                     const linkUrl = getLinkUrl(item.link);
-                    if (!linkUrl || !item.link.label) return null;
+                    if (!linkUrl || !item.link.label) {
+                      return null;
+                    }
 
                     const linkProps = item.link.newTab
-                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      ? { rel: "noopener noreferrer", target: "_blank" }
                       : {};
 
                     return (
@@ -176,10 +192,10 @@ export const ContentGrid: React.FC<ContentGridBlockType> = (props) => {
                 {cells.map((cell, i) => (
                   <div
                     key={cell.id || i}
-                    className="p-6 border border-border rounded-lg"
+                    className="border-border rounded-lg border p-6"
                   >
                     {showNumbers && (
-                      <div className="text-3xl font-bold text-primary mb-4">
+                      <div className="text-primary mb-4 text-3xl font-bold">
                         {i + 1}
                       </div>
                     )}

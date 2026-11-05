@@ -4,14 +4,13 @@ import React from "react";
 
 import { defaultTheme, themeLocalStorageKey } from "../ThemeSelector/types";
 
-export const InitTheme: React.FC = () => {
-  return (
-    // Execute before hydration on hard loads; the ThemeProvider handles client updates.
-    <script
-      type={typeof window === "undefined" ? "text/javascript" : "text/plain"}
-      suppressHydrationWarning
-      dangerouslySetInnerHTML={{
-        __html: `
+export const InitTheme: React.FC = () => (
+  // Execute before hydration on hard loads; the ThemeProvider handles client updates.
+  <script
+    type={typeof window === "undefined" ? "text/javascript" : "text/plain"}
+    suppressHydrationWarning
+    dangerouslySetInnerHTML={{
+      __html: `
   (function () {
     function getImplicitPreference() {
       var mediaQuery = '(prefers-color-scheme: dark)'
@@ -47,8 +46,7 @@ export const InitTheme: React.FC = () => {
     document.documentElement.classList.add(themeToSet)
   })();
   `,
-      }}
-      id="theme-script"
-    />
-  );
-};
+    }}
+    id="theme-script"
+  />
+);

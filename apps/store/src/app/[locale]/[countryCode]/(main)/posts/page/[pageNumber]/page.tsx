@@ -9,11 +9,11 @@ import { getCachedPosts } from "@/utilities/getPosts";
 
 import PageClient from "./page.client";
 
-type Args = {
+interface Args {
   params: Promise<{
     pageNumber: string;
   }>;
-};
+}
 
 export default async function Page({ params: paramsPromise }: Args) {
   const { pageNumber } = await paramsPromise;

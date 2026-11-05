@@ -15,13 +15,13 @@ export const sdk = new Medusa({
 
 const EMPTY_RESULT = {
   hits: [],
+  hitsPerPage: 0,
   nbHits: 0,
   nbPages: 0,
   page: 0,
-  hitsPerPage: 0,
+  params: "",
   processingTimeMS: 0,
   query: "",
-  params: "",
 };
 
 export const searchClient = {
@@ -44,12 +44,12 @@ export const searchClient = {
         }
 
         const res = await fetch(`/api/search`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ query }),
+          headers: { "Content-Type": "application/json" },
+          method: "POST",
         });
         const response = (await res.json()) as {
-          results: Array<Record<string, unknown>>;
+          results: Record<string, unknown>[];
         };
 
         return response.results?.[0] ?? EMPTY_RESULT;

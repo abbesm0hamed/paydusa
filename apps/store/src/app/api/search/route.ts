@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 const MEDUSA_BACKEND_URL =
   process.env.MEDUSA_BACKEND_URL || "http://localhost:9100";
@@ -20,12 +21,12 @@ export async function POST(request: NextRequest) {
     const response = await fetch(
       `${MEDUSA_BACKEND_URL}/store/products/search`,
       {
-        method: "POST",
+        body: JSON.stringify({ query }),
         headers: {
           "Content-Type": "application/json",
           "x-publishable-api-key": PUBLISHABLE_API_KEY,
         },
-        body: JSON.stringify({ query }),
+        method: "POST",
       }
     );
 

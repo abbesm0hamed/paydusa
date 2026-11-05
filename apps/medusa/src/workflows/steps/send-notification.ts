@@ -1,4 +1,4 @@
-import { CreateNotificationDTO } from "@medusajs/framework/types";
+import type { CreateNotificationDTO } from "@medusajs/framework/types";
 import { Modules } from "@medusajs/framework/utils";
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
 

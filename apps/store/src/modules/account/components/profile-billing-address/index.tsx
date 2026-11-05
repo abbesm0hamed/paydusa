@@ -1,34 +1,32 @@
 "use client";
 
 import { addCustomerAddress, updateCustomerAddress } from "@lib/data/customer";
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import Input from "@modules/common/components/input";
 import NativeSelect from "@modules/common/components/native-select";
 import React, { useEffect, useMemo, useActionState } from "react";
 
 import AccountInfo from "../account-info";
 
-type MyInformationProps = {
+interface MyInformationProps {
   customer: HttpTypes.StoreCustomer;
   regions: HttpTypes.StoreRegion[];
-};
+}
 
 const ProfileBillingAddress: React.FC<MyInformationProps> = ({
   customer,
   regions,
 }) => {
-  const regionOptions = useMemo(() => {
-    return (
-      regions
-        ?.map((region) => {
-          return region.countries?.map((country) => ({
-            value: country.iso_2,
-            label: country.display_name,
-          }));
-        })
-        .flat() || []
-    );
-  }, [regions]);
+  const regionOptions = useMemo(
+    () =>
+      regions?.flatMap((region) =>
+        region.countries?.map((country) => ({
+          label: country.display_name,
+          value: country.iso_2,
+        }))
+      ) || [],
+    [regions]
+  );
 
   const [successState, setSuccessState] = React.useState(false);
 
@@ -37,9 +35,9 @@ const ProfileBillingAddress: React.FC<MyInformationProps> = ({
   );
 
   const initialState: Record<string, any> = {
+    error: false,
     isDefaultBilling: true,
     isDefaultShipping: false,
-    error: false,
     success: false,
   };
 
@@ -164,13 +162,11 @@ const ProfileBillingAddress: React.FC<MyInformationProps> = ({
             data-testid="billing-country-code-select"
           >
             <option value="">-</option>
-            {regionOptions.map((option, i) => {
-              return (
-                <option key={i} value={option?.value}>
-                  {option?.label}
-                </option>
-              );
-            })}
+            {regionOptions.map((option, i) => (
+              <option key={i} value={option?.value}>
+                {option?.label}
+              </option>
+            ))}
           </NativeSelect>
         </div>
       </AccountInfo>

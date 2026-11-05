@@ -16,25 +16,23 @@ export const Text: React.FC<
     errors: Partial<FieldErrorsImpl>;
     register: UseFormRegister<FieldValues>;
   }
-> = ({ name, defaultValue, errors, label, register, required, width }) => {
-  return (
-    <Width width={width}>
-      <Label htmlFor={name}>
-        {label}
+> = ({ name, defaultValue, errors, label, register, required, width }) => (
+  <Width width={width}>
+    <Label htmlFor={name}>
+      {label}
 
-        {required && (
-          <span className="required">
-            * <span className="sr-only">(required)</span>
-          </span>
-        )}
-      </Label>
-      <Input
-        defaultValue={defaultValue}
-        id={name}
-        type="text"
-        {...register(name, { required })}
-      />
-      {errors[name] && <Error name={name} />}
-    </Width>
-  );
-};
+      {required && (
+        <span className="required">
+          * <span className="sr-only">(required)</span>
+        </span>
+      )}
+    </Label>
+    <Input
+      defaultValue={defaultValue}
+      id={name}
+      type="text"
+      {...register(name, { required })}
+    />
+    {errors[name] && <Error name={name} />}
+  </Width>
+);

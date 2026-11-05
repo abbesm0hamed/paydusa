@@ -4,19 +4,15 @@ import type { FC } from "react";
 
 import RichText from "@/components/RichText";
 
-export const BlogContent: FC<BlogContentBlockProps> = ({ content }) => {
-  return (
-    <div className="content-container mx-auto px-4 py-8">
-      <div className="prose prose-lg max-w-none">
-        {content && <RichText data={content} />}
-      </div>
+export const BlogContent: FC<BlogContentBlockProps> = ({ content }) => (
+  <div className="content-container mx-auto px-4 py-8">
+    <div className="prose prose-lg max-w-none">
+      {content && <RichText data={content} />}
     </div>
-  );
-};
+  </div>
+);
 
 // For use with Payload blocks renderer
 export const BlogContentBlock: FC<{ data: BlogContentBlockProps }> = ({
   data,
-}) => {
-  return <BlogContent {...data} />;
-};
+}) => <BlogContent {...data} />;

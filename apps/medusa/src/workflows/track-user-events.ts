@@ -1,12 +1,12 @@
 import { Modules } from "@medusajs/framework/utils";
 import { createWorkflow, createStep } from "@medusajs/framework/workflows-sdk";
 
-type UserWorkflowInput = {
+interface UserWorkflowInput {
   customer_id: string;
   email?: string;
   first_name?: string;
   last_name?: string;
-};
+}
 
 const trackUserSignupStep = createStep(
   "track-user-signup-step",
@@ -17,8 +17,8 @@ const trackUserSignupStep = createStep(
     const analyticsModuleService = container.resolve(Modules.ANALYTICS);
 
     await analyticsModuleService.track({
-      event: "user_signed_up",
       actor_id: customer_id,
+      event: "user_signed_up",
       properties: {
         customer_id,
         email: email || "",
@@ -43,12 +43,12 @@ export const trackUserSignupWorkflow = createWorkflow(
 );
 
 // Track product views
-type ProductViewInput = {
+interface ProductViewInput {
   product_id: string;
   customer_id?: string;
   product_title?: string;
   product_handle?: string;
-};
+}
 
 const trackProductViewStep = createStep(
   "track-product-view-step",
@@ -64,13 +64,13 @@ const trackProductViewStep = createStep(
     const analyticsModuleService = container.resolve(Modules.ANALYTICS);
 
     await analyticsModuleService.track({
-      event: "product_viewed",
       actor_id: customer_id,
+      event: "product_viewed",
       properties: {
+        customer_id,
+        product_handle: product_handle || "",
         product_id,
         product_title: product_title || "",
-        product_handle: product_handle || "",
-        customer_id,
         timestamp: new Date(),
       },
     });
@@ -86,20 +86,20 @@ export const trackProductViewWorkflow = createWorkflow(
     product_handle,
   }: ProductViewInput) => {
     trackProductViewStep({
-      product_id,
       customer_id,
-      product_title,
       product_handle,
+      product_id,
+      product_title,
     });
   }
 );
 
 // Track search events
-type SearchEventInput = {
+interface SearchEventInput {
   query: string;
   results_count: number;
   customer_id?: string;
-};
+}
 
 const trackSearchEventStep = createStep(
   "track-search-event-step",
@@ -110,12 +110,12 @@ const trackSearchEventStep = createStep(
     const analyticsModuleService = container.resolve(Modules.ANALYTICS);
 
     await analyticsModuleService.track({
-      event: "search_performed",
       actor_id: customer_id,
+      event: "search_performed",
       properties: {
+        customer_id,
         query,
         results_count,
-        customer_id,
         timestamp: new Date(),
       },
     });
@@ -126,9 +126,9 @@ export const trackSearchEventWorkflow = createWorkflow(
   "track-search-event",
   ({ query, results_count, customer_id }: SearchEventInput) => {
     trackSearchEventStep({
+      customer_id,
       query,
       results_count,
-      customer_id,
     });
   }
 );

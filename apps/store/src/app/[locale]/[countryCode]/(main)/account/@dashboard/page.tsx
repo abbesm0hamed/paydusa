@@ -1,12 +1,12 @@
 import { retrieveCustomer } from "@lib/data/customer";
 import { listOrders } from "@lib/data/orders";
 import Overview from "@modules/account/components/overview";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Account",
   description: "Overview of your account activity.",
+  title: "Account",
 };
 
 export default async function OverviewTemplate() {

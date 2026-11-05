@@ -13,9 +13,9 @@ export default async function Footer() {
   const productCategories = await listCategories();
 
   return (
-    <footer className="border-t border-ui-border-base w-full">
-      <div className="content-container flex flex-col w-full">
-        <div className="flex flex-col gap-y-6 xsmall:flex-row items-start justify-between py-40">
+    <footer className="border-ui-border-base w-full border-t">
+      <div className="content-container flex w-full flex-col">
+        <div className="xsmall:flex-row flex flex-col items-start justify-between gap-y-6 py-40">
           <div>
             <LocalizedClientLink
               href="/"
@@ -24,7 +24,7 @@ export default async function Footer() {
               Medusa Store
             </LocalizedClientLink>
           </div>
-          <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5">
+          <div className="text-small-regular grid grid-cols-2 gap-10 sm:grid-cols-3 md:grid-cols-5 md:gap-x-16">
             {productCategories && productCategories?.length > 0 && (
               <div className="flex flex-col gap-y-2">
                 <span className="txt-small-plus txt-ui-fg-base">
@@ -41,14 +41,14 @@ export default async function Footer() {
 
                     const children =
                       c.category_children?.map((child) => ({
-                        name: child.name,
                         handle: child.handle,
                         id: child.id,
+                        name: child.name,
                       })) || null;
 
                     return (
                       <li
-                        className="flex flex-col gap-2 text-ui-fg-subtle txt-small"
+                        className="text-ui-fg-subtle txt-small flex flex-col gap-2"
                         key={c.id}
                       >
                         <LocalizedClientLink
@@ -62,7 +62,7 @@ export default async function Footer() {
                           {c.name}
                         </LocalizedClientLink>
                         {children && (
-                          <ul className="grid grid-cols-1 ml-3 gap-2">
+                          <ul className="ml-3 grid grid-cols-1 gap-2">
                             {children &&
                               children.map((child) => (
                                 <li key={child.id}>
@@ -85,7 +85,7 @@ export default async function Footer() {
             )}
             <div className="flex flex-col gap-y-2">
               <span className="txt-small-plus txt-ui-fg-base">Socials</span>
-              <div className="flex flex-col gap-2 text-ui-fg-subtle txt-small">
+              <div className="text-ui-fg-subtle txt-small flex flex-col gap-2">
                 <a href="#" className="hover:text-ui-fg-base">
                   instagram
                 </a>
@@ -132,7 +132,7 @@ export default async function Footer() {
             )}
             <div className="flex flex-col gap-y-2">
               <span className="txt-small-plus txt-ui-fg-base">Links</span>
-              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
+              <ul className="text-ui-fg-subtle txt-small grid grid-cols-1 gap-y-2">
                 <li>
                   <a
                     href="#"
@@ -147,7 +147,7 @@ export default async function Footer() {
             </div>
           </div>
         </div>
-        <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
+        <div className="text-ui-fg-muted mb-16 flex w-full justify-between">
           <Text className="txt-compact-small">© 2026 Ecommerce</Text>
           <MedusaCTA />
         </div>

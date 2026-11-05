@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@paydusa/design-system/components/select";
 import { useLocale } from "next-intl";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import type { TypedLocale } from "payload";
 import { useTransition } from "react";
 
@@ -33,7 +33,7 @@ export default function LocaleSwitcher() {
 
   return (
     <Select onValueChange={onSelectChange} value={locale}>
-      <SelectTrigger className="w-auto text-sm bg-transparent gap-2 pl-0 md:pl-3 border-none">
+      <SelectTrigger className="w-auto gap-2 border-none bg-transparent pl-0 text-sm md:pl-3">
         <SelectValue placeholder="Theme" />
       </SelectTrigger>
       <SelectContent>

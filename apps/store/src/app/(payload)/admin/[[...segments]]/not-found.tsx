@@ -6,14 +6,12 @@ import type { Metadata } from "next";
 
 import { importMap } from "../importMap";
 
-type Args = {
+interface Args {
   params: Promise<{
     segments: string[];
   }>;
-  searchParams: Promise<{
-    [key: string]: string | string[];
-  }>;
-};
+  searchParams: Promise<Record<string, string | string[]>>;
+}
 
 export const generateMetadata = ({
   params,
@@ -22,6 +20,6 @@ export const generateMetadata = ({
   generatePageMetadata({ config, params, searchParams });
 
 const NotFound = ({ params, searchParams }: Args) =>
-  NotFoundPage({ config, params, searchParams, importMap });
+  NotFoundPage({ config, importMap, params, searchParams });
 
 export default NotFound;

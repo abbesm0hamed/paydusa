@@ -1,4 +1,4 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http";
+import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http";
 import { z } from "zod";
 
 import { updateInvoiceConfigWorkflow } from "../../../workflows/update-invoice-config";
@@ -19,11 +19,11 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 }
 
 export const PostInvoiceConfgSchema = z.object({
-  company_name: z.string().optional(),
   company_address: z.string().optional(),
-  company_phone: z.string().optional(),
   company_email: z.string().optional(),
   company_logo: z.string().optional(),
+  company_name: z.string().optional(),
+  company_phone: z.string().optional(),
   notes: z.string().optional(),
 });
 

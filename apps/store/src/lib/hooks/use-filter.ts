@@ -104,10 +104,10 @@ export function useFilter() {
   }, [router, pathname, searchParams]);
 
   return {
-    filters,
     activeCount,
-    setFilter,
-    removeFilter,
     clearFilters,
+    filters,
+    removeFilter,
+    setFilter,
   };
 }

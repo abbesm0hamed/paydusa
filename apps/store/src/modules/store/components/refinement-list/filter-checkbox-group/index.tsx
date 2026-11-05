@@ -5,7 +5,7 @@ import { cn } from "@paydusa/design-system/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { useCallback, useState } from "react";
 
-type FilterCheckboxGroupProps = {
+interface FilterCheckboxGroupProps {
   title: string;
   options: {
     value: string;
@@ -16,7 +16,7 @@ type FilterCheckboxGroupProps = {
   onChange: (values: string[]) => void;
   collapsible?: boolean;
   defaultOpen?: boolean;
-};
+}
 
 const FilterCheckboxGroup = ({
   title,
@@ -47,7 +47,7 @@ const FilterCheckboxGroup = ({
       <button
         type="button"
         className={cn(
-          "flex items-center justify-between w-full text-left group",
+          "group flex w-full items-center justify-between text-left",
           collapsible && "cursor-pointer"
         )}
         onClick={() => collapsible && setIsOpen(!isOpen)}
@@ -57,7 +57,7 @@ const FilterCheckboxGroup = ({
         {collapsible && (
           <ChevronDown
             className={cn(
-              "size-4 transition-transform duration-200 text-muted-foreground",
+              "text-muted-foreground size-4 transition-transform duration-200",
               isOpen && "rotate-180"
             )}
           />
@@ -70,7 +70,7 @@ const FilterCheckboxGroup = ({
             return (
               <div
                 key={option.value}
-                className="flex items-center gap-x-2 group/option"
+                className="group/option flex items-center gap-x-2"
               >
                 <Checkbox
                   id={option.value}
@@ -79,11 +79,11 @@ const FilterCheckboxGroup = ({
                 />
                 <label
                   htmlFor={option.value}
-                  className="flex-1 flex items-center gap-2 text-sm text-muted-foreground hover:cursor-pointer hover:text-foreground transition-colors"
+                  className="text-muted-foreground hover:text-foreground flex flex-1 items-center gap-2 text-sm transition-colors hover:cursor-pointer"
                 >
                   <span>{option.label}</span>
                   {option.count !== undefined && (
-                    <span className="text-xs text-muted-foreground ml-auto tabular-nums">
+                    <span className="text-muted-foreground ml-auto text-xs tabular-nums">
                       {option.count}
                     </span>
                   )}

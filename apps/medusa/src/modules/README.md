@@ -31,6 +31,7 @@ For example, create the file `src/modules/blog/service.ts` with the following co
 
 ```ts
 import { MedusaService } from "@medusajs/framework/utils";
+
 import Post from "./models/post";
 
 class BlogModuleService extends MedusaService({
@@ -47,8 +48,9 @@ A module must have an `index.ts` file in its root directory that exports its def
 For example, create the file `src/modules/blog/index.ts` with the following content:
 
 ```ts
-import BlogModuleService from "./service";
 import { Module } from "@medusajs/framework/utils";
+
+import BlogModuleService from "./service";
 
 export const BLOG_MODULE = "blog";
 
@@ -96,8 +98,9 @@ For example, to use the module in an API route:
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework";
-import BlogModuleService from "../../../modules/blog/service";
+
 import { BLOG_MODULE } from "../../../modules/blog";
+import BlogModuleService from "../../../modules/blog/service";
 
 export async function GET(
   req: MedusaRequest,

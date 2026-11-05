@@ -6,9 +6,6 @@ import { isAdminOrSelf, isAdminOrSelfFieldLevel } from "@/access/isAdminOrSelf";
 import { authenticated } from "../../access/authenticated";
 
 export const Users: CollectionConfig = {
-  slug: "users",
-  versions: false,
-  authorship: false,
   access: {
     admin: authenticated,
     create: isAdmin,
@@ -23,14 +20,13 @@ export const Users: CollectionConfig = {
   auth: {
     useAPIKey: true,
   },
+  authorship: false,
   fields: [
     {
       name: "name",
       type: "text",
     },
     {
-      name: "roles",
-      type: "select",
       access: {
         create: isAdminFieldLevel,
         read: isAdminOrSelfFieldLevel,
@@ -38,9 +34,13 @@ export const Users: CollectionConfig = {
       },
       defaultValue: ["public"],
       hasMany: true,
+      name: "roles",
       options: ["admin", "public"],
       required: true,
+      type: "select",
     },
   ],
+  slug: "users",
   timestamps: true,
+  versions: false,
 };

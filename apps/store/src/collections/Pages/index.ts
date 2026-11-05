@@ -42,17 +42,17 @@ export const Pages = {
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
   // Type safe if the collection slug generic is passed to `CollectionConfig` - `CollectionConfig<'pages'>
   defaultPopulate: {
-    title: true,
     slug: true,
+    title: true,
   },
   admin: {
     defaultColumns: ["title", "slug", "createdAt", "updatedAt"],
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({
-          slug: typeof data?.slug === "string" ? data.slug : "",
           collection: "pages",
           req,
+          slug: typeof data?.slug === "string" ? data.slug : "",
         });
 
         return path;
@@ -60,20 +60,19 @@ export const Pages = {
     },
     preview: (data, { req }) =>
       generatePreviewPath({
-        slug: typeof data?.slug === "string" ? data.slug : "",
         collection: "pages",
         req,
+        slug: typeof data?.slug === "string" ? data.slug : "",
       }),
     useAsTitle: "title",
   },
   fields: [
     {
       name: "title",
-      type: "text",
       required: true,
+      type: "text",
     },
     {
-      type: "tabs",
       tabs: [
         {
           fields: [hero],
@@ -82,9 +81,9 @@ export const Pages = {
         {
           fields: [
             {
-              name: "layout",
-              type: "blocks",
-              localized: true,
+              admin: {
+                initCollapsed: true,
+              },
               blocks: [
                 CallToAction,
                 Content,
@@ -99,23 +98,20 @@ export const Pages = {
                 Archive,
                 FormBlock,
               ],
+              localized: true,
+              name: "layout",
               required: true,
-              admin: {
-                initCollapsed: true,
-              },
+              type: "blocks",
             },
           ],
           label: "Content",
         },
         {
-          name: "meta",
-          label: "SEO",
-          localized: true,
           fields: [
             OverviewField({
-              titlePath: "meta.title",
               descriptionPath: "meta.description",
               imagePath: "meta.image",
+              titlePath: "meta.title",
             }),
             MetaTitleField({
               hasGenerateFn: true,
@@ -134,23 +130,27 @@ export const Pages = {
               descriptionPath: "meta.description",
             }),
           ],
+          label: "SEO",
+          localized: true,
+          name: "meta",
         },
       ],
+      type: "tabs",
     },
     {
-      name: "publishedAt",
-      type: "date",
-      localized: true,
       admin: {
         position: "sidebar",
       },
+      localized: true,
+      name: "publishedAt",
+      type: "date",
     },
     ...slugField(),
   ],
   hooks: {
     afterChange: [revalidatePage],
-    beforeChange: [populatePublishedAt],
     afterDelete: [revalidateDelete],
+    beforeChange: [populatePublishedAt],
   },
   versions: {
     drafts: {

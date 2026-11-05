@@ -2,7 +2,7 @@
 
 import { Popover, PopoverPanel, Transition } from "@headlessui/react";
 import { ArrowRightMini, XMark } from "@medusajs/icons";
-import { HttpTypes } from "@medusajs/types";
+import type { HttpTypes } from "@medusajs/types";
 import { Text, clx, useToggleState } from "@medusajs/ui";
 import LocalizedClientLink from "@modules/common/components/localized-client-link";
 import { Fragment, useEffect, useState } from "react";
@@ -10,10 +10,10 @@ import { Fragment, useEffect, useState } from "react";
 import CountrySelect from "../country-select";
 
 const SideMenuItems = {
-  Home: "/",
-  Store: "/store",
   Account: "/account",
   Cart: "/cart",
+  Home: "/",
+  Store: "/store",
 };
 
 const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
@@ -26,14 +26,14 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
 
   return (
     <div className="h-full">
-      <div className="flex items-center h-full">
-        <Popover className="h-full flex">
+      <div className="flex h-full items-center">
+        <Popover className="flex h-full">
           {({ open, close }) => (
             <>
               <div className="relative flex h-full">
                 <Popover.Button
                   data-testid="nav-menu-button"
-                  className="relative h-full flex items-center transition-all ease-out duration-200 focus:outline-none hover:text-ui-fg-base"
+                  className="hover:text-ui-fg-base relative flex h-full items-center transition-all duration-200 ease-out focus:outline-none"
                 >
                   Menu
                 </Popover.Button>
@@ -49,31 +49,29 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
                 leaveFrom="opacity-100 backdrop-blur-2xl"
                 leaveTo="opacity-0"
               >
-                <PopoverPanel className="flex flex-col fixed w-full pr-4 sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min h-[calc(100vh-1rem)] z-50 inset-0 text-sm text-ui-fg-on-color m-2 backdrop-blur-md">
+                <PopoverPanel className="text-ui-fg-on-color fixed inset-0 z-50 m-2 flex h-[calc(100vh-1rem)] w-full flex-col pr-4 text-sm backdrop-blur-md sm:w-1/3 sm:min-w-min sm:pr-0 2xl:w-1/4">
                   <div
                     data-testid="nav-menu-popup"
-                    className="flex flex-col h-full bg-[rgba(3,7,18,0.5)] rounded-rounded justify-between p-6"
+                    className="rounded-rounded flex h-full flex-col justify-between bg-[rgba(3,7,18,0.5)] p-6"
                   >
                     <div className="flex justify-end" id="xmark">
                       <button data-testid="close-menu-button" onClick={close}>
                         <XMark />
                       </button>
                     </div>
-                    <ul className="flex flex-col gap-6 items-start justify-start">
-                      {Object.entries(SideMenuItems).map(([name, href]) => {
-                        return (
-                          <li key={name}>
-                            <LocalizedClientLink
-                              href={href}
-                              className="text-xl sm:text-3xl leading-8 sm:leading-10 hover:text-ui-fg-disabled"
-                              onClick={close}
-                              data-testid={`${name.toLowerCase()}-link`}
-                            >
-                              {name}
-                            </LocalizedClientLink>
-                          </li>
-                        );
-                      })}
+                    <ul className="flex flex-col items-start justify-start gap-6">
+                      {Object.entries(SideMenuItems).map(([name, href]) => (
+                        <li key={name}>
+                          <LocalizedClientLink
+                            href={href}
+                            className="hover:text-ui-fg-disabled text-xl leading-8 sm:text-3xl sm:leading-10"
+                            onClick={close}
+                            data-testid={`${name.toLowerCase()}-link`}
+                          >
+                            {name}
+                          </LocalizedClientLink>
+                        </li>
+                      ))}
                     </ul>
                     <div className="flex flex-col gap-y-6">
                       <div
@@ -94,7 +92,7 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
                           )}
                         />
                       </div>
-                      <Text className="flex justify-between txt-compact-small">
+                      <Text className="txt-compact-small flex justify-between">
                         © {year} Medusa Store. All rights reserved.
                       </Text>
                     </div>

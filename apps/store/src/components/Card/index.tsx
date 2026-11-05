@@ -32,18 +32,18 @@ export const Card: React.FC<{
   const hasCategories =
     categories && Array.isArray(categories) && categories.length > 0;
   const titleToUse = titleFromProps || title;
-  const sanitizedDescription = description?.replace(/\s/g, " "); // replace non-breaking space with white space
+  const sanitizedDescription = description?.replaceAll(/\s/g, " "); // replace non-breaking space with white space
   const href = `/${relationTo}/${slug}`;
 
   return (
     <article
       className={cn(
-        "border border-border rounded-lg overflow-hidden bg-card hover:cursor-pointer",
+        "border-border bg-card overflow-hidden rounded-lg border hover:cursor-pointer",
         className
       )}
       ref={card.ref}
     >
-      <div className="relative w-full ">
+      <div className="relative w-full">
         {!metaImage && <div className="">No image</div>}
         {metaImage && typeof metaImage !== "string" && (
           <Media resource={metaImage} size="33vw" />
@@ -51,7 +51,7 @@ export const Card: React.FC<{
       </div>
       <div className="p-4">
         {showCategories && hasCategories && (
-          <div className="uppercase text-sm mb-4">
+          <div className="mb-4 text-sm uppercase">
             {showCategories && hasCategories && (
               <div>
                 {categories?.map((category, index) => {

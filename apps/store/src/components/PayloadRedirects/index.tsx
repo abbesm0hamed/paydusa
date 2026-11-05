@@ -31,21 +31,25 @@ export const PayloadRedirects: React.FC<Props> = async ({
       const id = redirectItem.to?.reference?.value;
 
       const document = (await getCachedDocument(collection, id)) as Page | Post;
-      redirectUrl = `${redirectItem.to?.reference?.relationTo !== "pages" ? `/${redirectItem.to?.reference?.relationTo}` : ""}/${
+      redirectUrl = `${redirectItem.to?.reference?.relationTo === "pages" ? "" : `/${redirectItem.to?.reference?.relationTo}`}/${
         document?.slug
       }`;
     } else {
-      redirectUrl = `${redirectItem.to?.reference?.relationTo !== "pages" ? `/${redirectItem.to?.reference?.relationTo}` : ""}/${
+      redirectUrl = `${redirectItem.to?.reference?.relationTo === "pages" ? "" : `/${redirectItem.to?.reference?.relationTo}`}/${
         typeof redirectItem.to?.reference?.value === "object"
           ? redirectItem.to?.reference?.value?.slug
           : ""
       }`;
     }
 
-    if (redirectUrl) redirect(redirectUrl);
+    if (redirectUrl) {
+      redirect(redirectUrl);
+    }
   }
 
-  if (disableNotFound) return null;
+  if (disableNotFound) {
+    return null;
+  }
 
   notFound();
 };

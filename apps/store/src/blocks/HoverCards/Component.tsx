@@ -21,7 +21,9 @@ export const HoverCards: React.FC<HoverCardsBlockProps> = ({
   >["link"];
 
   const getLinkUrl = (link: HoverCardLink) => {
-    if (!link) return undefined;
+    if (!link) {
+      return;
+    }
 
     if (link.type === "custom" && link.url) {
       return link.url;
@@ -29,7 +31,7 @@ export const HoverCards: React.FC<HoverCardsBlockProps> = ({
 
     if (link.type === "reference" && link.reference) {
       const ref = link.reference;
-      const value = ref.value;
+      const { value } = ref;
 
       // If value is an object with slug property
       if (
@@ -43,7 +45,7 @@ export const HoverCards: React.FC<HoverCardsBlockProps> = ({
       }
     }
 
-    return undefined;
+    return;
   };
 
   type HoverCardCard = NonNullable<
@@ -87,10 +89,9 @@ export const HoverCards: React.FC<HoverCardsBlockProps> = ({
     } else if (rowPattern === 1) {
       // Second row: 3/3
       return "md:col-span-3";
-    } else {
-      // Third row: 2/4
-      return colIndex === 0 ? "md:col-span-2" : "md:col-span-4";
     }
+    // Third row: 2/4
+    return colIndex === 0 ? "md:col-span-2" : "md:col-span-4";
   };
 
   return (
@@ -104,7 +105,7 @@ export const HoverCards: React.FC<HoverCardsBlockProps> = ({
         )}
 
         {/* Cards Section with specific repeating pattern */}
-        <div className="overflow-hidden border border-border">
+        <div className="border-border overflow-hidden border">
           {cardPairs.map((pair, rowIndex) => (
             <div
               key={`row-${rowIndex}`}
@@ -125,7 +126,7 @@ export const HoverCards: React.FC<HoverCardsBlockProps> = ({
 
                 const CardContent = () => (
                   <div className="relative z-10 flex h-full flex-col justify-between gap-6">
-                    <h3 className="mb-2 font-bold text-white text-xl drop-shadow-md">
+                    <h3 className="mb-2 text-xl font-bold text-white drop-shadow-md">
                       {card.title}
                     </h3>
                     {card.desc && (
@@ -179,7 +180,7 @@ export const HoverCards: React.FC<HoverCardsBlockProps> = ({
                         {/* Decorative Elements */}
                         <div
                           className={cn(
-                            "-mr-12 -mb-12 absolute right-0 bottom-0 h-24 w-24 rounded-full bg-gradient-radial from-white/20 to-transparent transition-all duration-500",
+                            "bg-gradient-radial absolute right-0 bottom-0 -mr-12 -mb-12 h-24 w-24 rounded-full from-white/20 to-transparent transition-all duration-500",
                             isActive
                               ? "scale-125 opacity-100"
                               : "scale-75 opacity-0"
@@ -188,7 +189,7 @@ export const HoverCards: React.FC<HoverCardsBlockProps> = ({
 
                         <div
                           className={cn(
-                            "-ml-8 -mt-8 absolute top-0 left-0 h-16 w-16 rounded-full border border-white/10 transition-all duration-500",
+                            "absolute top-0 left-0 -mt-8 -ml-8 h-16 w-16 rounded-full border border-white/10 transition-all duration-500",
                             isActive ? "opacity-100" : "opacity-0"
                           )}
                         />
@@ -223,6 +224,4 @@ export const HoverCards: React.FC<HoverCardsBlockProps> = ({
 // For use with Payload blocks renderer
 export const HoverCardsBlock: React.FC<{ data: HoverCardsBlockProps }> = ({
   data,
-}) => {
-  return <HoverCards {...data} />;
-};
+}) => <HoverCards {...data} />;

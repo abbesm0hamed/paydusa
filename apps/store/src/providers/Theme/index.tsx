@@ -27,19 +27,14 @@ const ThemeContext = createContext(initialContext);
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setThemeState] = useState<Theme | undefined>(
-    canUseDOM
-      ? (document.documentElement.getAttribute("data-theme") as Theme)
-      : undefined
+    canUseDOM ? (document.documentElement.dataset.theme as Theme) : undefined
   );
 
   const setTheme = useCallback((themeToSet: Theme | null) => {
     if (themeToSet === null) {
       window.localStorage.removeItem(themeLocalStorageKey);
       const implicitPreference = getImplicitPreference();
-      document.documentElement.setAttribute(
-        "data-theme",
-        implicitPreference || ""
-      );
+      document.documentElement.dataset.theme = implicitPreference || "";
       document.documentElement.classList.remove("dark", "light");
       if (implicitPreference) {
         document.documentElement.classList.add(implicitPreference);
@@ -48,7 +43,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     } else {
       setThemeState(themeToSet);
       window.localStorage.setItem(themeLocalStorageKey, themeToSet);
-      document.documentElement.setAttribute("data-theme", themeToSet);
+      document.documentElement.dataset.theme = themeToSet;
       document.documentElement.classList.remove("dark", "light");
       document.documentElement.classList.add(themeToSet);
     }
@@ -68,7 +63,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       }
     }
 
-    document.documentElement.setAttribute("data-theme", themeToSet);
+    document.documentElement.dataset.theme = themeToSet;
     document.documentElement.classList.remove("dark", "light");
     document.documentElement.classList.add(themeToSet);
     setThemeState(themeToSet);

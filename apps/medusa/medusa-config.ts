@@ -1,5 +1,9 @@
-import { loadEnv, defineConfig } from "@medusajs/framework/utils";
-import { Modules, ContainerRegistrationKeys } from "@medusajs/framework/utils";
+import {
+  loadEnv,
+  defineConfig,
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils";
 
 // Load environment variables based on NODE_ENV
 loadEnv(process.env.NODE_ENV || "development", process.cwd());
@@ -31,40 +35,42 @@ const getRedisUrl = () => {
 };
 
 module.exports = defineConfig({
+  admin: {
+    path: process.env.MEDUSA_ADMIN_PATH || "/app",
+  },
   modules: [
     {
       resolve: "@medusajs/medusa/product",
     },
     {
-      resolve: "@medusajs/medusa/auth",
       dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
       options: {
         providers: [
           {
-            resolve: "@medusajs/medusa/auth-emailpass",
             id: "emailpass",
+            resolve: "@medusajs/medusa/auth-emailpass",
           },
         ],
       },
+      resolve: "@medusajs/medusa/auth",
     },
     {
-      resolve: "@medusajs/medusa/workflow-engine-redis",
       options: {
         redis: {
           url: getRedisUrl(),
         },
       },
+      resolve: "@medusajs/medusa/workflow-engine-redis",
     },
     {
-      resolve: "./src/modules/algolia",
       options: {
-        appId: process.env.ALGOLIA_APP_ID!,
         apiKey: process.env.ALGOLIA_ADMIN_API_KEY!,
+        appId: process.env.ALGOLIA_APP_ID!,
         productIndexName: process.env.ALGOLIA_PRODUCT_INDEX_NAME!,
       },
+      resolve: "./src/modules/algolia",
     },
     {
-      resolve: "@medusajs/medusa/file",
       options: {
         providers: [
           {
@@ -72,49 +78,50 @@ module.exports = defineConfig({
             // Keep the provider ID stable for existing file records.
             id: "s3",
             options: {
-              file_url: process.env.R2_PUBLIC_URL,
               access_key_id: process.env.R2_ACCESS_KEY_ID,
-              secret_access_key: process.env.R2_SECRET_ACCESS_KEY,
-              region: process.env.R2_REGION,
               bucket: process.env.R2_BUCKET,
               endpoint: process.env.R2_ENDPOINT,
+              file_url: process.env.R2_PUBLIC_URL,
               prefix: "medusa/",
+              region: process.env.R2_REGION,
+              secret_access_key: process.env.R2_SECRET_ACCESS_KEY,
             },
           },
         ],
       },
+      resolve: "@medusajs/medusa/file",
     },
     {
-      resolve: "@medusajs/medusa/analytics",
       options: {
         providers: [
           {
-            resolve: "@medusajs/analytics-posthog",
             id: "posthog",
             options: {
               posthogEventsKey: process.env.POSTHOG_EVENTS_API_KEY,
               posthogHost:
                 process.env.POSTHOG_HOST || "https://eu.i.posthog.com",
             },
+            resolve: "@medusajs/analytics-posthog",
           },
         ],
       },
+      resolve: "@medusajs/medusa/analytics",
     },
     {
-      resolve: "@medusajs/medusa/notification",
       options: {
         providers: [
           {
-            resolve: "./src/modules/resend",
             id: "resend",
             options: {
-              channels: ["email"],
               api_key: process.env.RESEND_API_KEY,
+              channels: ["email"],
               from: process.env.RESEND_FROM_EMAIL,
             },
+            resolve: "./src/modules/resend",
           },
         ],
       },
+      resolve: "@medusajs/medusa/notification",
     },
     {
       resolve: "./src/modules/invoice-generator",
@@ -122,21 +129,18 @@ module.exports = defineConfig({
   ],
   plugins: [
     {
-      resolve: "@medusajs/draft-order",
       options: {},
+      resolve: "@medusajs/draft-order",
     },
   ],
-  admin: {
-    path: process.env.MEDUSA_ADMIN_PATH || "/app",
-  },
   projectConfig: {
     databaseUrl: getDatabaseUrl(),
     http: {
-      storeCors: process.env.STORE_CORS!,
       adminCors: process.env.ADMIN_CORS!,
       authCors: process.env.AUTH_CORS!,
-      jwtSecret: process.env.JWT_SECRET,
       cookieSecret: process.env.COOKIE_SECRET,
+      jwtSecret: process.env.JWT_SECRET,
+      storeCors: process.env.STORE_CORS!,
     },
   },
 });
