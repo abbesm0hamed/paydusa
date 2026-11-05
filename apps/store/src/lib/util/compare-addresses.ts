@@ -1,7 +1,26 @@
-import { isEqual, pick } from "lodash";
+import isEqual from "lodash/isEqual.js";
+import pick from "lodash/pick.js";
 
-export default function compareAddresses(address1: any, address2: any) {
-  return isEqual(
+type ComparableAddress =
+  | Partial<{
+      address_1: string | null;
+      city: string | null;
+      company: string | null;
+      country_code: string | null;
+      first_name: string | null;
+      last_name: string | null;
+      phone: string | null;
+      postal_code: string | null;
+      province: string | null;
+    }>
+  | null
+  | undefined;
+
+const compareAddresses = (
+  address1: ComparableAddress,
+  address2: ComparableAddress
+) =>
+  isEqual(
     pick(address1, [
       "first_name",
       "last_name",
@@ -25,4 +44,5 @@ export default function compareAddresses(address1: any, address2: any) {
       "phone",
     ])
   );
-}
+
+export default compareAddresses;

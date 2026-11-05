@@ -1,8 +1,8 @@
 import type { HttpTypes } from "@medusajs/types";
 
-export function getVariantOptions(
+export const getVariantOptions = (
   variantOptions: HttpTypes.StoreProductVariant["options"]
-): Record<string, string> {
+): Record<string, string> => {
   const options: Record<string, string> = {};
 
   for (const option of variantOptions ?? []) {
@@ -12,4 +12,4 @@ export function getVariantOptions(
   }
 
   return options;
-}
+};
