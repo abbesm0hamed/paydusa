@@ -4,33 +4,38 @@
     "building-admin-dashboard-customizations": {
       "source": "medusajs/medusa-agent-skills",
       "sourceType": "github",
-      "computedHash": "4cd60098a12fcfd682ae4f7668bd1cf0c5986c27e2ebfcf45166e3d69c4e5f1c"
+      "skillPath": "plugins/medusa-dev/skills/building-admin-dashboard-customizations/SKILL.md",
+      "computedHash": "8543b8a31aa960940501034c95e8752bb232dfc9d075bb18f0a051ebd03c6960"
     },
     "building-storefronts": {
       "source": "medusajs/medusa-agent-skills",
       "sourceType": "github",
+      "skillPath": "plugins/medusa-dev/skills/building-storefronts/SKILL.md",
       "computedHash": "288f645ffd2b29f925f5c70077b9e57af6b787843fc98b276e84150d253511a7"
     },
     "building-with-medusa": {
       "source": "medusajs/medusa-agent-skills",
       "sourceType": "github",
-      "computedHash": "fef62d911eba65523b679baea2ce9bf1c253211f18499115374dc9727c024e4f"
+      "skillPath": "plugins/medusa-dev/skills/building-with-medusa/SKILL.md",
+      "computedHash": "297c33edf8ee06fddf0c598c506ec1e6577559830e0210cd2cd5ecc1d8bd5261"
     },
-    "next-best-practices": {
-      "source": "vercel-labs/next-skills",
+    "checkout-integration": {
+      "source": "dodopayments/skills",
       "sourceType": "github",
-      "computedHash": "db85045827ebeb83ac8dbc992b69188755eeb74dcf01cbf5e694d58aa494a106"
+      "skillPath": "dodo-payments/checkout-integration/SKILL.md",
+      "computedHash": "00ac88f1c21896ad75d7446b177a61a20abe144bbc44e2bc335564b9f9b3f661"
+    },
+    "dodo-best-practices": {
+      "source": "dodopayments/skills",
+      "sourceType": "github",
+      "skillPath": "dodo-payments/dodo-best-practices/SKILL.md",
+      "computedHash": "5aa911095810b0567eb54f9e0f2a7d5a30c466d71715e61d808c7b3e0a792aa3"
     },
     "next-bundle-optimizer": {
       "source": "vercel/next.js",
       "sourceType": "github",
       "skillPath": "skills/next-bundle-optimizer/SKILL.md",
-      "computedHash": "c6b7c0bcc589582d7c142c20febe4a0501b8e65e2d239abef86b4c59b680b039"
-    },
-    "next-cache-components": {
-      "source": "vercel-labs/next-skills",
-      "sourceType": "github",
-      "computedHash": "f835d8226c28abf012cc013928e2627c8a7a046de61127ef229be1711bd1f255"
+      "computedHash": "7c37f80887cf574e146b88d42cf7d8e847a96ac4cbd1a499672213a30a5ba8f5"
     },
     "next-cache-components-adoption": {
       "source": "vercel/next.js",
@@ -42,25 +47,25 @@
       "source": "vercel/next.js",
       "sourceType": "github",
       "skillPath": "skills/next-cache-components-optimizer/SKILL.md",
-      "computedHash": "45a4f4ad46ce791d42f310c4734795c9ff4e26fbf27ed0285a43a903ef469000"
+      "computedHash": "4e0f4d73209a4c89e503eb374d63631a9146681304f15d64929e47196e7f6a45"
     },
     "next-dev-loop": {
       "source": "vercel/next.js",
       "sourceType": "github",
       "skillPath": "skills/next-dev-loop/SKILL.md",
-      "computedHash": "c305c83b726212e0284930c65cded2c4a4ab85f9bfccfa83b62274247fe3580e"
+      "computedHash": "68e70a9270eb02cc9c63cb19ce5106772ce4c140242199f4d90c77f6acb56355"
     },
     "next-partial-prefetching-adoption": {
       "source": "vercel/next.js",
       "sourceType": "github",
       "skillPath": "skills/next-partial-prefetching-adoption/SKILL.md",
-      "computedHash": "e523f1aec1789b3a1f4ca881898d99416427f9d853b3b1841f0e13657bc38f77"
+      "computedHash": "6fb1757aee3491689ec704b397f4b7ff9e276f500a66403867e77a16b2038594"
     },
     "next-partial-prefetching-optimizer": {
       "source": "vercel/next.js",
       "sourceType": "github",
       "skillPath": "skills/next-partial-prefetching-optimizer/SKILL.md",
-      "computedHash": "97b935496e9f821417229fd4afe153dc57732911991b48144371b15b11716fbe"
+      "computedHash": "2fc7448f5eec4e5c4f6e51359e2cd3d9c992566ca90652c8466d64015932b255"
     },
     "payload": {
       "source": "payloadcms/skills",
@@ -68,40 +73,83 @@
       "skillPath": "skills/payload/SKILL.md",
       "computedHash": "4abfcc828ca2cc0d9142b2fee2456f257f73dd7a37bd1cce2d354231b08b8767"
     },
+    "playwright-best-practices": {
+      "source": "currents-dev/playwright-best-practices-skill",
+      "sourceType": "github",
+      "skillPath": "playwright-best-practices/SKILL.md",
+      "computedHash": "7eb144f734450fee649dc1d209114775ddda07cbf45be84fe969d3d4f3971dce"
+    },
+    "react-email": {
+      "source": "resend/react-email",
+      "sourceType": "github",
+      "skillPath": "skills/react-email/SKILL.md",
+      "computedHash": "da0feefc6ddf4aaeff930ab203d269774da464429e35b178d2403d69d2dc2fb3"
+    },
+    "security-review": {
+      "source": "getsentry/skills",
+      "sourceType": "github",
+      "skillPath": "skills/security-review/SKILL.md",
+      "computedHash": "194b70d3a2a4e0b23a436866c95496457962d1a818c382c56e4912bcd0cc3424"
+    },
     "shadcn": {
       "source": "shadcn/ui",
       "sourceType": "github",
-      "computedHash": "507f011a70e8b3ae242bdc0bb5b39fd91a1d4049a0f3c281991ccf84973d591c"
+      "skillPath": "skills/shadcn/SKILL.md",
+      "computedHash": "b864a958765563321f485a96f4d59c0bb6539f4286ab6d8b8b66895b7ebd302d"
     },
     "storefront-best-practices": {
       "source": "medusajs/medusa-agent-skills",
       "sourceType": "github",
-      "computedHash": "633f757031071344075cce6450ff8c5bf209691a8d072bb6cc73be153faa4ba4"
+      "skillPath": "plugins/ecommerce-storefront/skills/storefront-best-practices/SKILL.md",
+      "computedHash": "7cb664b5767378a57e1a78d6a9b277a00d3723625d563d033c7d979bbb65a487"
+    },
+    "tailwind-4-docs": {
+      "source": "lombiq/tailwind-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/tailwind-4-docs/SKILL.md",
+      "computedHash": "de756f5f03cc20a029983875b00b9dfef9d0ba8567d242c5cbb0262037d0a134"
     },
     "turborepo": {
       "source": "vercel/turborepo",
       "sourceType": "github",
-      "computedHash": "8941746a010948d4251798bd9703230b8841ab7efe988a0815022e870368b481"
+      "skillPath": "skills/turborepo/SKILL.md",
+      "computedHash": "c83a6ff75c62092f71da91408164ed3426f11749b032fd23ecc855e27c2fb538"
     },
     "ultracite": {
       "source": "haydenbleasel/ultracite",
       "sourceType": "github",
-      "computedHash": "41cdab62af0f9cf6a34c34ae37919751dae6a254394a2c8aca98cc97816068d1"
+      "skillPath": "skills/ultracite/SKILL.md",
+      "computedHash": "c543d7dd84476545b8f65d14af9ec5e221eb8ee14ebe801cd4315638551d8663"
     },
     "vercel-composition-patterns": {
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
-      "computedHash": "575757e3e25761c8c562d6e395d29f0b76c98b1273c0bd72d88e6ab1bc9c7d42"
+      "skillPath": "skills/composition-patterns/SKILL.md",
+      "computedHash": "f98931159fa9c7fed043bcd18a891a46dcf89ababa38df13a4c5b7b30dc0ce07"
     },
     "vercel-react-best-practices": {
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
-      "computedHash": "43ca6c197f8ec13055079da7053232d477068b03ca443f9ac1bc819b95cdd432"
+      "skillPath": "skills/react-best-practices/SKILL.md",
+      "computedHash": "3219a1944e404ffc14d1d9d6aef6dd2e3855b81387ee0a044ccbfe14d34c2357"
+    },
+    "vitest": {
+      "source": "antfu/skills",
+      "sourceType": "github",
+      "skillPath": "skills/vitest/SKILL.md",
+      "computedHash": "90f1cee9326269c91b46a601b3a575491505d8e771009dacff01329381d45291"
     },
     "web-design-guidelines": {
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
-      "computedHash": "f3bc47f890f42a44db1007ab390709ec368e4b8c089baee6b0007182236ac474"
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "computedHash": "a6a44d5498f7e8f68289902f3dedfc6f38ae0cee1e96527c80724cf27f727c2a"
+    },
+    "webhook-integration": {
+      "source": "dodopayments/skills",
+      "sourceType": "github",
+      "skillPath": "dodo-payments/webhook-integration/SKILL.md",
+      "computedHash": "ce3327dbef3196b80241dc50ccd5106ede4ede890ddfc9af044732e4019603c1"
     }
   }
 }

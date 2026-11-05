@@ -65,14 +65,19 @@ import { ThemeProvider } from "next-themes";
 
 ```bash
 # Apply a preset code from ui.shadcn.com.
-npx shadcn@latest init --preset a2r6bw --force
+npx shadcn@latest apply --preset a2r6bw
 
-# Switch to a named preset.
-npx shadcn@latest init --preset radix-nova --force
-npx shadcn@latest init --reinstall  # update existing components to match
+# Positional shorthand also works.
+npx shadcn@latest apply a2r6bw
+
+# Switch to a named preset and overwrite existing components.
+npx shadcn@latest apply --preset nova
+
+# Preserve existing components instead.
+npx shadcn@latest init --preset nova --force --no-reinstall
 
 # Use a custom theme URL.
-npx shadcn@latest init --preset "https://ui.shadcn.com/init?base=radix&style=nova&theme=blue&..." --force
+npx shadcn@latest apply --preset "https://ui.shadcn.com/init?base=radix&style=nova&theme=blue&..."
 ```
 
 Or edit CSS variables directly in `globals.css`.
@@ -131,6 +136,8 @@ module.exports = {
 
 `--radius` controls border radius globally. Components derive values from it (`rounded-lg` = `var(--radius)`, `rounded-md` = `calc(var(--radius) - 2px)`).
 
+When a brand spec defines its own radius scale, pin each step in `@theme inline` (`--radius-sm` … `--radius-4xl`) instead of deriving from `--radius`. See [design-system.md](./design-system.md#radius).
+
 ---
 
 ## Customizing Components
@@ -150,7 +157,7 @@ Prefer these approaches in order:
 ### 2. Tailwind classes via `className`
 
 ```tsx
-<Card className="max-w-md mx-auto">...</Card>
+<Card className="mx-auto max-w-md">...</Card>
 ```
 
 ### 3. Add a new variant

@@ -41,14 +41,15 @@ Create a TypeScript file in the `src/jobs/` directory:
 ```typescript
 // src/jobs/sync-products.ts
 import { MedusaContainer } from "@medusajs/framework/types";
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils";
 
 export default async function syncProductsJob(container: MedusaContainer) {
-  const logger = container.resolve("logger");
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
 
   logger.info("Starting product sync...");
 
   // Resolve services from container
-  const productService = container.resolve("product");
+  const productService = container.resolve(Modules.PRODUCT);
   const myService = container.resolve("my-custom-service");
 
   try {
@@ -130,11 +131,13 @@ export const config = {
 ```typescript
 // src/jobs/send-weekly-newsletter.ts
 import { MedusaContainer } from "@medusajs/framework/types";
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils";
+
 import { sendNewsletterWorkflow } from "../workflows/send-newsletter";
 
 export default async function sendNewsletterJob(container: MedusaContainer) {
-  const logger = container.resolve("logger");
-  const query = container.resolve("query");
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
+  const query = container.resolve(ContainerRegistrationKeys.QUERY);
 
   logger.info("Sending weekly newsletter...");
 
@@ -212,8 +215,10 @@ schedule: "0 */6 * * *";
 ### 1. Always Use Logging
 
 ```typescript
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils";
+
 export default async function myJob(container: MedusaContainer) {
-  const logger = container.resolve("logger");
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
 
   logger.info("Job started");
 
@@ -240,7 +245,7 @@ export default async function myJob(container: MedusaContainer) {
 
 // ✅ GOOD: Catches errors and logs
 export default async function myJob(container: MedusaContainer) {
-  const logger = container.resolve("logger");
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
 
   try {
     const service = container.resolve("my-service");
@@ -260,7 +265,7 @@ Design jobs to be safely re-runnable:
 ```typescript
 // ✅ GOOD: Idempotent job
 export default async function syncProducts(container: MedusaContainer) {
-  const logger = container.resolve("logger");
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
   const myService = container.resolve("my-service");
 
   // Check what's already synced
@@ -287,12 +292,14 @@ export default async function syncProducts(container: MedusaContainer) {
 ### 4. Use Workflows for Mutations
 
 ```typescript
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils";
+
 // ✅ GOOD: Uses workflow for mutations
 import { deleteCartsWorkflow } from "../workflows/delete-carts";
 
 export default async function cleanupExpiredCarts(container: MedusaContainer) {
-  const logger = container.resolve("logger");
-  const query = container.resolve("query");
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
+  const query = container.resolve(ContainerRegistrationKeys.QUERY);
 
   // Find expired carts
   const { data: carts } = await query.graph({
@@ -321,8 +328,10 @@ export default async function cleanupExpiredCarts(container: MedusaContainer) {
 ### 5. Add Metrics/Monitoring
 
 ```typescript
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils";
+
 export default async function myJob(container: MedusaContainer) {
-  const logger = container.resolve("logger");
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
   const startTime = Date.now();
 
   try {
@@ -364,13 +373,15 @@ export const config = {
 ```typescript
 // src/jobs/send-abandoned-cart-emails.ts
 import { MedusaContainer } from "@medusajs/framework/types";
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils";
+
 import { sendAbandonedCartEmailWorkflow } from "../workflows/send-abandoned-cart-email";
 
 export default async function abandonedCartEmailJob(
   container: MedusaContainer
 ) {
-  const logger = container.resolve("logger");
-  const query = container.resolve("query");
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
+  const query = container.resolve(ContainerRegistrationKeys.QUERY);
 
   logger.info("Starting abandoned cart email job...");
 

@@ -72,6 +72,7 @@ export default Post;
 ```typescript
 // src/modules/blog/service.ts
 import { MedusaService } from "@medusajs/framework/utils";
+
 import Post from "./models/post";
 
 class BlogModuleService extends MedusaService({
@@ -86,9 +87,10 @@ The service extends `MedusaService` which auto-generates CRUD methods for each d
 ## Step 3: Export Module Definition
 
 ```typescript
+import { Module } from "@medusajs/framework/utils";
+
 // src/modules/blog/index.ts
 import BlogModuleService from "./service";
-import { Module } from "@medusajs/framework/utils";
 
 export const BLOG_MODULE = "blog";
 

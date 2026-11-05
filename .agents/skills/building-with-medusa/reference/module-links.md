@@ -65,6 +65,7 @@ Create link files in `src/links/`:
 // ✅ CORRECT - src/links/product-brand.ts (one link per file)
 import { defineLink } from "@medusajs/framework/utils";
 import ProductModule from "@medusajs/medusa/product";
+
 import BrandModule from "../modules/brand";
 
 export default defineLink(
@@ -166,8 +167,8 @@ To create a link between records in workflow composition functions, use the `cre
 
 ```typescript
 import { Modules } from "@medusajs/framework/utils";
-import { createRemoteLinkStep } from "@medusajs/medusa/core-flows";
 import { createWorkflow, transform } from "@medusajs/framework/workflows-sdk";
+import { createRemoteLinkStep } from "@medusajs/medusa/core-flows";
 
 const BRAND_MODULE = "brand";
 
@@ -210,8 +211,8 @@ To dismiss (remove) a link between records in workflow composition functions, us
 
 ```typescript
 import { Modules } from "@medusajs/framework/utils";
-import { dismissRemoteLinkStep } from "@medusajs/medusa/core-flows";
 import { createWorkflow, transform } from "@medusajs/framework/workflows-sdk";
+import { dismissRemoteLinkStep } from "@medusajs/medusa/core-flows";
 
 const BRAND_MODULE = "brand";
 

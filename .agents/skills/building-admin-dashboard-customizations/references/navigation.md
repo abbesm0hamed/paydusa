@@ -26,9 +26,9 @@ pnpm add react-router-dom@[exact-version]
 Use the `Link` component for internal navigation in widgets and custom pages:
 
 ```tsx
-import { Link } from "react-router-dom";
-import { Text } from "@medusajs/ui";
 import { TriangleRightMini } from "@medusajs/icons";
+import { Text } from "@medusajs/ui";
+import { Link } from "react-router-dom";
 
 // Link to a custom page
 <Link
@@ -75,9 +75,10 @@ import { Link } from "react-router-dom";
 Use `useNavigate` for navigation after actions (e.g., after creating an entity):
 
 ```tsx
-import { useNavigate } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast, Button } from "@medusajs/ui";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+
 import { sdk } from "../lib/client";
 
 const CreateProductWidget = () => {
@@ -148,11 +149,12 @@ const navigate = useNavigate()
 In custom pages, access URL parameters with `useParams`:
 
 ```tsx
+import { Container, Heading } from "@medusajs/ui";
+import { useQuery } from "@tanstack/react-query";
 // Custom page at: /custom/products/:id
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+
 import { sdk } from "../lib/client";
-import { Container, Heading } from "@medusajs/ui";
 
 const ProductDetailsPage = () => {
   const { id } = useParams(); // Get :id from URL
@@ -286,9 +288,9 @@ Add a "View All" link from a widget to a custom page:
 
 ```tsx
 import { defineWidgetConfig } from "@medusajs/admin-sdk";
+import { DetailWidgetProps } from "@medusajs/framework/types";
 import { Container, Heading, Button, Text } from "@medusajs/ui";
 import { Link } from "react-router-dom";
-import { DetailWidgetProps } from "@medusajs/framework/types";
 
 const RelatedProductsWidget = ({ data: product }) => {
   // ... widget logic
@@ -316,7 +318,7 @@ const RelatedProductsWidget = ({ data: product }) => {
 };
 
 export const config = defineWidgetConfig({
-  zone: "product.details.after",
+  zone: "product.details",
 });
 
 export default RelatedProductsWidget;
@@ -327,8 +329,8 @@ export default RelatedProductsWidget;
 Make list items clickable to navigate:
 
 ```tsx
-import { Thumbnail, Text } from "@medusajs/ui";
 import { TriangleRightMini } from "@medusajs/icons";
+import { Thumbnail, Text } from "@medusajs/ui";
 import { Link } from "react-router-dom";
 
 const ProductListItem = ({ product }) => {
@@ -365,9 +367,9 @@ const ProductListItem = ({ product }) => {
 Navigate back to list after viewing details:
 
 ```tsx
-import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "@medusajs/icons";
 import { IconButton } from "@medusajs/ui";
+import { useNavigate } from "react-router-dom";
 
 const DetailsPage = () => {
   const navigate = useNavigate();
@@ -389,8 +391,8 @@ const DetailsPage = () => {
 ### Pattern: Breadcrumb Navigation
 
 ```tsx
-import { Link } from "react-router-dom";
 import { Text } from "@medusajs/ui";
+import { Link } from "react-router-dom";
 
 const Breadcrumbs = ({ product }) => {
   return (
@@ -424,8 +426,8 @@ const Breadcrumbs = ({ product }) => {
 Navigate between different views using tabs:
 
 ```tsx
-import { useSearchParams, Link } from "react-router-dom";
 import { Tabs } from "@medusajs/ui";
+import { useSearchParams, Link } from "react-router-dom";
 
 const ProductTabs = () => {
   const [searchParams] = useSearchParams();

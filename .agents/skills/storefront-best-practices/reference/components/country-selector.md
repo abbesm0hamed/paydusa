@@ -235,7 +235,7 @@ Create a context that stores both country and region. When country changes, look
 
 - Medusa storefront regions documentation: https://docs.medusajs.com/resources/storefront-development/regions/context
 - Medusa JS SDK regions endpoints
-- Consult Medusa MCP server for real-time API details
+- Consult Docs MCP server for real-time API details
 
 **Other backends:**
 Check the ecommerce backend's documentation for country/region handling patterns.
